@@ -1,0 +1,10 @@
+[
+  {"id":"EV001","name":"Urban Feast Demo","category":"food","price":11200,"rating":4.6},
+  {"id":"EV002","name":"Spice Route Demo","category":"food","price":12800,"rating":4.8},
+  {"id":"EV003","name":"Sweet Canvas Demo","category":"cake","price":2200,"rating":4.7},
+  {"id":"EV004","name":"Bake House Demo","category":"cake","price":2800,"rating":4.8},
+  {"id":"EV005","name":"Glow Decor Demo","category":"decor","price":3900,"rating":4.5},
+  {"id":"EV006","name":"Celebration Works Demo","category":"decor","price":4600,"rating":4.7},
+  {"id":"EV007","name":"FrameStory Demo","category":"photography","price":2400,"rating":4.4},
+  {"id":"EV008","name":"Moment Lens Demo","category":"photography","price":3200,"rating":4.7}
+]
