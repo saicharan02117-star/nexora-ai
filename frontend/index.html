@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Nexora AI — Universal Transactional AI & Zero-App Commerce OS" />
+  <title>Nexora AI</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand"><span class="brand-mark">N</span><span>NEXORA <b>AI</b></span></div>
+      <nav>
+        <button class="nav-item active" data-view="mission">✦ <span>Ask Nexora</span></button>
+        <button class="nav-item" data-view="merchant">⌁ <span>Merchant Intelligence</span></button>
+        <button class="nav-item" data-view="wallet">◈ <span>Action Wallet</span></button>
+      </nav>
+      <div class="sidebar-card">
+        <div class="eyebrow">SYSTEM STATUS</div>
+        <div class="status-row"><span class="status-dot"></span><span id="systemStatus">Checking...</span></div>
+        <div class="tiny" id="modeText">Secure transaction layer</div>
+      </div>
+    </aside>
+
+    <main>
+      <header class="topbar">
+        <div>
+          <div class="eyebrow">UNIVERSAL TRANSACTIONAL AI</div>
+          <h1>From intent to outcome.</h1>
+        </div>
+        <div class="profile-chip">SC</div>
+      </header>
+
+      <section id="missionView" class="view active">
+        <div class="hero-card">
+          <div class="hero-copy">
+            <span class="badge">ZERO-APP COMMERCE</span>
+            <h2>What do you want done?</h2>
+            <p>Describe the outcome. Nexora plans, discovers, compares, optimizes and prepares the transaction while keeping sensitive actions behind explicit permissions.</p>
+          </div>
+          <div class="prompt-box">
+            <textarea id="missionInput" rows="4" placeholder="Example: Find me the best laptop below ₹70,000 for AI development and coding."></textarea>
+            <div class="prompt-actions">
+              <div class="sample-prompts">
+                <button data-prompt="Find me the best laptop below ₹70,000 for AI development and coding.">Laptop under ₹70K</button>
+                <button data-prompt="Arrange a birthday for 25 people under ₹20,000.">Birthday under ₹20K</button>
+                <button data-prompt="Why is my merchant revenue leaking today?">Revenue leakage</button>
+              </div>
+              <button id="runMission" class="primary">Run Mission →</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="missionResult" class="result-grid hidden">
+          <section class="panel span-2">
+            <div class="panel-head"><div><div class="eyebrow">MISSION</div><h3 id="missionTitle">Mission Ready</h3></div><span id="missionId" class="pill"></span></div>
+            <div id="intentChips" class="chips"></div>
+            <div id="nextAction" class="next-action"></div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head"><div><div class="eyebrow">AGENT TRACE</div><h3>Execution Path</h3></div></div>
+            <div id="agentSteps" class="timeline"></div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head"><div><div class="eyebrow">PLAN</div><h3>Mission Plan</h3></div></div>
+            <ol id="missionPlan" class="plan-list"></ol>
+          </section>
+
+          <section id="recommendationsPanel" class="panel span-2">
+            <div class="panel-head"><div><div class="eyebrow">DECISION ENGINE</div><h3>Best Options</h3></div><span id="budgetStatus" class="pill"></span></div>
+            <div id="recommendations" class="cards"></div>
+          </section>
+
+          <section id="checkoutPanel" class="panel span-2 hidden">
+            <div class="panel-head"><div><div class="eyebrow">ZERO-TRUST CHECKOUT</div><h3>Permission Before Payment</h3></div><span class="secure-badge">Protected by Action Wallet</span></div>
+            <div class="checkout-grid">
+              <div>
+                <div class="checkout-price" id="checkoutPrice">₹0</div>
+                <div class="muted" id="checkoutLabel">Selected option</div>
+              </div>
+              <div class="permission-list">
+                <div>✓ Intent verified</div>
+                <div>✓ Merchant identified</div>
+                <div>✓ Spending limit checked</div>
+                <div>● User approval required</div>
+              </div>
+              <button id="approveCheckout" class="primary large">Approve & Create Test Order</button>
+            </div>
+            <div id="paymentResult" class="payment-result hidden"></div>
+          </section>
+        </div>
+      </section>
+
+      <section id="merchantView" class="view">
+        <div class="section-title"><div><div class="eyebrow">MERCHANT MODE</div><h2>Revenue Digital Twin</h2></div><button id="refreshMetrics" class="secondary">Refresh intelligence</button></div>
+        <div id="merchantStats" class="stats-grid"></div>
+        <div class="panel">
+          <div class="panel-head"><div><div class="eyebrow">REVENUE LEAK RADAR</div><h3>Recoverable opportunities</h3></div></div>
+          <div id="leakageBars" class="leakage-list"></div>
+        </div>
+      </section>
+
+      <section id="walletView" class="view">
+        <div class="section-title"><div><div class="eyebrow">TRUST LAYER</div><h2>Action Wallet</h2><p class="muted">Separate AI reasoning from transaction authority.</p></div></div>
+        <div class="panel">
+          <div id="walletControls" class="wallet-grid"></div>
+          <button id="saveWallet" class="primary">Save Permissions</button>
+          <div id="walletSaved" class="tiny success-text"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="/static/app.js"></script>
+</body>
+</html>
