@@ -1,0 +1,8 @@
+[
+  {"id":"LAP001","name":"AstraBook Pro 15","merchant":"TechStore Demo","price":67990,"cpu":"Core i7 H-Series","cpu_tier":4,"ram_gb":16,"storage_gb":512,"gpu":"RTX 4050","gpu_tier":3,"stock":12,"delivery_days":2,"rating":4.6,"max_authorized_offer":1200},
+  {"id":"LAP002","name":"CodeBook X16","merchant":"DigitalHub Demo","price":62990,"cpu":"Core i7 H-Series","cpu_tier":4,"ram_gb":16,"storage_gb":1024,"gpu":"Integrated Graphics","gpu_tier":1,"stock":7,"delivery_days":1,"rating":4.4,"max_authorized_offer":800},
+  {"id":"LAP003","name":"Vector 15 AI","merchant":"ComputeKart Demo","price":69490,"cpu":"Core Ultra H-Series","cpu_tier":5,"ram_gb":16,"storage_gb":512,"gpu":"RTX 4050","gpu_tier":3,"stock":5,"delivery_days":3,"rating":4.7,"max_authorized_offer":1500},
+  {"id":"LAP004","name":"Campus Pro 14","merchant":"CampusTech Demo","price":58990,"cpu":"Core i5 H-Series","cpu_tier":3,"ram_gb":16,"storage_gb":512,"gpu":"Integrated Graphics","gpu_tier":1,"stock":18,"delivery_days":2,"rating":4.5,"max_authorized_offer":600},
+  {"id":"LAP005","name":"TensorEdge 15","merchant":"TechStore Demo","price":71990,"cpu":"Core i7 H-Series","cpu_tier":4,"ram_gb":24,"storage_gb":1024,"gpu":"RTX 4050","gpu_tier":3,"stock":4,"delivery_days":2,"rating":4.8,"max_authorized_offer":1700},
+  {"id":"LAP006","name":"DevStation 16","merchant":"DigitalHub Demo","price":64990,"cpu":"Core i7 H-Series","cpu_tier":4,"ram_gb":16,"storage_gb":512,"gpu":"RTX 3050","gpu_tier":2,"stock":10,"delivery_days":1,"rating":4.3,"max_authorized_offer":900}
+]
