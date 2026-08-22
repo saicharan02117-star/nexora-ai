@@ -1,4 +1,13 @@
 (() => {
+  const shoppingCss = document.createElement('link');
+  shoppingCss.rel = 'stylesheet';
+  shoppingCss.href = '/static/shopping.css';
+  document.head.appendChild(shoppingCss);
+
+  const shoppingScript = document.createElement('script');
+  shoppingScript.src = '/static/shopping.js';
+  document.head.appendChild(shoppingScript);
+
   let attachedImage = null;
   const $ = (id) => document.getElementById(id);
 
@@ -91,7 +100,6 @@
     $('imageLightbox')?.addEventListener('click', (e) => { if (e.target === $('imageLightbox')) closePreview(); });
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('imageLightbox')?.classList.contains('hidden')) closePreview(); });
 
-    // Capture the original send handler without replacing the core mission logic.
     $('runMission')?.addEventListener('click', () => {
       if (attachedImage) setTimeout(() => appendUserImageToLatestMessage(), 0);
     }, true);
@@ -101,7 +109,6 @@
 
     const observer = new MutationObserver(() => {
       if (attachedImage && document.querySelector('.message-row.user .user-image-preview')) {
-        // Keep the object URL alive in chat, but clear only the composer tray.
         const tray = $('attachmentTray');
         if (tray) { tray.innerHTML = ''; tray.classList.add('hidden'); }
         if ($('fileInput')) $('fileInput').value = '';
