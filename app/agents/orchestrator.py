@@ -3,6 +3,7 @@ from app.schemas import MissionResponse, AgentStep, Recommendation
 from app.world_model.state import CommerceWorldModel
 from app.security.action_wallet import DEFAULT_WALLET
 from app.security.agent_firewall import AgentFirewall, ActionRequest
+from app.services.market_enrichment import enrich_product
 from .intent_agent import IntentAgent
 from .planner_agent import PlannerAgent
 from .discovery_agent import DiscoveryAgent
@@ -71,7 +72,7 @@ class MasterOrchestrator:
             if is_universal_demo:
                 steps.append(AgentStep(
                     agent="Universal Product Router",
-                    summary=f"No exact demo SKU existed for '{query}', so Nexora generated representative prototype options for this product type instead of rejecting the request.",
+                    summary=f"No exact demo SKU existed for '{query}', so Nexora prepared representative offline prototype options instead of rejecting the request.",
                 ))
             else:
                 steps.append(AgentStep(
@@ -82,7 +83,7 @@ class MasterOrchestrator:
             ranked = self.comparison_agent.run(discovered, intent)
             steps.append(AgentStep(agent="Comparison Agent", summary="Ranked available matches using budget, requested attributes, delivery and merchant signals."))
 
-            if ranked:
+            if ranked and not ranked[0].get("synthetic_demo"):
                 offer = self.negotiation_agent.run(ranked[0])
                 ranked[0]["original_price"] = ranked[0]["price"]
                 ranked[0]["price"] = offer["final_price"]
@@ -90,7 +91,9 @@ class MasterOrchestrator:
                     ranked[0]["reasons"] = [f"₹{offer['discount']} demo merchant-authorized offer applied"] + ranked[0]["reasons"]
                 steps.append(AgentStep(agent="Negotiation Agent", summary=offer["policy"]))
 
-            for item in ranked:
+            enriched_ranked = [enrich_product(item, query, index=i) for i, item in enumerate(ranked)]
+
+            for item in enriched_ranked:
                 recommendations.append(Recommendation(
                     id=item["id"],
                     name=item["name"],
@@ -99,15 +102,22 @@ class MasterOrchestrator:
                     score=item["score"],
                     reasons=item["reasons"],
                     metadata=self._metadata(item),
+                    image_url=item.get("image_url"),
+                    image_label=item.get("image_label"),
+                    local_market_range=item.get("local_market_range"),
+                    price_label=item.get("price_label"),
+                    price_note=item.get("price_note"),
+                    buy_links=item.get("buy_links", {}),
+                    nearby_link=item.get("nearby_link"),
                 ))
 
-            budget_summary = self.budget_agent.product_summary(ranked, intent.get("budget_max"))
-            if ranked:
+            budget_summary = self.budget_agent.product_summary(enriched_ranked, intent.get("budget_max"))
+            if enriched_ranked:
                 firewall = self.firewall.inspect(ActionRequest(
                     agent_id="nexora-payment-agent",
                     action="payment",
-                    amount=ranked[0]["price"],
-                    merchant=ranked[0]["merchant"],
+                    amount=enriched_ranked[0]["price"],
+                    merchant=enriched_ranked[0]["merchant"],
                     purpose=intent["raw_goal"],
                 ), DEFAULT_WALLET)
                 steps.append(AgentStep(
@@ -115,13 +125,16 @@ class MasterOrchestrator:
                     status="needs_confirmation" if firewall.requires_confirmation else "completed",
                     summary=firewall.reason,
                 ))
-                if ranked[0].get("synthetic_demo"):
+                if enriched_ranked[0].get("synthetic_demo"):
                     next_action = (
-                        f"Prototype match prepared for '{query}': {ranked[0]['name']} at ₹{ranked[0]['price']:,}. "
-                        "This keeps the demo usable for arbitrary product categories; the listing and price are representative demo data, not a claim of current worldwide inventory."
+                        f"Prepared an offline prototype estimate for '{query}'. The local-market range is approximate and the shopping buttons open retailer/search pages for the same item; "
+                        "they are not claimed as verified seller listings until a merchant feed is connected."
                     )
                 else:
-                    next_action = f"Best demo-catalogue match: {ranked[0]['name']} from {ranked[0]['merchant']} at ₹{ranked[0]['price']:,}. Review the options and confirm before checkout."
+                    next_action = (
+                        f"Best demo-catalogue match: {enriched_ranked[0]['name']} at ₹{enriched_ranked[0]['price']:,}. "
+                        "You can compare the approximate local-market range, preview an image and open shopping links before checkout."
+                    )
             else:
                 next_action = f"I understood the request for '{query}', but could not prepare a prototype option."
 
