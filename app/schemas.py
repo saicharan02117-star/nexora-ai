@@ -21,6 +21,13 @@ class Recommendation(BaseModel):
     score: float
     reasons: list[str]
     metadata: dict[str, Any] = {}
+    image_url: str | None = None
+    image_label: str | None = None
+    local_market_range: str | None = None
+    price_label: str | None = None
+    price_note: str | None = None
+    buy_links: dict[str, str] = {}
+    nearby_link: str | None = None
 
 
 class MissionResponse(BaseModel):
