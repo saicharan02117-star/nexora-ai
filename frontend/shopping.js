@@ -20,7 +20,12 @@
     const buyLinks = Object.entries(r.buy_links || {}).slice(0,5)
       .map(([name,url], idx)=>`<a class="shop-link ${idx===0?'primary':''}" href="${safeUrl(url)}" target="_blank" rel="noopener noreferrer">${safe(name)} ↗</a>`).join('');
     const nearby = r.nearby_link ? `<a class="shop-link nearby" href="${safeUrl(r.nearby_link)}" target="_blank" rel="noopener noreferrer">Nearby shops ↗</a>` : '';
-    const image = r.image_url ? `<div class="product-visual"><img loading="lazy" referrerpolicy="no-referrer" src="${safeUrl(r.image_url)}" alt="Representative preview for ${safe(r.name)}" onerror="this.parentElement.style.display='none'"><span class="product-visual-badge">${safe(r.image_label || 'Representative preview')}</span></div>` : '';
+    const exactImageSearch = r.image_search_url ? `<a class="shop-link image-search" href="${safeUrl(r.image_search_url)}" target="_blank" rel="noopener noreferrer">View matching images ↗</a>` : '';
+
+    const image = r.image_url
+      ? `<div class="product-visual"><img loading="lazy" referrerpolicy="no-referrer" src="${safeUrl(r.image_url)}" alt="Product preview for ${safe(r.name)}" onerror="this.parentElement.style.display='none'"><span class="product-visual-badge">${safe(r.image_label || 'Verified product image')}</span></div>`
+      : `<div class="image-unverified"><div class="image-placeholder-icon">▣</div><div><strong>Exact image not verified</strong><small>No random photo is shown for this demo suggestion.</small></div>${exactImageSearch}</div>`;
+
     const localRange = r.local_market_range ? `<div class="price-context"><span class="market-label">India local-market estimate</span><span class="market-range">${safe(r.local_market_range)}</span></div>` : '';
     const priceNote = r.price_note ? `<div class="price-note">${safe(r.price_note)}</div>` : '';
     const sourceNote = r.metadata?.['Source Note'] ? `<div class="shopping-disclaimer">${safe(r.metadata['Source Note'])}</div>` : '';
