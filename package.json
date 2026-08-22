@@ -1,0 +1,9 @@
+{
+  "name": "nexora-ai-search-runtime",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "ai": "latest",
+    "@ai-sdk/anthropic": "latest"
+  }
+}
