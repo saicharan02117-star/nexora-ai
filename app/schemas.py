@@ -5,6 +5,7 @@ from pydantic import BaseModel, Field
 class MissionRequest(BaseModel):
     message: str = Field(min_length=2, max_length=2000)
     user_id: str = "demo-user"
+    previous_intent: dict[str, Any] | None = None
 
 
 class AgentStep(BaseModel):
