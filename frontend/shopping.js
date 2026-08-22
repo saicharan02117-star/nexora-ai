@@ -1,13 +1,13 @@
 (() => {
   function safe(value) {
     if (typeof escapeHtml === 'function') return escapeHtml(value);
-    return String(value ?? '').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+    return String(value ?? '').replace(/[&<>'\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','\"':'&quot;'}[c]));
   }
 
   function safeUrl(value) {
     try {
       const url = new URL(String(value));
-      return ['http:', 'https:'].includes(url.protocol) ? url.href : '#';
+      return ['http:', 'https:', 'data:'].includes(url.protocol) ? url.href : '#';
     } catch { return '#'; }
   }
 
@@ -20,11 +20,10 @@
     const buyLinks = Object.entries(r.buy_links || {}).slice(0,5)
       .map(([name,url], idx)=>`<a class="shop-link ${idx===0?'primary':''}" href="${safeUrl(url)}" target="_blank" rel="noopener noreferrer">${safe(name)} ↗</a>`).join('');
     const nearby = r.nearby_link ? `<a class="shop-link nearby" href="${safeUrl(r.nearby_link)}" target="_blank" rel="noopener noreferrer">Nearby shops ↗</a>` : '';
-    const exactImageSearch = r.image_search_url ? `<a class="shop-link image-search" href="${safeUrl(r.image_search_url)}" target="_blank" rel="noopener noreferrer">View matching images ↗</a>` : '';
 
     const image = r.image_url
-      ? `<div class="product-visual"><img loading="lazy" referrerpolicy="no-referrer" src="${safeUrl(r.image_url)}" alt="Product preview for ${safe(r.name)}" onerror="this.parentElement.style.display='none'"><span class="product-visual-badge">${safe(r.image_label || 'Verified product image')}</span></div>`
-      : `<div class="image-unverified"><div class="image-placeholder-icon">▣</div><div><strong>Exact image not verified</strong><small>No random photo is shown for this demo suggestion.</small></div>${exactImageSearch}</div>`;
+      ? `<div class="product-visual"><img loading="lazy" referrerpolicy="no-referrer" src="${safeUrl(r.image_url)}" alt="Preview for ${safe(r.name)}" onerror="this.parentElement.style.display='none'"><span class="product-visual-badge">${safe(r.image_label || 'Preview')}</span></div>`
+      : '';
 
     const localRange = r.local_market_range ? `<div class="price-context"><span class="market-label">India local-market estimate</span><span class="market-range">${safe(r.local_market_range)}</span></div>` : '';
     const priceNote = r.price_note ? `<div class="price-note">${safe(r.price_note)}</div>` : '';
