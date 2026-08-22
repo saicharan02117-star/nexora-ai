@@ -8,6 +8,22 @@ class MissionRequest(BaseModel):
     previous_intent: dict[str, Any] | None = None
 
 
+class ChatMessage(BaseModel):
+    role: Literal["user", "assistant"]
+    content: str = Field(min_length=1, max_length=12000)
+
+
+class ChatRequest(BaseModel):
+    message: str = Field(min_length=1, max_length=8000)
+    history: list[ChatMessage] = []
+
+
+class ChatResponse(BaseModel):
+    answer: str
+    mode: str = "general"
+    model_connected: bool = False
+
+
 class AgentStep(BaseModel):
     agent: str
     status: Literal["completed", "needs_confirmation", "blocked"] = "completed"
