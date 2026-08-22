@@ -13,60 +13,20 @@
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">
         <div class="brand-row">
-          <a class="brand" href="#" aria-label="Nexora home">
-            <span class="brand-mark">N</span>
-            <span class="brand-name">Nexora</span>
-          </a>
+          <a class="brand" href="#" aria-label="Nexora home"><span class="brand-mark">N</span><span class="brand-name">Nexora</span></a>
           <button class="icon-button desktop-collapse" id="collapseSidebar" aria-label="Collapse sidebar">‹</button>
           <button class="icon-button mobile-close" id="closeSidebar" aria-label="Close sidebar">×</button>
         </div>
-
-        <button class="new-chat" id="newChat">
-          <span class="new-chat-icon">＋</span>
-          <span>New chat</span>
-          <kbd>Ctrl K</kbd>
-        </button>
-
-        <div class="sidebar-search">
-          <span>⌕</span>
-          <input id="historySearch" placeholder="Search chats" autocomplete="off" />
-        </div>
+        <button class="new-chat" id="newChat"><span class="new-chat-icon">＋</span><span>New chat</span><kbd>Ctrl K</kbd></button>
+        <div class="sidebar-search"><span>⌕</span><input id="historySearch" placeholder="Search chats" autocomplete="off" /></div>
       </div>
-
-      <div class="sidebar-section">
-        <div class="sidebar-label">Recent</div>
-        <div class="history" id="chatHistory">
-          <button class="history-item active"><span class="history-icon">◇</span><span class="history-label">New commerce mission</span><span class="history-more">•••</span></button>
-        </div>
-      </div>
-
+      <div class="sidebar-section"><div class="sidebar-label">Recent</div><div class="history" id="chatHistory"><button class="history-item active"><span class="history-icon">◇</span><span class="history-label">New commerce mission</span><span class="history-more">•••</span></button></div></div>
       <div class="sidebar-bottom">
-        <button class="side-action" data-view="merchant">
-          <span class="side-icon">↗</span>
-          <span class="side-label">Merchant intelligence</span>
-        </button>
-        <button class="side-action" data-view="wallet">
-          <span class="side-icon">◎</span>
-          <span class="side-label">Action wallet</span>
-        </button>
-        <button class="side-action" id="themeToggle">
-          <span class="side-icon" id="themeIcon">☾</span>
-          <span class="side-label" id="themeLabel">Light mode</span>
-        </button>
-
-        <div class="system-card">
-          <span class="status-dot"></span>
-          <div class="system-copy-wrap">
-            <div id="systemStatus" class="system-title">Checking system</div>
-            <div id="modeText" class="system-copy">Secure transaction layer</div>
-          </div>
-        </div>
-
-        <button class="account-row">
-          <span class="avatar">SC</span>
-          <span class="account-copy"><strong>Sai Charan</strong><small>Nexora workspace</small></span>
-          <span class="more">•••</span>
-        </button>
+        <button class="side-action" data-view="merchant"><span class="side-icon">↗</span><span class="side-label">Merchant intelligence</span></button>
+        <button class="side-action" data-view="wallet"><span class="side-icon">◎</span><span class="side-label">Action wallet</span></button>
+        <button class="side-action" id="themeToggle"><span class="side-icon" id="themeIcon">☾</span><span class="side-label" id="themeLabel">Light mode</span></button>
+        <div class="system-card"><span class="status-dot"></span><div class="system-copy-wrap"><div id="systemStatus" class="system-title">Checking system</div><div id="modeText" class="system-copy">Secure transaction layer</div></div></div>
+        <button class="account-row"><span class="avatar">SC</span><span class="account-copy"><strong>Sai Charan</strong><small>Nexora workspace</small></span><span class="more">•••</span></button>
       </div>
     </aside>
 
@@ -84,16 +44,8 @@
             </div>
           </div>
         </div>
-
-        <div class="topbar-center">
-          <span class="security-pill">◎ Permission controlled</span>
-        </div>
-
-        <div class="topbar-actions">
-          <span class="top-status"><span class="status-dot"></span> Live</span>
-          <button class="share-button" id="shareButton">Share</button>
-          <button class="icon-button top-more" aria-label="More">•••</button>
-        </div>
+        <div class="topbar-center"><span class="security-pill">◎ Permission controlled</span></div>
+        <div class="topbar-actions"><span class="top-status"><span class="status-dot"></span> Live</span><button class="share-button" id="shareButton">Share</button><button class="icon-button top-more" aria-label="More">•••</button></div>
       </header>
 
       <main>
@@ -102,36 +54,16 @@
             <div class="empty-state" id="emptyState">
               <div class="hero-logo-wrap"><div class="hero-logo">N</div><div class="hero-ring"></div></div>
               <h1>What can I help you get done?</h1>
-              <p>One conversation for discovery, comparison, planning, merchant intelligence and permission-controlled transactions.</p>
-
-              <div class="capability-row">
-                <span>Research</span><i></i><span>Compare</span><i></i><span>Plan</span><i></i><span>Transact</span>
-              </div>
-
+              <p>One conversation for discovery, comparison, planning, image-based product exploration and permission-controlled transactions.</p>
+              <div class="capability-row"><span>Research</span><i></i><span>Compare</span><i></i><span>Plan</span><i></i><span>Preview images</span><i></i><span>Transact</span></div>
               <div class="suggestion-grid">
-                <button class="suggestion-card" data-prompt="Find me the best laptop below ₹70,000 for AI development and coding.">
-                  <span class="suggestion-icon">⌁</span>
-                  <span><strong>Find the right laptop</strong><small>Compare performance and value under ₹70K</small></span>
-                  <span class="suggestion-arrow">↗</span>
-                </button>
-                <button class="suggestion-card" data-prompt="Find me running shoes under ₹1,500.">
-                  <span class="suggestion-icon">◇</span>
-                  <span><strong>Shop within a budget</strong><small>Rank the best running shoes under ₹1,500</small></span>
-                  <span class="suggestion-arrow">↗</span>
-                </button>
-                <button class="suggestion-card" data-prompt="Arrange a birthday for 25 people under ₹20,000.">
-                  <span class="suggestion-icon">✦</span>
-                  <span><strong>Plan a complete event</strong><small>Coordinate vendors and total budget</small></span>
-                  <span class="suggestion-arrow">↗</span>
-                </button>
-                <button class="suggestion-card" data-prompt="Why is my merchant revenue leaking today?">
-                  <span class="suggestion-icon">↗</span>
-                  <span><strong>Analyze merchant growth</strong><small>Find leakage and recovery opportunities</small></span>
-                  <span class="suggestion-arrow">↗</span>
-                </button>
+                <button class="suggestion-card" data-prompt="Find me the best laptop below ₹70,000 for AI development and coding."><span class="suggestion-icon">⌁</span><span><strong>Find the right laptop</strong><small>Compare performance and value under ₹70K</small></span><span class="suggestion-arrow">↗</span></button>
+                <button class="suggestion-card" data-prompt="Find me running shoes under ₹1,500."><span class="suggestion-icon">◇</span><span><strong>Shop within a budget</strong><small>Rank the best running shoes under ₹1,500</small></span><span class="suggestion-arrow">↗</span></button>
+                <button class="suggestion-card" id="visualSearchCard"><span class="suggestion-icon">▣</span><span><strong>Preview a product image</strong><small>Attach an image and continue the commerce mission</small></span><span class="suggestion-arrow">＋</span></button>
+                <button class="suggestion-card" data-prompt="Arrange a birthday for 25 people under ₹20,000."><span class="suggestion-icon">✦</span><span><strong>Plan a complete event</strong><small>Coordinate vendors and total budget</small></span><span class="suggestion-arrow">↗</span></button>
+                <button class="suggestion-card" data-prompt="Why is my merchant revenue leaking today?"><span class="suggestion-icon">↗</span><span><strong>Analyze merchant growth</strong><small>Find leakage and recovery opportunities</small></span><span class="suggestion-arrow">↗</span></button>
               </div>
             </div>
-
             <div id="messageList" class="message-list"></div>
           </div>
 
@@ -140,71 +72,35 @@
           <div class="composer-wrap">
             <div class="composer-shell">
               <div class="composer" id="composer">
+                <div id="attachmentTray" class="attachment-tray hidden"></div>
                 <textarea id="missionInput" rows="1" placeholder="Message Nexora" aria-label="Message Nexora"></textarea>
                 <div class="composer-footer">
                   <div class="composer-tools">
-                    <button class="tool-button" id="attachButton" title="Add attachment">＋</button>
+                    <button class="tool-button" id="attachButton" title="Add image">＋</button>
+                    <button class="tool-pill" id="imagePreviewButton" type="button"><span>▣</span> Image preview</button>
                     <button class="tool-pill" id="commerceMode" type="button"><span>◉</span> Commerce</button>
                     <button class="tool-pill compact" id="deepReasonButton" type="button"><span>✦</span> Deep plan</button>
                   </div>
-                  <div class="composer-right">
-                    <button class="mic-button" id="micButton" aria-label="Voice input">⌁</button>
-                    <button id="runMission" class="send-button" aria-label="Send message">↑</button>
-                  </div>
+                  <div class="composer-right"><button class="mic-button" id="micButton" aria-label="Voice input">⌁</button><button id="runMission" class="send-button" aria-label="Send message">↑</button></div>
                 </div>
               </div>
-              <div class="composer-note">Nexora can make mistakes. Verify important prices, policies and payment details.</div>
+              <div class="composer-note">Image preview runs locally in your browser. Nexora can make mistakes; verify important prices, policies and payment details.</div>
             </div>
           </div>
         </section>
 
         <section id="merchantView" class="view utility-view">
           <div class="utility-shell">
-            <div class="utility-header">
-              <div>
-                <button class="back-to-chat" data-view="mission">← Back to chat</button>
-                <div class="eyebrow">MERCHANT INTELLIGENCE</div>
-                <h1>Revenue Digital Twin</h1>
-                <p>See revenue health, detect leakage and identify the highest-value recovery action.</p>
-              </div>
-              <button id="refreshMetrics" class="secondary-button">↻ Refresh intelligence</button>
-            </div>
-
+            <div class="utility-header"><div><button class="back-to-chat" data-view="mission">← Back to chat</button><div class="eyebrow">MERCHANT INTELLIGENCE</div><h1>Revenue Digital Twin</h1><p>See revenue health, detect leakage and identify the highest-value recovery action.</p></div><button id="refreshMetrics" class="secondary-button">↻ Refresh intelligence</button></div>
             <div id="merchantStats" class="stats-grid"></div>
-
-            <section class="utility-panel">
-              <div class="panel-title">
-                <div><span class="eyebrow">RECOVERY RADAR</span><h2>Recoverable opportunities</h2></div>
-                <span class="panel-badge">Live model</span>
-              </div>
-              <div id="leakageBars" class="leakage-list"></div>
-            </section>
+            <section class="utility-panel"><div class="panel-title"><div><span class="eyebrow">RECOVERY RADAR</span><h2>Recoverable opportunities</h2></div><span class="panel-badge">Live model</span></div><div id="leakageBars" class="leakage-list"></div></section>
           </div>
         </section>
 
         <section id="walletView" class="view utility-view">
           <div class="utility-shell">
-            <div class="utility-header">
-              <div>
-                <button class="back-to-chat" data-view="mission">← Back to chat</button>
-                <div class="eyebrow">TRUST & PERMISSIONS</div>
-                <h1>Action Wallet</h1>
-                <p>Define what Nexora may search, prepare, negotiate or transact before any sensitive action is allowed.</p>
-              </div>
-              <span class="security-pill large">◎ Zero-trust actions</span>
-            </div>
-
-            <section class="utility-panel">
-              <div class="permission-intro">
-                <div><strong>Transaction authority</strong><span>Reasoning and payment authority stay separate.</span></div>
-                <span class="secure-state"><span class="status-dot"></span> Protected</span>
-              </div>
-              <div id="walletControls" class="wallet-grid"></div>
-              <div class="wallet-footer">
-                <button id="saveWallet" class="primary-button">Save permissions</button>
-                <div id="walletSaved" class="save-status"></div>
-              </div>
-            </section>
+            <div class="utility-header"><div><button class="back-to-chat" data-view="mission">← Back to chat</button><div class="eyebrow">TRUST & PERMISSIONS</div><h1>Action Wallet</h1><p>Define what Nexora may search, prepare, negotiate or transact before any sensitive action is allowed.</p></div><span class="security-pill large">◎ Zero-trust actions</span></div>
+            <section class="utility-panel"><div class="permission-intro"><div><strong>Transaction authority</strong><span>Reasoning and payment authority stay separate.</span></div><span class="secure-state"><span class="status-dot"></span> Protected</span></div><div id="walletControls" class="wallet-grid"></div><div class="wallet-footer"><button id="saveWallet" class="primary-button">Save permissions</button><div id="walletSaved" class="save-status"></div></div></section>
           </div>
         </section>
       </main>
@@ -213,7 +109,13 @@
 
   <div class="sidebar-scrim" id="sidebarScrim"></div>
   <div class="toast" id="toast"></div>
-  <input id="fileInput" type="file" class="hidden" />
+  <input id="fileInput" type="file" accept="image/png,image/jpeg,image/webp,image/gif" class="hidden" />
+
+  <div id="imageLightbox" class="image-lightbox hidden" role="dialog" aria-modal="true" aria-label="Image preview">
+    <button id="closeLightbox" class="lightbox-close" aria-label="Close image preview">×</button>
+    <div class="lightbox-card"><img id="lightboxImage" alt="Attached image preview" /><div id="lightboxCaption" class="lightbox-caption"></div></div>
+  </div>
+
   <script src="/static/app.js"></script>
 </body>
 </html>
