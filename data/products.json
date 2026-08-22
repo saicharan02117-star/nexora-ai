@@ -20,5 +20,52 @@
   {"id":"AUD003","category":"earbuds","name":"CampusPods Mini","merchant":"CampusTech Demo","price":899,"battery":"28 hours","feature":"compact case","stock":34,"delivery_days":2,"rating":4.2,"max_authorized_offer":60},
 
   {"id":"BAG001","category":"backpack","name":"CampusCarry 25L","merchant":"CampusStyle Demo","price":899,"capacity":"25L","feature":"laptop sleeve","stock":30,"delivery_days":2,"rating":4.4,"max_authorized_offer":70},
-  {"id":"BAG002","category":"backpack","name":"UrbanTech 30L","merchant":"UrbanGear Demo","price":1499,"capacity":"30L","feature":"water resistant + organizer","stock":14,"delivery_days":1,"rating":4.6,"max_authorized_offer":120}
+  {"id":"BAG002","category":"backpack","name":"UrbanTech 30L","merchant":"UrbanGear Demo","price":1499,"capacity":"30L","feature":"water resistant + organizer","stock":14,"delivery_days":1,"rating":4.6,"max_authorized_offer":120},
+
+  {"id":"CON001","category":"gaming_console","name":"Xbox Series S 512GB","merchant":"GameHub Demo","price":32990,"platform":"Xbox","edition":"Digital","storage_gb":512,"connectivity":"Wi-Fi + HDMI","stock":8,"delivery_days":2,"rating":4.7,"max_authorized_offer":900},
+  {"id":"CON002","category":"gaming_console","name":"Xbox Series X 1TB","merchant":"GameHub Demo","price":52990,"platform":"Xbox","edition":"Disc + Digital","storage_gb":1024,"connectivity":"Wi-Fi + HDMI","stock":5,"delivery_days":2,"rating":4.8,"max_authorized_offer":1400},
+  {"id":"CON003","category":"gaming_console","name":"PlayStation 5 Slim","merchant":"ConsoleWorld Demo","price":54990,"platform":"PlayStation","edition":"Disc","storage_gb":1024,"connectivity":"Wi-Fi + HDMI","stock":6,"delivery_days":3,"rating":4.8,"max_authorized_offer":1200},
+
+  {"id":"TV001","category":"television","name":"VisionMax 43-inch 4K Smart TV","merchant":"HomeElectro Demo","price":27990,"display":"43-inch 4K","feature":"HDR + streaming apps","connectivity":"Wi-Fi + HDMI","stock":9,"delivery_days":2,"rating":4.5,"max_authorized_offer":700},
+  {"id":"MON001","category":"monitor","name":"PixelView 27-inch QHD Monitor","merchant":"ComputeKart Demo","price":18990,"display":"27-inch QHD 165Hz","feature":"Adaptive sync","connectivity":"HDMI + DisplayPort","stock":10,"delivery_days":2,"rating":4.6,"max_authorized_offer":500},
+  {"id":"KEY001","category":"keyboard","name":"MechType RGB Mechanical Keyboard","merchant":"Peripherals Demo","price":3499,"feature":"Hot-swappable switches","connectivity":"USB-C","stock":18,"delivery_days":1,"rating":4.5,"max_authorized_offer":200},
+  {"id":"MOU001","category":"mouse","name":"SwiftClick Wireless Mouse","merchant":"Peripherals Demo","price":1499,"feature":"Adjustable DPI","connectivity":"2.4GHz + Bluetooth","stock":25,"delivery_days":1,"rating":4.4,"max_authorized_offer":100},
+  {"id":"TAB001","category":"tablet","name":"StudyTab 11","merchant":"DigitalHub Demo","price":24990,"display":"11-inch","memory":"8GB + 128GB","battery":"8000mAh","stock":12,"delivery_days":2,"rating":4.5,"max_authorized_offer":600},
+  {"id":"SPK001","category":"speaker","name":"BoomGo Portable Bluetooth Speaker","merchant":"AudioCart Demo","price":2999,"feature":"IPX6 + stereo pairing","battery":"18 hours","connectivity":"Bluetooth","stock":16,"delivery_days":1,"rating":4.5,"max_authorized_offer":180},
+  {"id":"WAT001","category":"smartwatch","name":"PulseTrack Smartwatch","merchant":"Wearables Demo","price":4499,"display":"AMOLED","feature":"GPS + fitness tracking","battery":"7 days","stock":14,"delivery_days":2,"rating":4.4,"max_authorized_offer":250},
+  {"id":"CAM001","category":"camera","name":"FramePro Mirrorless Camera","merchant":"CameraHouse Demo","price":58990,"camera":"24MP APS-C","feature":"4K video + interchangeable lens","stock":4,"delivery_days":3,"rating":4.7,"max_authorized_offer":1000},
+
+  {"id":"CHR001","category":"chair","name":"FlexSeat Plastic Chair","merchant":"HomeBasics Demo","price":899,"material":"plastic","feature":"stackable + lightweight","stock":42,"delivery_days":2,"rating":4.3,"max_authorized_offer":50},
+  {"id":"CHR002","category":"chair","name":"SteelFrame Office Chair","merchant":"FurniWorks Demo","price":6499,"material":"metal + mesh","feature":"ergonomic back + height adjustment","stock":11,"delivery_days":3,"rating":4.5,"max_authorized_offer":300},
+  {"id":"CHR003","category":"chair","name":"CloudSoft Lounge Chair","merchant":"FurniWorks Demo","price":8999,"material":"wood + soft fabric","feature":"deep cushion seating","stock":5,"delivery_days":4,"rating":4.6,"max_authorized_offer":400},
+  {"id":"TBL001","category":"table","name":"StudyMate Wooden Desk","merchant":"FurniWorks Demo","price":4999,"material":"engineered wood","feature":"cable management + shelf","stock":12,"delivery_days":3,"rating":4.4,"max_authorized_offer":250},
+  {"id":"TBL002","category":"table","name":"MetalPro Work Table","merchant":"Workshop Demo","price":7499,"material":"powder-coated steel","feature":"heavy duty work surface","stock":8,"delivery_days":4,"rating":4.5,"max_authorized_offer":300},
+
+  {"id":"BOT001","category":"bottle","name":"ClearSip Plastic Bottle 1L","merchant":"HomeBasics Demo","price":299,"material":"BPA-free plastic","capacity":"1L","feature":"leak resistant","stock":60,"delivery_days":1,"rating":4.3,"max_authorized_offer":20},
+  {"id":"BOT002","category":"bottle","name":"ThermoSteel Insulated Bottle 1L","merchant":"HomeBasics Demo","price":999,"material":"stainless steel","capacity":"1L","feature":"double-wall insulated","stock":35,"delivery_days":1,"rating":4.6,"max_authorized_offer":60},
+  {"id":"STO001","category":"storage","name":"StackBox Plastic Storage 45L","merchant":"HomeBasics Demo","price":799,"material":"plastic","capacity":"45L","feature":"stackable + transparent lid","stock":26,"delivery_days":2,"rating":4.4,"max_authorized_offer":50},
+  {"id":"STO002","category":"storage","name":"StrongRack Steel 5-Tier Rack","merchant":"Workshop Demo","price":4299,"material":"powder-coated steel","feature":"heavy duty 5-tier storage","stock":9,"delivery_days":3,"rating":4.6,"max_authorized_offer":200},
+
+  {"id":"CKW001","category":"cookware","name":"SteelCraft Pressure Cooker 5L","merchant":"KitchenHub Demo","price":2499,"material":"stainless steel","capacity":"5L","feature":"induction compatible","stock":14,"delivery_days":2,"rating":4.5,"max_authorized_offer":150},
+  {"id":"CKW002","category":"cookware","name":"NonStick Fry Pan 28cm","merchant":"KitchenHub Demo","price":1299,"material":"aluminium + non-stick coating","feature":"soft-touch handle","stock":20,"delivery_days":1,"rating":4.4,"max_authorized_offer":80},
+
+  {"id":"TOL001","category":"tool","name":"HomeFix 46-Piece Tool Kit","merchant":"Workshop Demo","price":1999,"material":"hardened steel + plastic grips","feature":"screwdrivers + pliers + sockets","stock":18,"delivery_days":2,"rating":4.5,"max_authorized_offer":120},
+  {"id":"TOL002","category":"tool","name":"PowerDrill Compact 550W","merchant":"Workshop Demo","price":3299,"material":"metal + polymer housing","feature":"variable speed drill","stock":10,"delivery_days":2,"rating":4.6,"max_authorized_offer":180},
+
+  {"id":"APP001","category":"appliance","name":"BreezePro Table Fan","merchant":"HomeElectro Demo","price":2199,"material":"plastic + metal","feature":"3-speed oscillation","stock":17,"delivery_days":2,"rating":4.4,"max_authorized_offer":100},
+  {"id":"APP002","category":"appliance","name":"QuickBoil Steel Kettle 1.5L","merchant":"HomeElectro Demo","price":1299,"material":"stainless steel + plastic","capacity":"1.5L","feature":"auto shut-off","stock":23,"delivery_days":1,"rating":4.5,"max_authorized_offer":80},
+
+  {"id":"CLO001","category":"clothing","name":"Everyday Cotton T-Shirt","merchant":"StyleDemo","price":599,"material":"soft cotton","feature":"regular fit","sizes":"S-XXL","stock":50,"delivery_days":2,"rating":4.3,"max_authorized_offer":30},
+  {"id":"CLO002","category":"clothing","name":"Urban Denim Jeans","merchant":"StyleDemo","price":1499,"material":"cotton denim","feature":"stretch fit","sizes":"28-38","stock":32,"delivery_days":2,"rating":4.4,"max_authorized_offer":80},
+
+  {"id":"SPT001","category":"sports","name":"PowerStrike Cricket Bat","merchant":"SportsArena Demo","price":2999,"material":"English willow composite","feature":"full-size bat","stock":12,"delivery_days":2,"rating":4.5,"max_authorized_offer":150},
+  {"id":"SPT002","category":"sports","name":"AeroShuttle Badminton Set","merchant":"SportsArena Demo","price":1799,"material":"aluminium + graphite","feature":"2 rackets + shuttle pack","stock":18,"delivery_days":1,"rating":4.4,"max_authorized_offer":100},
+
+  {"id":"TOY001","category":"toy","name":"BuildBox 500-Piece Blocks","merchant":"KidsCorner Demo","price":1299,"material":"ABS plastic","feature":"500 building pieces","stock":22,"delivery_days":2,"rating":4.5,"max_authorized_offer":70},
+  {"id":"TOY002","category":"toy","name":"MetalMini Remote Car","merchant":"KidsCorner Demo","price":1799,"material":"metal + plastic","feature":"rechargeable remote control","stock":14,"delivery_days":2,"rating":4.4,"max_authorized_offer":90},
+
+  {"id":"MAT001","category":"material","name":"PVC Utility Pipe 3m","merchant":"BuildSupply Demo","price":499,"material":"PVC plastic","dimensions":"3m length","feature":"general plumbing/demo use","stock":40,"delivery_days":3,"rating":4.2,"max_authorized_offer":20},
+  {"id":"MAT002","category":"material","name":"Square Steel Tube 2m","merchant":"BuildSupply Demo","price":1199,"material":"mild steel","dimensions":"2m length","feature":"fabrication/demo stock","stock":24,"delivery_days":4,"rating":4.4,"max_authorized_offer":50},
+  {"id":"MAT003","category":"material","name":"Aluminium Sheet 1mm","merchant":"BuildSupply Demo","price":899,"material":"aluminium","dimensions":"1mm demo sheet","feature":"lightweight metal sheet","stock":19,"delivery_days":4,"rating":4.3,"max_authorized_offer":40},
+  {"id":"MAT004","category":"material","name":"Soft EVA Foam Mat","merchant":"BuildSupply Demo","price":699,"material":"soft EVA foam","dimensions":"interlocking tiles","feature":"cushioned surface","stock":28,"delivery_days":2,"rating":4.4,"max_authorized_offer":40}
 ]
