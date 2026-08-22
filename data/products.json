@@ -1,8 +1,24 @@
 [
-  {"id":"LAP001","name":"AstraBook Pro 15","merchant":"TechStore Demo","price":67990,"cpu":"Core i7 H-Series","cpu_tier":4,"ram_gb":16,"storage_gb":512,"gpu":"RTX 4050","gpu_tier":3,"stock":12,"delivery_days":2,"rating":4.6,"max_authorized_offer":1200},
-  {"id":"LAP002","name":"CodeBook X16","merchant":"DigitalHub Demo","price":62990,"cpu":"Core i7 H-Series","cpu_tier":4,"ram_gb":16,"storage_gb":1024,"gpu":"Integrated Graphics","gpu_tier":1,"stock":7,"delivery_days":1,"rating":4.4,"max_authorized_offer":800},
-  {"id":"LAP003","name":"Vector 15 AI","merchant":"ComputeKart Demo","price":69490,"cpu":"Core Ultra H-Series","cpu_tier":5,"ram_gb":16,"storage_gb":512,"gpu":"RTX 4050","gpu_tier":3,"stock":5,"delivery_days":3,"rating":4.7,"max_authorized_offer":1500},
-  {"id":"LAP004","name":"Campus Pro 14","merchant":"CampusTech Demo","price":58990,"cpu":"Core i5 H-Series","cpu_tier":3,"ram_gb":16,"storage_gb":512,"gpu":"Integrated Graphics","gpu_tier":1,"stock":18,"delivery_days":2,"rating":4.5,"max_authorized_offer":600},
-  {"id":"LAP005","name":"TensorEdge 15","merchant":"TechStore Demo","price":71990,"cpu":"Core i7 H-Series","cpu_tier":4,"ram_gb":24,"storage_gb":1024,"gpu":"RTX 4050","gpu_tier":3,"stock":4,"delivery_days":2,"rating":4.8,"max_authorized_offer":1700},
-  {"id":"LAP006","name":"DevStation 16","merchant":"DigitalHub Demo","price":64990,"cpu":"Core i7 H-Series","cpu_tier":4,"ram_gb":16,"storage_gb":512,"gpu":"RTX 3050","gpu_tier":2,"stock":10,"delivery_days":1,"rating":4.3,"max_authorized_offer":900}
+  {"id":"LAP001","category":"laptop","name":"AstraBook Pro 15","merchant":"TechStore Demo","price":67990,"cpu":"Core i7 H-Series","cpu_tier":4,"ram_gb":16,"storage_gb":512,"gpu":"RTX 4050","gpu_tier":3,"stock":12,"delivery_days":2,"rating":4.6,"max_authorized_offer":1200},
+  {"id":"LAP002","category":"laptop","name":"CodeBook X16","merchant":"DigitalHub Demo","price":62990,"cpu":"Core i7 H-Series","cpu_tier":4,"ram_gb":16,"storage_gb":1024,"gpu":"Integrated Graphics","gpu_tier":1,"stock":7,"delivery_days":1,"rating":4.4,"max_authorized_offer":800},
+  {"id":"LAP003","category":"laptop","name":"Vector 15 AI","merchant":"ComputeKart Demo","price":69490,"cpu":"Core Ultra H-Series","cpu_tier":5,"ram_gb":16,"storage_gb":512,"gpu":"RTX 4050","gpu_tier":3,"stock":5,"delivery_days":3,"rating":4.7,"max_authorized_offer":1500},
+  {"id":"LAP004","category":"laptop","name":"Campus Pro 14","merchant":"CampusTech Demo","price":58990,"cpu":"Core i5 H-Series","cpu_tier":3,"ram_gb":16,"storage_gb":512,"gpu":"Integrated Graphics","gpu_tier":1,"stock":18,"delivery_days":2,"rating":4.5,"max_authorized_offer":600},
+  {"id":"LAP005","category":"laptop","name":"TensorEdge 15","merchant":"TechStore Demo","price":71990,"cpu":"Core i7 H-Series","cpu_tier":4,"ram_gb":24,"storage_gb":1024,"gpu":"RTX 4050","gpu_tier":3,"stock":4,"delivery_days":2,"rating":4.8,"max_authorized_offer":1700},
+  {"id":"LAP006","category":"laptop","name":"DevStation 16","merchant":"DigitalHub Demo","price":64990,"cpu":"Core i7 H-Series","cpu_tier":4,"ram_gb":16,"storage_gb":512,"gpu":"RTX 3050","gpu_tier":2,"stock":10,"delivery_days":1,"rating":4.3,"max_authorized_offer":900},
+
+  {"id":"SHO001","category":"shoes","name":"StrideFlex Everyday Runner","merchant":"UrbanSteps Demo","price":1299,"style":"running","material":"mesh","sizes":"6-11","stock":24,"delivery_days":2,"rating":4.5,"max_authorized_offer":100},
+  {"id":"SHO002","category":"shoes","name":"SprintLite Active Shoes","merchant":"FitFoot Demo","price":1499,"style":"sports","material":"breathable knit","sizes":"6-10","stock":17,"delivery_days":1,"rating":4.6,"max_authorized_offer":120},
+  {"id":"SHO003","category":"shoes","name":"CampusWalk Comfort Shoes","merchant":"CampusStyle Demo","price":999,"style":"casual","material":"synthetic mesh","sizes":"5-11","stock":31,"delivery_days":2,"rating":4.3,"max_authorized_offer":80},
+  {"id":"SHO004","category":"shoes","name":"RoadPulse Training Shoes","merchant":"UrbanSteps Demo","price":1399,"style":"training","material":"mesh + EVA","sizes":"6-11","stock":9,"delivery_days":3,"rating":4.7,"max_authorized_offer":100},
+
+  {"id":"PHN001","category":"phone","name":"NovaPhone 5G","merchant":"MobileHub Demo","price":18999,"display":"6.6-inch","memory":"8GB + 128GB","battery":"5000mAh","camera":"50MP","stock":13,"delivery_days":1,"rating":4.5,"max_authorized_offer":500},
+  {"id":"PHN002","category":"phone","name":"PixelEdge Lite 5G","merchant":"DigitalHub Demo","price":22999,"display":"6.5-inch AMOLED","memory":"8GB + 256GB","battery":"5100mAh","camera":"64MP","stock":8,"delivery_days":2,"rating":4.6,"max_authorized_offer":700},
+  {"id":"PHN003","category":"phone","name":"Campus 5G Pro","merchant":"MobileHub Demo","price":15999,"display":"6.7-inch","memory":"6GB + 128GB","battery":"5200mAh","camera":"50MP","stock":21,"delivery_days":2,"rating":4.3,"max_authorized_offer":400},
+
+  {"id":"AUD001","category":"earbuds","name":"WavePods Air","merchant":"AudioCart Demo","price":1299,"battery":"32 hours","feature":"ENC calling","stock":28,"delivery_days":1,"rating":4.4,"max_authorized_offer":100},
+  {"id":"AUD002","category":"earbuds","name":"PulseBuds Pro","merchant":"AudioCart Demo","price":1799,"battery":"40 hours","feature":"ANC + low latency","stock":16,"delivery_days":2,"rating":4.6,"max_authorized_offer":150},
+  {"id":"AUD003","category":"earbuds","name":"CampusPods Mini","merchant":"CampusTech Demo","price":899,"battery":"28 hours","feature":"compact case","stock":34,"delivery_days":2,"rating":4.2,"max_authorized_offer":60},
+
+  {"id":"BAG001","category":"backpack","name":"CampusCarry 25L","merchant":"CampusStyle Demo","price":899,"capacity":"25L","feature":"laptop sleeve","stock":30,"delivery_days":2,"rating":4.4,"max_authorized_offer":70},
+  {"id":"BAG002","category":"backpack","name":"UrbanTech 30L","merchant":"UrbanGear Demo","price":1499,"capacity":"30L","feature":"water resistant + organizer","stock":14,"delivery_days":1,"rating":4.6,"max_authorized_offer":120}
 ]
