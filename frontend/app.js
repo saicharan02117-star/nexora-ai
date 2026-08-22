@@ -2,6 +2,9 @@ const $ = (id) => document.getElementById(id);
 const money = (n) => `₹${Number(n || 0).toLocaleString('en-IN')}`;
 let currentMission = null;
 let history = [];
+let selectedMode = 'auto';
+let deepPlan = false;
+let recognition = null;
 
 async function api(path, options = {}) {
   const response = await fetch(path, {headers: {'Content-Type': 'application/json'}, ...options});
@@ -29,20 +32,34 @@ function closeSidebar() {
 function showToast(message) {
   $('toast').textContent = message;
   $('toast').classList.add('show');
-  setTimeout(() => $('toast').classList.remove('show'), 1800);
+  clearTimeout(showToast.timer);
+  showToast.timer = setTimeout(() => $('toast').classList.remove('show'), 1900);
 }
 
 function autoResize() {
   const box = $('missionInput');
   box.style.height = 'auto';
-  box.style.height = `${Math.min(box.scrollHeight, 180)}px`;
+  box.style.height = `${Math.min(box.scrollHeight, 190)}px`;
+}
+
+function scrollConversation(smooth = true) {
+  requestAnimationFrame(() => {
+    $('conversation').scrollTo({top: $('conversation').scrollHeight, behavior: smooth ? 'smooth' : 'auto'});
+  });
+}
+
+function updateScrollButton() {
+  const c = $('conversation');
+  const nearBottom = c.scrollHeight - c.scrollTop - c.clientHeight < 160;
+  $('scrollBottom').classList.toggle('hidden', nearBottom || !$('messageList').children.length);
 }
 
 function addUserMessage(message) {
   $('emptyState').classList.add('hidden');
   const row = document.createElement('div');
   row.className = 'message-row user';
-  row.innerHTML = `<div class="message-content"><div class="message-text">${escapeHtml(message)}</div></div>`;
+  row.innerHTML = `<div class="message-content"><div class="message-text">${escapeHtml(message)}</div><div class="message-actions"><button class="message-action copy-user" title="Copy">⧉</button></div></div>`;
+  row.querySelector('.copy-user').addEventListener('click', () => copyText(message));
   $('messageList').appendChild(row);
   scrollConversation();
 }
@@ -61,19 +78,30 @@ function removeLoadingMessage() {
   if (el) el.remove();
 }
 
-function scrollConversation() {
-  requestAnimationFrame(() => {
-    $('conversation').scrollTo({top: $('conversation').scrollHeight, behavior: 'smooth'});
-  });
-}
-
 function addHistoryItem(label) {
   history.unshift(label);
-  history = history.slice(0, 6);
-  $('chatHistory').innerHTML = history.map((x, i) => `<button class="history-item ${i===0?'active':''}"><span class="history-dot"></span><span>${escapeHtml(x)}</span></button>`).join('');
+  history = [...new Set(history)].slice(0, 10);
+  renderHistory();
+}
+
+function renderHistory(filter = '') {
+  const q = filter.trim().toLowerCase();
+  const filtered = history.filter(x => x.toLowerCase().includes(q));
+  $('chatHistory').innerHTML = filtered.length
+    ? filtered.map((x, i) => `<button class="history-item ${i===0 && !q ? 'active' : ''}" data-history="${escapeAttr(x)}"><span class="history-icon">◇</span><span class="history-label">${escapeHtml(x)}</span><span class="history-more">•••</span></button>`).join('')
+    : `<div class="sidebar-label">No matching chats</div>`;
+  document.querySelectorAll('[data-history]').forEach(btn => btn.addEventListener('click', () => {
+    switchView('mission');
+    $('missionInput').value = btn.dataset.history;
+    autoResize();
+    $('missionInput').focus();
+  }));
 }
 
 async function init() {
+  const savedTheme = localStorage.getItem('nexora-theme');
+  if (savedTheme === 'light') document.body.classList.add('light');
+  updateThemeLabel();
   try {
     const health = await api('/api/health');
     $('systemStatus').textContent = 'Nexora is online';
@@ -84,6 +112,17 @@ async function init() {
   }
   loadMerchant();
   loadWallet();
+  initVoice();
+}
+
+function newChat() {
+  currentMission = null;
+  $('messageList').innerHTML = '';
+  $('emptyState').classList.remove('hidden');
+  $('missionInput').value = '';
+  autoResize();
+  switchView('mission');
+  $('missionInput').focus();
 }
 
 document.querySelectorAll('[data-view]').forEach(btn => btn.addEventListener('click', () => switchView(btn.dataset.view)));
@@ -102,31 +141,106 @@ $('missionInput').addEventListener('keydown', (e) => {
     runMission();
   }
 });
-$('newChat').addEventListener('click', () => {
-  currentMission = null;
-  $('messageList').innerHTML = '';
-  $('emptyState').classList.remove('hidden');
-  $('missionInput').value = '';
-  autoResize();
-  switchView('mission');
-});
+$('newChat').addEventListener('click', newChat);
 $('openSidebar').addEventListener('click', openSidebar);
 $('closeSidebar').addEventListener('click', closeSidebar);
 $('sidebarScrim').addEventListener('click', closeSidebar);
+$('collapseSidebar').addEventListener('click', () => document.querySelector('.app-shell').classList.toggle('sidebar-collapsed'));
+$('historySearch').addEventListener('input', (e) => renderHistory(e.target.value));
 $('refreshMetrics').addEventListener('click', loadMerchant);
 $('saveWallet').addEventListener('click', saveWallet);
+$('scrollBottom').addEventListener('click', () => scrollConversation());
+$('conversation').addEventListener('scroll', updateScrollButton);
+$('attachButton').addEventListener('click', () => $('fileInput').click());
+$('fileInput').addEventListener('change', () => {
+  const file = $('fileInput').files?.[0];
+  if (file) showToast(`${file.name} attached for demo`);
+});
+$('deepReasonButton').addEventListener('click', () => {
+  deepPlan = !deepPlan;
+  $('deepReasonButton').classList.toggle('active', deepPlan);
+  showToast(deepPlan ? 'Deep plan enabled' : 'Deep plan disabled');
+});
+$('commerceMode').addEventListener('click', () => showToast('Commerce tools active'));
 $('shareButton').addEventListener('click', async () => {
   try {
     await navigator.clipboard.writeText(location.href);
     showToast('Link copied');
   } catch { showToast('Share link ready'); }
 });
+$('themeToggle').addEventListener('click', () => {
+  document.body.classList.toggle('light');
+  localStorage.setItem('nexora-theme', document.body.classList.contains('light') ? 'light' : 'dark');
+  updateThemeLabel();
+});
+$('modeButton').addEventListener('click', (e) => {
+  e.stopPropagation();
+  $('modeMenu').classList.toggle('hidden');
+});
+document.querySelectorAll('.mode-option').forEach(btn => btn.addEventListener('click', () => {
+  selectedMode = btn.dataset.mode;
+  document.querySelectorAll('.mode-option').forEach(x => {
+    x.classList.toggle('active', x === btn);
+    x.querySelector('.mode-check').textContent = x === btn ? '✓' : '';
+  });
+  const label = btn.querySelector('strong').textContent;
+  $('modeButton').innerHTML = `Nexora ${label === 'Auto' ? 'AI' : label} <span class="chevron">⌄</span>`;
+  $('modeMenu').classList.add('hidden');
+  showToast(`${label} mode selected`);
+}));
+document.addEventListener('click', (e) => {
+  if (!$('modeMenu').contains(e.target) && !$('modeButton').contains(e.target)) $('modeMenu').classList.add('hidden');
+});
+document.addEventListener('keydown', (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+    e.preventDefault();
+    newChat();
+  }
+  if (e.key === 'Escape') {
+    $('modeMenu').classList.add('hidden');
+    closeSidebar();
+  }
+});
+
+function updateThemeLabel() {
+  const light = document.body.classList.contains('light');
+  $('themeIcon').textContent = light ? '☀' : '☾';
+  $('themeLabel').textContent = light ? 'Dark mode' : 'Light mode';
+}
+
+function initVoice() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    $('micButton').addEventListener('click', () => showToast('Voice input is not supported in this browser'));
+    return;
+  }
+  recognition = new SpeechRecognition();
+  recognition.lang = 'en-IN';
+  recognition.interimResults = true;
+  recognition.continuous = false;
+  recognition.onstart = () => $('micButton').classList.add('recording');
+  recognition.onend = () => $('micButton').classList.remove('recording');
+  recognition.onresult = (event) => {
+    let transcript = '';
+    for (let i = event.resultIndex; i < event.results.length; i++) transcript += event.results[i][0].transcript;
+    $('missionInput').value = transcript;
+    autoResize();
+  };
+  $('micButton').addEventListener('click', () => {
+    try { recognition.start(); } catch {}
+  });
+}
 
 async function runMission() {
-  const message = $('missionInput').value.trim();
+  let message = $('missionInput').value.trim();
   if (!message) return;
-  addUserMessage(message);
-  addHistoryItem(message.length > 34 ? `${message.slice(0,34)}…` : message);
+  if (selectedMode === 'shop' && !/find|buy|shop|product|shoe|laptop|phone|earbud|backpack/i.test(message)) message = `Shop request: ${message}`;
+  if (selectedMode === 'plan' && !/plan|arrange|event|birthday|party/i.test(message)) message = `Plan this goal: ${message}`;
+  if (selectedMode === 'analyze' && !/revenue|merchant|sales|leak|conversion/i.test(message)) message = `Analyze merchant performance: ${message}`;
+  if (deepPlan) message = `${message} Provide a deeper multi-step plan.`;
+
+  addUserMessage($('missionInput').value.trim());
+  addHistoryItem($('missionInput').value.trim().length > 42 ? `${$('missionInput').value.trim().slice(0,42)}…` : $('missionInput').value.trim());
   $('missionInput').value = '';
   autoResize();
   $('runMission').disabled = true;
@@ -147,7 +261,8 @@ async function runMission() {
 function addErrorMessage(message) {
   const row = document.createElement('div');
   row.className = 'message-row assistant';
-  row.innerHTML = `<div class="message-avatar">N</div><div class="message-content"><div class="message-title">Nexora</div><div class="message-text">I couldn't complete that mission. ${escapeHtml(message)}</div></div>`;
+  row.innerHTML = `<div class="message-avatar">N</div><div class="message-content"><div class="message-title">Nexora</div><div class="message-text">I couldn't complete that request. ${escapeHtml(message)}</div><div class="message-actions"><button class="message-action retry-action" title="Retry">↻</button></div></div>`;
+  row.querySelector('.retry-action').addEventListener('click', () => showToast('Edit your last prompt and resend'));
   $('messageList').appendChild(row);
   scrollConversation();
 }
@@ -160,7 +275,7 @@ function buildSummary(data) {
   }
   if (data.mission_type === 'multi_merchant_event') {
     const total = data.budget_summary?.total;
-    return `I built a multi-merchant event plan for you${total ? ` with an estimated total of ${money(total)}` : ''}. Review the selected vendors below before approving any transaction.`;
+    return `I built a multi-merchant plan${total ? ` with an estimated total of ${money(total)}` : ''}. Review the selected vendors before approving any transaction.`;
   }
   if (data.mission_type === 'merchant_intelligence') {
     const leak = data.budget_summary?.leakage;
@@ -172,23 +287,29 @@ function buildSummary(data) {
 function renderAssistantResponse(data) {
   const row = document.createElement('div');
   row.className = 'message-row assistant';
-  const options = data.recommendations?.length ? `<div class="assistant-section"><h3>Top options</h3><div class="option-list">${data.recommendations.map((r,i)=>optionCard(r,i)).join('')}</div></div>` : '';
+  const options = data.recommendations?.length
+    ? `<div class="assistant-section"><div class="assistant-section-title"><h3>Top options</h3><span class="option-count">${data.recommendations.length} ranked</span></div><div class="option-list">${data.recommendations.map((r,i)=>optionCard(r,i)).join('')}</div></div>`
+    : '';
   const chips = [];
   if (data.intent?.budget_max) chips.push(`Budget ${money(data.intent.budget_max)}`);
   if (data.intent?.people) chips.push(`${data.intent.people} people`);
   if (data.intent?.category && data.intent.category !== 'general') chips.push(data.intent.category);
   const trace = data.steps?.length ? `<details class="trace-details"><summary>View agent execution path</summary><div class="trace-list">${data.steps.map((s,i)=>`<div class="trace-item"><span class="trace-num">${i+1}</span><span><strong>${escapeHtml(s.agent)}</strong> — ${escapeHtml(s.summary)}</span></div>`).join('')}</div></details>` : '';
   const checkout = data.mission_type === 'product_purchase' && data.recommendations?.length ? `<div class="checkout-card"><div class="checkout-row"><div class="checkout-info"><strong>Ready to prepare checkout</strong><small>${escapeHtml(data.recommendations[0].name)} · ${money(data.recommendations[0].price)}</small></div><button class="approve-button" data-checkout="true">Approve</button></div><div class="payment-result hidden"></div></div>` : '';
-  row.innerHTML = `<div class="message-avatar">N</div><div class="message-content"><div class="message-title">Nexora</div><div class="message-text">${escapeHtml(buildSummary(data))}</div>${chips.length?`<div class="mission-meta">${chips.map(x=>`<span class="mission-chip">${escapeHtml(x)}</span>`).join('')}</div>`:''}${options}<div class="next-action">${escapeHtml(data.next_action || '')}</div>${trace}${checkout}</div>`;
+  const summary = buildSummary(data);
+  row.innerHTML = `<div class="message-avatar">N</div><div class="message-content"><div class="message-title">Nexora</div><div class="message-text">${escapeHtml(summary)}</div>${chips.length?`<div class="mission-meta">${chips.map(x=>`<span class="mission-chip">${escapeHtml(x)}</span>`).join('')}</div>`:''}${options}<div class="next-action">${escapeHtml(data.next_action || '')}</div>${trace}${checkout}<div class="message-actions"><button class="message-action copy-response" title="Copy">⧉</button><button class="message-action good-response" title="Helpful">♡</button><button class="message-action regenerate-response" title="Regenerate">↻</button></div></div>`;
   $('messageList').appendChild(row);
   const approve = row.querySelector('[data-checkout="true"]');
   if (approve) approve.addEventListener('click', () => createOrder(row, approve));
+  row.querySelector('.copy-response').addEventListener('click', () => copyText(summary));
+  row.querySelector('.good-response').addEventListener('click', () => showToast('Feedback saved'));
+  row.querySelector('.regenerate-response').addEventListener('click', () => showToast('Regenerate is available after editing the prompt'));
   scrollConversation();
 }
 
 function optionCard(r, i) {
   const meta = Object.entries(r.metadata || {}).filter(([,v])=>v !== null && v !== undefined && v !== '').map(([,v])=>`<span class="meta">${escapeHtml(String(v))}</span>`).join('');
-  return `<article class="option-card ${i===0?'best':''}"><div class="option-head"><div><div class="option-name">${escapeHtml(r.name)}</div><div class="option-merchant">${escapeHtml(r.merchant)}</div></div><div class="option-price">${money(r.price)}</div></div><span class="match-chip">${i===0?'Best match · ':''}${Math.round(r.score)}%</span>${r.reasons?.length?`<ul class="reason-list">${r.reasons.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul>`:''}<div class="meta-row">${meta}</div></article>`;
+  return `<article class="option-card ${i===0?'best':''}">${i===0?'<span class="best-ribbon">BEST MATCH</span>':''}<div class="option-head"><div><div class="option-name">${escapeHtml(r.name)}</div><div class="option-merchant">${escapeHtml(r.merchant)}</div></div><div class="option-price">${money(r.price)}</div></div><span class="match-chip">Match ${Math.round(r.score)}%</span>${r.reasons?.length?`<ul class="reason-list">${r.reasons.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul>`:''}<div class="meta-row">${meta}</div></article>`;
 }
 
 async function createOrder(row, button) {
@@ -200,7 +321,7 @@ async function createOrder(row, button) {
     const order = await api('/api/payments/order',{method:'POST',body:JSON.stringify({mission_id:currentMission.mission_id,amount:selected.price,description:selected.name})});
     const result = row.querySelector('.payment-result');
     result.classList.remove('hidden');
-    result.innerHTML = `<strong>Order prepared.</strong><br>Order ID: ${escapeHtml(order.id)}<br>Mode: ${escapeHtml(order.mode)}${order.mode === 'demo' ? '<br>Demo mode is active; add Razorpay test credentials for sandbox checkout.' : ''}`;
+    result.innerHTML = `<strong>Order prepared.</strong><br>Order ID: ${escapeHtml(order.id)}<br>Mode: ${escapeHtml(order.mode)}${order.mode === 'demo' ? '<br>Demo mode is active; connect Razorpay test credentials for sandbox checkout.' : ''}`;
     button.textContent = 'Prepared';
   } catch(e) {
     showToast(e.message);
@@ -238,8 +359,17 @@ async function saveWallet() {
   } catch(e){ showToast(e.message); }
 }
 
+async function copyText(text) {
+  try { await navigator.clipboard.writeText(text); showToast('Copied'); }
+  catch { showToast('Copy unavailable'); }
+}
+
 function escapeHtml(value) {
   return String(value ?? '').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+}
+
+function escapeAttr(value) {
+  return escapeHtml(value).replace(/`/g,'&#96;');
 }
 
 init();
