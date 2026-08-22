@@ -104,6 +104,7 @@ class MasterOrchestrator:
                     metadata=self._metadata(item),
                     image_url=item.get("image_url"),
                     image_label=item.get("image_label"),
+                    image_search_url=item.get("image_search_url"),
                     local_market_range=item.get("local_market_range"),
                     price_label=item.get("price_label"),
                     price_note=item.get("price_note"),
@@ -127,13 +128,13 @@ class MasterOrchestrator:
                 ))
                 if enriched_ranked[0].get("synthetic_demo"):
                     next_action = (
-                        f"Prepared an offline prototype estimate for '{query}'. The local-market range is approximate and the shopping buttons open retailer/search pages for the same item; "
-                        "they are not claimed as verified seller listings until a merchant feed is connected."
+                        f"Prepared an offline prototype estimate for '{query}'. Inline product photos are hidden unless the image is verified for that exact listing. "
+                        "Use the image-search and retailer buttons to inspect matching products before buying."
                     )
                 else:
                     next_action = (
                         f"Best demo-catalogue match: {enriched_ranked[0]['name']} at ₹{enriched_ranked[0]['price']:,}. "
-                        "You can compare the approximate local-market range, preview an image and open shopping links before checkout."
+                        "Review the market range and shopping links before checkout."
                     )
             else:
                 next_action = f"I understood the request for '{query}', but could not prepare a prototype option."
