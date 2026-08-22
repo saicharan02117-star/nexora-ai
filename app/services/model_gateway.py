@@ -11,9 +11,8 @@ from app.config import get_settings
 class ModelGateway:
     """Provider-agnostic general intelligence gateway.
 
-    On Vercel, Nexora can authenticate to AI Gateway using the automatically
-    available VERCEL_OIDC_TOKEN. A custom LLM_ENDPOINT / LLM_API_KEY / LLM_MODEL
-    can still override the defaults without changing application code.
+    On Vercel, Nexora can authenticate to AI Gateway using VERCEL_OIDC_TOKEN.
+    A custom LLM_ENDPOINT / LLM_API_KEY / LLM_MODEL can override the defaults.
     """
 
     DEFAULT_ENDPOINT = "https://ai-gateway.vercel.sh/v1/chat/completions"
@@ -42,7 +41,7 @@ class ModelGateway:
     def configured(self) -> bool:
         return bool(self.endpoint and self.api_key and self.model)
 
-    def generate(
+    async def generate(
         self,
         messages: list[dict[str, Any]],
         *,
@@ -64,8 +63,8 @@ class ModelGateway:
         }
 
         try:
-            with httpx.Client(timeout=50) as client:
-                response = client.post(self.endpoint, headers=headers, json=payload)
+            async with httpx.AsyncClient(timeout=50) as client:
+                response = await client.post(self.endpoint, headers=headers, json=payload)
                 response.raise_for_status()
                 data = response.json()
         except Exception:
