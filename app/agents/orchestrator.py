@@ -23,6 +23,27 @@ class MasterOrchestrator:
         self.merchant_agent = MerchantIntelligenceAgent()
         self.firewall = AgentFirewall()
 
+    @staticmethod
+    def _metadata(item: dict) -> dict:
+        preferred = [
+            "cpu", "ram_gb", "storage_gb", "gpu", "delivery_days", "rating",
+            "style", "material", "sizes", "display", "memory", "battery",
+            "camera", "feature", "capacity"
+        ]
+        data = {}
+        for key in preferred:
+            if key in item:
+                label = key.replace("_", " ").title()
+                value = item[key]
+                if key == "ram_gb":
+                    value = f"{value}GB"
+                elif key == "storage_gb":
+                    value = f"{value}GB SSD"
+                elif key == "delivery_days":
+                    value = f"{value} day(s)"
+                data[label] = value
+        return data
+
     def run(self, message: str, user_id: str) -> MissionResponse:
         mission_id = f"NX-{uuid4().hex[:8].upper()}"
         world = CommerceWorldModel(user_id=user_id)
@@ -31,8 +52,10 @@ class MasterOrchestrator:
         world.record("intent_understood", intent)
         plan = self.planner_agent.run(intent)
 
-        steps = [AgentStep(agent="Intent Agent", summary="Converted the request into structured goals and constraints."),
-                 AgentStep(agent="Planner Agent", summary=f"Created an executable {len(plan)}-step mission plan.")]
+        steps = [
+            AgentStep(agent="Intent Agent", summary="Converted the request into structured goals and constraints."),
+            AgentStep(agent="Planner Agent", summary=f"Created an executable {len(plan)}-step mission plan."),
+        ]
 
         mission_type = intent["mission_type"]
         recommendations: list[Recommendation] = []
@@ -41,9 +64,9 @@ class MasterOrchestrator:
 
         if mission_type == "product_purchase":
             discovered = self.discovery_agent.run(intent)
-            steps.append(AgentStep(agent="Discovery Agent", summary=f"Found {len(discovered)} eligible in-stock products."))
+            steps.append(AgentStep(agent="Discovery Agent", summary=f"Found {len(discovered)} eligible in-stock products for {intent.get('category')}."))
             ranked = self.comparison_agent.run(discovered, intent)
-            steps.append(AgentStep(agent="Comparison Agent", summary="Ranked products using budget, performance, delivery and merchant signals."))
+            steps.append(AgentStep(agent="Comparison Agent", summary="Ranked products using budget, requested use, delivery and merchant signals."))
 
             if ranked:
                 offer = self.negotiation_agent.run(ranked[0])
@@ -55,21 +78,34 @@ class MasterOrchestrator:
 
             for item in ranked:
                 recommendations.append(Recommendation(
-                    id=item["id"], name=item["name"], merchant=item["merchant"], price=item["price"],
-                    score=item["score"], reasons=item["reasons"],
-                    metadata={"cpu": item["cpu"], "ram": f"{item['ram_gb']}GB", "storage": f"{item['storage_gb']}GB SSD", "delivery_days": item["delivery_days"]}
+                    id=item["id"],
+                    name=item["name"],
+                    merchant=item["merchant"],
+                    price=item["price"],
+                    score=item["score"],
+                    reasons=item["reasons"],
+                    metadata=self._metadata(item),
                 ))
 
             budget_summary = self.budget_agent.product_summary(ranked, intent.get("budget_max"))
             if ranked:
                 firewall = self.firewall.inspect(ActionRequest(
-                    agent_id="nexora-payment-agent", action="payment", amount=ranked[0]["price"],
-                    merchant=ranked[0]["merchant"], purpose=intent["raw_goal"]
+                    agent_id="nexora-payment-agent",
+                    action="payment",
+                    amount=ranked[0]["price"],
+                    merchant=ranked[0]["merchant"],
+                    purpose=intent["raw_goal"],
                 ), DEFAULT_WALLET)
-                steps.append(AgentStep(agent="Agent Firewall", status="needs_confirmation" if firewall.requires_confirmation else "completed", summary=firewall.reason))
-                next_action = f"Confirm the selected product and authorize ₹{ranked[0]['price']:,} checkout."
+                steps.append(AgentStep(
+                    agent="Agent Firewall",
+                    status="needs_confirmation" if firewall.requires_confirmation else "completed",
+                    summary=firewall.reason,
+                ))
+                next_action = f"Best match: {ranked[0]['name']} from {ranked[0]['merchant']} at ₹{ranked[0]['price']:,}. Review the top options and confirm before checkout."
             else:
-                next_action = "Adjust the budget or constraints to continue."
+                category = intent.get("category", "product")
+                budget = intent.get("budget_max")
+                next_action = f"I found no {category} options" + (f" within ₹{budget:,}" if budget else "") + ". Try a slightly higher budget or different requirement."
 
         elif mission_type == "multi_merchant_event":
             vendors = self.discovery_agent.run(intent)
@@ -79,8 +115,9 @@ class MasterOrchestrator:
             for item in budget_summary.get("selected_vendors", []):
                 recommendations.append(Recommendation(
                     id=item["id"], name=item["name"], merchant=item["name"], price=item["price"],
-                    score=item.get("rating", 4.0) * 20, reasons=[f"Selected for {item['category']}", "Best-value eligible option in demo catalogue"],
-                    metadata={"category": item["category"]}
+                    score=item.get("rating", 4.0) * 20,
+                    reasons=[f"Selected for {item['category']}", "Best-value eligible option in demo catalogue"],
+                    metadata={"Category": item["category"]},
                 ))
             next_action = "Review the multi-merchant plan and approve before any transaction is created."
 
@@ -90,8 +127,8 @@ class MasterOrchestrator:
             next_action = "Review the ranked recovery actions and choose one to test."
 
         else:
-            steps.append(AgentStep(agent="Mission Orchestrator", summary="Prepared a general commerce mission and identified missing integration requirements."))
-            next_action = "Refine the request with a product, service, budget or merchant goal."
+            steps.append(AgentStep(agent="Mission Orchestrator", summary="The request is understood, but the current demo catalogue does not yet contain that category or service."))
+            next_action = "Try a laptop, shoes, phone, earbuds, backpack, birthday/event mission, or merchant revenue question."
 
         world.record("mission_prepared", {"mission_id": mission_id, "mission_type": mission_type})
         return MissionResponse(
