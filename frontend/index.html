@@ -4,51 +4,67 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="Nexora AI — Universal Transactional AI & Zero-App Commerce OS" />
-  <meta name="theme-color" content="#0d0d0d" />
+  <meta name="theme-color" content="#212121" />
   <title>Nexora AI</title>
   <link rel="stylesheet" href="/static/styles.css" />
 </head>
 <body>
   <div class="app-shell">
     <aside class="sidebar" id="sidebar">
-      <div class="sidebar-top">
-        <button class="icon-button mobile-close" id="closeSidebar" aria-label="Close sidebar">×</button>
-        <a class="brand" href="#" aria-label="Nexora home">
-          <span class="brand-mark">N</span>
-          <span class="brand-name">Nexora</span>
-        </a>
+      <div class="sidebar-header">
+        <div class="brand-row">
+          <a class="brand" href="#" aria-label="Nexora home">
+            <span class="brand-mark">N</span>
+            <span class="brand-name">Nexora</span>
+          </a>
+          <button class="icon-button desktop-collapse" id="collapseSidebar" aria-label="Collapse sidebar">‹</button>
+          <button class="icon-button mobile-close" id="closeSidebar" aria-label="Close sidebar">×</button>
+        </div>
+
         <button class="new-chat" id="newChat">
           <span class="new-chat-icon">＋</span>
           <span>New chat</span>
+          <kbd>Ctrl K</kbd>
         </button>
+
+        <div class="sidebar-search">
+          <span>⌕</span>
+          <input id="historySearch" placeholder="Search chats" autocomplete="off" />
+        </div>
       </div>
 
       <div class="sidebar-section">
         <div class="sidebar-label">Recent</div>
         <div class="history" id="chatHistory">
-          <button class="history-item active"><span class="history-dot"></span><span>New commerce mission</span></button>
+          <button class="history-item active"><span class="history-icon">◇</span><span class="history-label">New commerce mission</span><span class="history-more">•••</span></button>
         </div>
       </div>
 
       <div class="sidebar-bottom">
         <button class="side-action" data-view="merchant">
           <span class="side-icon">↗</span>
-          <span>Merchant intelligence</span>
+          <span class="side-label">Merchant intelligence</span>
         </button>
         <button class="side-action" data-view="wallet">
-          <span class="side-icon">◇</span>
-          <span>Action wallet</span>
+          <span class="side-icon">◎</span>
+          <span class="side-label">Action wallet</span>
         </button>
+        <button class="side-action" id="themeToggle">
+          <span class="side-icon" id="themeIcon">☾</span>
+          <span class="side-label" id="themeLabel">Light mode</span>
+        </button>
+
         <div class="system-card">
           <span class="status-dot"></span>
-          <div>
+          <div class="system-copy-wrap">
             <div id="systemStatus" class="system-title">Checking system</div>
             <div id="modeText" class="system-copy">Secure transaction layer</div>
           </div>
         </div>
+
         <button class="account-row">
           <span class="avatar">SC</span>
-          <span class="account-copy"><strong>Sai Charan</strong><small>Prototype workspace</small></span>
+          <span class="account-copy"><strong>Sai Charan</strong><small>Nexora workspace</small></span>
           <span class="more">•••</span>
         </button>
       </div>
@@ -58,11 +74,25 @@
       <header class="topbar">
         <div class="topbar-left">
           <button class="icon-button menu-button" id="openSidebar" aria-label="Open sidebar">☰</button>
-          <button class="model-switch">Nexora AI <span>⌄</span></button>
+          <div class="mode-wrap">
+            <button class="model-switch" id="modeButton">Nexora AI <span class="chevron">⌄</span></button>
+            <div class="mode-menu hidden" id="modeMenu">
+              <button class="mode-option active" data-mode="auto"><span class="mode-symbol">✦</span><span><strong>Auto</strong><small>Choose the best commerce workflow</small></span><span class="mode-check">✓</span></button>
+              <button class="mode-option" data-mode="shop"><span class="mode-symbol">⌁</span><span><strong>Shop</strong><small>Find, compare and prepare checkout</small></span><span class="mode-check"></span></button>
+              <button class="mode-option" data-mode="plan"><span class="mode-symbol">◇</span><span><strong>Plan</strong><small>Coordinate multi-merchant goals</small></span><span class="mode-check"></span></button>
+              <button class="mode-option" data-mode="analyze"><span class="mode-symbol">↗</span><span><strong>Analyze</strong><small>Merchant growth and revenue insights</small></span><span class="mode-check"></span></button>
+            </div>
+          </div>
         </div>
+
+        <div class="topbar-center">
+          <span class="security-pill">◎ Permission controlled</span>
+        </div>
+
         <div class="topbar-actions">
           <span class="top-status"><span class="status-dot"></span> Live</span>
           <button class="share-button" id="shareButton">Share</button>
+          <button class="icon-button top-more" aria-label="More">•••</button>
         </div>
       </header>
 
@@ -70,79 +100,112 @@
         <section id="missionView" class="view active chat-view">
           <div class="conversation" id="conversation">
             <div class="empty-state" id="emptyState">
-              <div class="hero-logo">N</div>
+              <div class="hero-logo-wrap"><div class="hero-logo">N</div><div class="hero-ring"></div></div>
               <h1>What can I help you get done?</h1>
-              <p>Research, compare, plan and prepare commerce actions from one conversation.</p>
+              <p>One conversation for discovery, comparison, planning, merchant intelligence and permission-controlled transactions.</p>
+
+              <div class="capability-row">
+                <span>Research</span><i></i><span>Compare</span><i></i><span>Plan</span><i></i><span>Transact</span>
+              </div>
+
               <div class="suggestion-grid">
                 <button class="suggestion-card" data-prompt="Find me the best laptop below ₹70,000 for AI development and coding.">
                   <span class="suggestion-icon">⌁</span>
-                  <span><strong>Find the right laptop</strong><small>Compare options under ₹70K</small></span>
+                  <span><strong>Find the right laptop</strong><small>Compare performance and value under ₹70K</small></span>
+                  <span class="suggestion-arrow">↗</span>
                 </button>
                 <button class="suggestion-card" data-prompt="Find me running shoes under ₹1,500.">
-                  <span class="suggestion-icon">↗</span>
-                  <span><strong>Shop within a budget</strong><small>Running shoes under ₹1,500</small></span>
+                  <span class="suggestion-icon">◇</span>
+                  <span><strong>Shop within a budget</strong><small>Rank the best running shoes under ₹1,500</small></span>
+                  <span class="suggestion-arrow">↗</span>
                 </button>
                 <button class="suggestion-card" data-prompt="Arrange a birthday for 25 people under ₹20,000.">
                   <span class="suggestion-icon">✦</span>
-                  <span><strong>Plan a complete event</strong><small>Coordinate multiple merchants</small></span>
+                  <span><strong>Plan a complete event</strong><small>Coordinate vendors and total budget</small></span>
+                  <span class="suggestion-arrow">↗</span>
                 </button>
                 <button class="suggestion-card" data-prompt="Why is my merchant revenue leaking today?">
-                  <span class="suggestion-icon">▥</span>
-                  <span><strong>Analyze merchant growth</strong><small>Find revenue leakage</small></span>
+                  <span class="suggestion-icon">↗</span>
+                  <span><strong>Analyze merchant growth</strong><small>Find leakage and recovery opportunities</small></span>
+                  <span class="suggestion-arrow">↗</span>
                 </button>
               </div>
             </div>
+
             <div id="messageList" class="message-list"></div>
           </div>
 
+          <button class="scroll-bottom hidden" id="scrollBottom" aria-label="Scroll to latest">↓</button>
+
           <div class="composer-wrap">
-            <div class="composer" id="composer">
-              <textarea id="missionInput" rows="1" placeholder="Message Nexora" aria-label="Message Nexora"></textarea>
-              <div class="composer-footer">
-                <div class="composer-tools">
-                  <button class="tool-button" title="Add attachment">＋</button>
-                  <button class="tool-pill" type="button">◉ Commerce</button>
+            <div class="composer-shell">
+              <div class="composer" id="composer">
+                <textarea id="missionInput" rows="1" placeholder="Message Nexora" aria-label="Message Nexora"></textarea>
+                <div class="composer-footer">
+                  <div class="composer-tools">
+                    <button class="tool-button" id="attachButton" title="Add attachment">＋</button>
+                    <button class="tool-pill" id="commerceMode" type="button"><span>◉</span> Commerce</button>
+                    <button class="tool-pill compact" id="deepReasonButton" type="button"><span>✦</span> Deep plan</button>
+                  </div>
+                  <div class="composer-right">
+                    <button class="mic-button" id="micButton" aria-label="Voice input">⌁</button>
+                    <button id="runMission" class="send-button" aria-label="Send message">↑</button>
+                  </div>
                 </div>
-                <button id="runMission" class="send-button" aria-label="Send message">↑</button>
               </div>
+              <div class="composer-note">Nexora can make mistakes. Verify important prices, policies and payment details.</div>
             </div>
-            <div class="composer-note">Nexora can make mistakes. Verify important prices, policies and payment details.</div>
           </div>
         </section>
 
         <section id="merchantView" class="view utility-view">
-          <div class="utility-header">
-            <div>
-              <button class="back-to-chat" data-view="mission">← Back to chat</button>
-              <div class="eyebrow">MERCHANT INTELLIGENCE</div>
-              <h1>Revenue Digital Twin</h1>
-              <p>Understand where revenue is leaking and what to prioritize next.</p>
+          <div class="utility-shell">
+            <div class="utility-header">
+              <div>
+                <button class="back-to-chat" data-view="mission">← Back to chat</button>
+                <div class="eyebrow">MERCHANT INTELLIGENCE</div>
+                <h1>Revenue Digital Twin</h1>
+                <p>See revenue health, detect leakage and identify the highest-value recovery action.</p>
+              </div>
+              <button id="refreshMetrics" class="secondary-button">↻ Refresh intelligence</button>
             </div>
-            <button id="refreshMetrics" class="secondary-button">Refresh</button>
+
+            <div id="merchantStats" class="stats-grid"></div>
+
+            <section class="utility-panel">
+              <div class="panel-title">
+                <div><span class="eyebrow">RECOVERY RADAR</span><h2>Recoverable opportunities</h2></div>
+                <span class="panel-badge">Live model</span>
+              </div>
+              <div id="leakageBars" class="leakage-list"></div>
+            </section>
           </div>
-          <div id="merchantStats" class="stats-grid"></div>
-          <section class="utility-panel">
-            <div class="panel-title"><div><span class="eyebrow">RECOVERY RADAR</span><h2>Recoverable opportunities</h2></div></div>
-            <div id="leakageBars" class="leakage-list"></div>
-          </section>
         </section>
 
         <section id="walletView" class="view utility-view">
-          <div class="utility-header">
-            <div>
-              <button class="back-to-chat" data-view="mission">← Back to chat</button>
-              <div class="eyebrow">TRUST & PERMISSIONS</div>
-              <h1>Action Wallet</h1>
-              <p>Control exactly what Nexora can prepare or execute on your behalf.</p>
+          <div class="utility-shell">
+            <div class="utility-header">
+              <div>
+                <button class="back-to-chat" data-view="mission">← Back to chat</button>
+                <div class="eyebrow">TRUST & PERMISSIONS</div>
+                <h1>Action Wallet</h1>
+                <p>Define what Nexora may search, prepare, negotiate or transact before any sensitive action is allowed.</p>
+              </div>
+              <span class="security-pill large">◎ Zero-trust actions</span>
             </div>
+
+            <section class="utility-panel">
+              <div class="permission-intro">
+                <div><strong>Transaction authority</strong><span>Reasoning and payment authority stay separate.</span></div>
+                <span class="secure-state"><span class="status-dot"></span> Protected</span>
+              </div>
+              <div id="walletControls" class="wallet-grid"></div>
+              <div class="wallet-footer">
+                <button id="saveWallet" class="primary-button">Save permissions</button>
+                <div id="walletSaved" class="save-status"></div>
+              </div>
+            </section>
           </div>
-          <section class="utility-panel">
-            <div id="walletControls" class="wallet-grid"></div>
-            <div class="wallet-footer">
-              <button id="saveWallet" class="primary-button">Save permissions</button>
-              <div id="walletSaved" class="save-status"></div>
-            </div>
-          </section>
         </section>
       </main>
     </div>
@@ -150,6 +213,7 @@
 
   <div class="sidebar-scrim" id="sidebarScrim"></div>
   <div class="toast" id="toast"></div>
+  <input id="fileInput" type="file" class="hidden" />
   <script src="/static/app.js"></script>
 </body>
 </html>
