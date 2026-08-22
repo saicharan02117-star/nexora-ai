@@ -29,7 +29,8 @@ class MasterOrchestrator:
             "cpu", "ram_gb", "storage_gb", "gpu", "delivery_days", "rating",
             "style", "material", "sizes", "display", "memory", "battery",
             "camera", "feature", "capacity", "color", "finish", "dimensions",
-            "warranty", "connectivity", "platform", "edition", "compatibility"
+            "warranty", "connectivity", "platform", "edition", "compatibility",
+            "source_note"
         ]
         data = {}
         for key in preferred:
@@ -66,7 +67,18 @@ class MasterOrchestrator:
         if mission_type == "product_purchase":
             discovered = self.discovery_agent.run(intent)
             query = intent.get("product_query") or intent.get("category") or "product"
-            steps.append(AgentStep(agent="Discovery Agent", summary=f"Searched the connected demo catalogue for '{query}' and found {len(discovered)} eligible in-stock matches."))
+            is_universal_demo = bool(discovered) and all(item.get("synthetic_demo") for item in discovered)
+            if is_universal_demo:
+                steps.append(AgentStep(
+                    agent="Universal Product Router",
+                    summary=f"No exact demo SKU existed for '{query}', so Nexora generated representative prototype options for this product type instead of rejecting the request.",
+                ))
+            else:
+                steps.append(AgentStep(
+                    agent="Discovery Agent",
+                    summary=f"Searched the connected demo catalogue for '{query}' and found {len(discovered)} eligible in-stock matches.",
+                ))
+
             ranked = self.comparison_agent.run(discovered, intent)
             steps.append(AgentStep(agent="Comparison Agent", summary="Ranked available matches using budget, requested attributes, delivery and merchant signals."))
 
@@ -75,7 +87,7 @@ class MasterOrchestrator:
                 ranked[0]["original_price"] = ranked[0]["price"]
                 ranked[0]["price"] = offer["final_price"]
                 if offer["discount"]:
-                    ranked[0]["reasons"] = [f"₹{offer['discount']} merchant-authorized offer applied"] + ranked[0]["reasons"]
+                    ranked[0]["reasons"] = [f"₹{offer['discount']} demo merchant-authorized offer applied"] + ranked[0]["reasons"]
                 steps.append(AgentStep(agent="Negotiation Agent", summary=offer["policy"]))
 
             for item in ranked:
@@ -103,18 +115,15 @@ class MasterOrchestrator:
                     status="needs_confirmation" if firewall.requires_confirmation else "completed",
                     summary=firewall.reason,
                 ))
-                next_action = f"Best connected-catalogue match: {ranked[0]['name']} from {ranked[0]['merchant']} at ₹{ranked[0]['price']:,}. Review the options and confirm before checkout."
+                if ranked[0].get("synthetic_demo"):
+                    next_action = (
+                        f"Prototype match prepared for '{query}': {ranked[0]['name']} at ₹{ranked[0]['price']:,}. "
+                        "This keeps the demo usable for arbitrary product categories; the listing and price are representative demo data, not a claim of current worldwide inventory."
+                    )
+                else:
+                    next_action = f"Best demo-catalogue match: {ranked[0]['name']} from {ranked[0]['merchant']} at ₹{ranked[0]['price']:,}. Review the options and confirm before checkout."
             else:
-                budget = intent.get("budget_max")
-                suffix = f" within ₹{budget:,}" if budget else ""
-                steps.append(AgentStep(
-                    agent="Universal Product Router",
-                    summary="The request is valid commerce intent, but no matching live/demo merchant listing is currently connected. The production architecture routes arbitrary product queries to marketplace and merchant connectors rather than restricting them to hard-coded categories.",
-                ))
-                next_action = (
-                    f"I understand you want '{query}'{suffix}. There is no matching listing in the currently connected demo catalogue yet. "
-                    "Nexora now accepts arbitrary product categories; connect a merchant or marketplace catalogue to return live price, stock, images and checkout for that item."
-                )
+                next_action = f"I understood the request for '{query}', but could not prepare a prototype option."
 
         elif mission_type == "multi_merchant_event":
             vendors = self.discovery_agent.run(intent)
