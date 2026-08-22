@@ -134,4 +134,16 @@
     });
     if ($('messageList')) observer.observe($('messageList'), { childList: true, subtree: true });
   });
+
+  // Load the live-search layer after the existing UI so Nexora's primary chat
+  // uses current web research instead of the old static demo catalogue.
+  const style = document.createElement('link');
+  style.rel = 'stylesheet';
+  style.href = '/static/live_search.css';
+  document.head.appendChild(style);
+
+  const searchScript = document.createElement('script');
+  searchScript.src = '/static/live_search.js';
+  searchScript.defer = true;
+  document.head.appendChild(searchScript);
 })();
