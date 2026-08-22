@@ -1,4 +1,5 @@
 from typing import Any
+from app.services.brand_priority import brand_priority
 
 
 class ComparisonAgent:
@@ -75,6 +76,13 @@ class ComparisonAgent:
             if product.get("category"):
                 reasons.append(f"Available in {str(product['category']).replace('_', ' ')} category")
 
+        origin = str(product.get("brand_origin", "")).lower()
+        if origin == "indian":
+            score += 4
+            reasons.append("Indian brand prioritized")
+        elif origin == "international":
+            reasons.append("International alternative")
+
         if budget:
             headroom = budget - product["price"]
             if headroom >= max(300, budget * 0.1):
@@ -94,14 +102,17 @@ class ComparisonAgent:
         if not reasons:
             reasons.append("Best available match for the stated constraints")
 
-        # Remove duplicate explanations while preserving order.
         reasons = list(dict.fromkeys(reasons))
-        return min(score, 99.0), reasons[:4]
+        return min(score, 99.0), reasons[:5]
 
     def run(self, items: list[dict], intent: dict) -> list[dict]:
         ranked = []
         for item in items:
             score, reasons = self.score_product(item, intent)
             ranked.append({**item, "score": round(score, 1), "reasons": reasons})
-        ranked.sort(key=lambda x: (-x["score"], x["price"]))
-        return ranked[:3]
+
+        # India-first ordering is intentional: Indian brands appear before
+        # unknown/local options and international brands. Score still orders
+        # products within each origin group.
+        ranked.sort(key=lambda x: (brand_priority(x.get("brand")), -x["score"], x["price"]))
+        return ranked[:5]
