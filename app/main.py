@@ -30,7 +30,7 @@ def health() -> dict:
 
 @app.post("/api/missions", response_model=MissionResponse)
 def create_mission(payload: MissionRequest) -> MissionResponse:
-    return orchestrator.run(payload.message, payload.user_id)
+    return orchestrator.run(payload.message, payload.user_id, payload.previous_intent)
 
 
 @app.get("/api/merchant/metrics")
