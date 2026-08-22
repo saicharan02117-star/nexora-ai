@@ -65,7 +65,7 @@ class DiscoveryAgent:
             (("smartwatch", "smart watch"), 3990),
             (("monitor",), 12990),
             (("tablet",), 21990),
-            (("phone", "smartphone", "mobile"), 17990),
+            (("phone", "smartphone", "mobile"), 14999),
             (("tv", "television"), 24990),
             (("xbox", "playstation", "ps5", "console"), 39990),
             (("camera", "dslr", "mirrorless"), 44990),
@@ -89,14 +89,20 @@ class DiscoveryAgent:
     @staticmethod
     def _estimated_prices(anchor: int, budget: int | None, count: int = 5) -> list[int]:
         anchor = max(49, int(anchor))
-        factors = [0.70, 0.90, 1.0, 1.20, 1.45]
+        factors = [0.72, 0.90, 1.0, 1.18, 1.42]
         prices = [max(49, int(anchor * f)) for f in factors[:count]]
         if budget:
             cap = max(49, int(budget))
             prices = [min(p, cap) for p in prices]
         return prices
 
-    def _universal_demo_options(self, intent: dict) -> list[dict]:
+    def _brand_first_options(self, intent: dict) -> list[dict]:
+        """Return India-first brand suggestions without inventing an exact model/SKU.
+
+        These entries are deliberately labelled estimates. Exact product names,
+        current prices, stock and seller photos should only come from a connected
+        retailer/search feed.
+        """
         query = intent.get("product_query") or intent.get("category") or "product"
         label = self._display_name(query)
         budget = intent.get("budget_max")
@@ -110,37 +116,49 @@ class DiscoveryAgent:
         for brand in indian[:3]:
             brand_sequence.append((brand, "Indian brand"))
         for brand in international[:2]:
-            brand_sequence.append((brand, "International brand"))
+            brand_sequence.append((brand, "International alternative"))
         if not brand_sequence:
-            brand_sequence = [(None, "Unbranded / local option") for _ in range(3)]
+            brand_sequence = [(None, "Local / unbranded option") for _ in range(3)]
 
         raw_prices = self._estimated_prices(anchor, budget, len(brand_sequence))
         digest = hashlib.sha1(query.encode("utf-8")).hexdigest()[:6].upper()
         items: list[dict] = []
 
         for index, ((brand, origin), price) in enumerate(zip(brand_sequence, raw_prices), start=1):
-            feature_bits = ["Offline prototype estimate", origin]
+            feature_bits = ["India-first brand discovery", origin]
             if prefs:
-                feature_bits.append("Matches: " + ", ".join(prefs[:3]))
-            brand_prefix = f"{brand} " if brand else ""
+                feature_bits.append("Requested: " + ", ".join(prefs[:3]))
+            display_name = f"{brand} — {label}" if brand else f"Local / unbranded — {label}"
             items.append({
-                "id": f"UNI-{digest}-{index}",
+                "id": f"BRAND-{digest}-{index}",
                 "category": intent.get("category") or query,
-                "name": f"{brand_prefix}{label}",
+                "name": display_name,
                 "brand": brand or "Local / unbranded",
                 "brand_origin": classify_brand(brand) if brand else "local",
-                "merchant": "Nexora Offline Demo Estimator",
+                "merchant": "Nexora Brand Discovery",
                 "price": price,
                 "stock": 1,
                 "delivery_days": 2 + (index % 2),
                 "rating": 4.2 + min(index, 3) * 0.1,
                 "feature": " · ".join(feature_bits),
-                "material": next((p for p in prefs if p in {"plastic", "metal", "steel", "aluminium", "aluminum", "wood", "wooden", "soft", "hard", "cotton", "rubber"}), "Depends on selected variant"),
+                "material": next((p for p in prefs if p in {"plastic", "metal", "steel", "aluminium", "aluminum", "wood", "wooden", "soft", "hard", "cotton", "rubber"}), "Depends on selected product"),
                 "max_authorized_offer": 0,
                 "synthetic_demo": True,
-                "source_note": "Brand-priority demo suggestion only; not a verified seller listing or live price",
+                "source_note": "Brand suggestion with estimated price range; exact model, live price, stock and seller image are not verified",
             })
         return items
+
+    @staticmethod
+    def _trusted_catalog_items() -> list[dict]:
+        """Only exact listings explicitly marked verified may outrank brand discovery.
+
+        The legacy data file contains fictional demo SKUs (for example NovaPhone),
+        so they must never be presented as real product recommendations.
+        """
+        return [
+            p for p in products()
+            if p.get("stock", 0) > 0 and p.get("verified_listing") is True
+        ]
 
     def run(self, intent: dict) -> list[dict]:
         mission_type = intent.get("mission_type")
@@ -149,9 +167,10 @@ class DiscoveryAgent:
         product_query = (intent.get("product_query") or category or "").lower().strip()
 
         if mission_type == "product_purchase":
-            items = [p for p in products() if p.get("stock", 0) > 0]
+            items = self._trusted_catalog_items()
             exact = [p for p in items if p.get("category") == category] if category and category != "general" else []
-            if not exact and product_query:
+
+            if not exact and product_query and items:
                 query_tokens = self._tokens(product_query)
                 scored: list[tuple[int, dict]] = []
                 for product in items:
@@ -164,11 +183,17 @@ class DiscoveryAgent:
                         scored.append((overlap, product))
                 scored.sort(key=lambda row: (-row[0], row[1].get("price", 0)))
                 exact = [p for _, p in scored]
+
             if budget:
                 exact = [p for p in exact if p["price"] <= budget]
-            if not exact:
-                return self._universal_demo_options(intent)
-            return exact
+
+            if exact:
+                return exact
+
+            # Until a retailer/search feed provides verified exact listings,
+            # always use real brand names + clearly marked estimates instead of
+            # fictional product names or fake merchant offers.
+            return self._brand_first_options(intent)
 
         if mission_type == "multi_merchant_event":
             return event_vendors()
