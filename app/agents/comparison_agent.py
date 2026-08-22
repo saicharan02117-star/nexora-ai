@@ -10,6 +10,7 @@ class ComparisonAgent:
         prefs = set(intent.get("preferences", []))
         budget = intent.get("budget_max")
         category = intent.get("category")
+        query = str(intent.get("product_query") or "").lower()
 
         if category == "laptop":
             if int(product.get("ram_gb", 0)) >= 16:
@@ -62,6 +63,17 @@ class ComparisonAgent:
             if "laptop" in product.get("feature", "").lower():
                 score += 6
                 reasons.append("Includes a dedicated laptop sleeve")
+        else:
+            searchable = " ".join(str(v) for v in product.values()).lower()
+            if query and query in searchable:
+                score += 16
+                reasons.append("Direct match for the requested item")
+            for pref in prefs:
+                if pref in searchable:
+                    score += 5
+                    reasons.append(f"Matches requested {pref} preference")
+            if product.get("category"):
+                reasons.append(f"Available in {str(product['category']).replace('_', ' ')} category")
 
         if budget:
             headroom = budget - product["price"]
@@ -82,6 +94,8 @@ class ComparisonAgent:
         if not reasons:
             reasons.append("Best available match for the stated constraints")
 
+        # Remove duplicate explanations while preserving order.
+        reasons = list(dict.fromkeys(reasons))
         return min(score, 99.0), reasons[:4]
 
     def run(self, items: list[dict], intent: dict) -> list[dict]:
