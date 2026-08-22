@@ -28,7 +28,8 @@ class MasterOrchestrator:
         preferred = [
             "cpu", "ram_gb", "storage_gb", "gpu", "delivery_days", "rating",
             "style", "material", "sizes", "display", "memory", "battery",
-            "camera", "feature", "capacity"
+            "camera", "feature", "capacity", "color", "finish", "dimensions",
+            "warranty", "connectivity", "platform", "edition", "compatibility"
         ]
         data = {}
         for key in preferred:
@@ -64,9 +65,10 @@ class MasterOrchestrator:
 
         if mission_type == "product_purchase":
             discovered = self.discovery_agent.run(intent)
-            steps.append(AgentStep(agent="Discovery Agent", summary=f"Found {len(discovered)} eligible in-stock products for {intent.get('category')}."))
+            query = intent.get("product_query") or intent.get("category") or "product"
+            steps.append(AgentStep(agent="Discovery Agent", summary=f"Searched the connected demo catalogue for '{query}' and found {len(discovered)} eligible in-stock matches."))
             ranked = self.comparison_agent.run(discovered, intent)
-            steps.append(AgentStep(agent="Comparison Agent", summary="Ranked products using budget, requested use, delivery and merchant signals."))
+            steps.append(AgentStep(agent="Comparison Agent", summary="Ranked available matches using budget, requested attributes, delivery and merchant signals."))
 
             if ranked:
                 offer = self.negotiation_agent.run(ranked[0])
@@ -101,11 +103,18 @@ class MasterOrchestrator:
                     status="needs_confirmation" if firewall.requires_confirmation else "completed",
                     summary=firewall.reason,
                 ))
-                next_action = f"Best match: {ranked[0]['name']} from {ranked[0]['merchant']} at ₹{ranked[0]['price']:,}. Review the top options and confirm before checkout."
+                next_action = f"Best connected-catalogue match: {ranked[0]['name']} from {ranked[0]['merchant']} at ₹{ranked[0]['price']:,}. Review the options and confirm before checkout."
             else:
-                category = intent.get("category", "product")
                 budget = intent.get("budget_max")
-                next_action = f"I found no {category} options" + (f" within ₹{budget:,}" if budget else "") + ". Try a slightly higher budget or different requirement."
+                suffix = f" within ₹{budget:,}" if budget else ""
+                steps.append(AgentStep(
+                    agent="Universal Product Router",
+                    summary="The request is valid commerce intent, but no matching live/demo merchant listing is currently connected. The production architecture routes arbitrary product queries to marketplace and merchant connectors rather than restricting them to hard-coded categories.",
+                ))
+                next_action = (
+                    f"I understand you want '{query}'{suffix}. There is no matching listing in the currently connected demo catalogue yet. "
+                    "Nexora now accepts arbitrary product categories; connect a merchant or marketplace catalogue to return live price, stock, images and checkout for that item."
+                )
 
         elif mission_type == "multi_merchant_event":
             vendors = self.discovery_agent.run(intent)
@@ -127,8 +136,8 @@ class MasterOrchestrator:
             next_action = "Review the ranked recovery actions and choose one to test."
 
         else:
-            steps.append(AgentStep(agent="Mission Orchestrator", summary="The request is understood, but the current demo catalogue does not yet contain that category or service."))
-            next_action = "Try a laptop, shoes, phone, earbuds, backpack, birthday/event mission, or merchant revenue question."
+            steps.append(AgentStep(agent="Mission Orchestrator", summary="The request does not yet map to a transactional commerce action."))
+            next_action = "Ask Nexora to find, compare, buy or plan a product/service, or ask a merchant growth question."
 
         world.record("mission_prepared", {"mission_id": mission_id, "mission_type": mission_type})
         return MissionResponse(
