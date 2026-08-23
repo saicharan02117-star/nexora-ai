@@ -13,5 +13,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
       - run: pip install -r requirements.txt
       - run: pytest -q
+      - run: node --check api/search.js
+      - name: Validate n8n workflow JSON
+        run: node -e "JSON.parse(require('fs').readFileSync('n8n/nexora-agent-webhook.json','utf8')); console.log('n8n workflow JSON valid')"
