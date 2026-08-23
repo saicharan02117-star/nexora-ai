@@ -1,0 +1,193 @@
+{
+  "name": "Nexora AI - Tool Agent Webhook",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "nexora-agent",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [-760, -20],
+      "id": "3f47c6dd-25d9-4d11-9d3b-a6e3bcff49bb",
+      "name": "Nexora Webhook",
+      "webhookId": "0e62a8f8-0ae6-4490-bffa-8793bdd9d621"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body?.message || $json.message || $json.chatInput || '' }}",
+        "options": {
+          "systemMessage": "You are Nexora AI's private tool agent. Understand the full user request and automatically choose the correct connected tool. Preserve follow-up context and always use the newest constraint or budget. Use Gmail only for email tasks and Google Calendar only for schedule/calendar tasks. Never claim an action succeeded unless the tool confirms it. Never invent emails, events, prices, stock, sources, links, or tool results. For any destructive or sensitive action, explain exactly what will happen and require confirmation when the upstream Nexora request says confirmation is required. Return a concise answer suitable for the Nexora chat UI.",
+          "returnIntermediateSteps": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [-420, -20],
+      "id": "324c0f55-f956-4d4c-8a05-f43b35d24910",
+      "name": "Nexora AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5.4",
+          "mode": "list"
+        },
+        "options": {
+          "temperature": 0.2
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [-600, 260],
+      "id": "b9ec6a6c-daf0-4c17-bb84-ad656b62fb19",
+      "name": "OpenAI Chat Model"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.body?.sessionId || $json.body?.user_id || $json.sessionId || 'nexora-default' }}",
+        "contextWindowLength": 50
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [-400, 260],
+      "id": "4084b52c-66a5-4698-8687-a1a96fccdf7b",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "getAll",
+        "returnAll": false,
+        "limit": 10,
+        "filters": {
+          "q": "={{ $fromAI('gmail_search', 'Gmail search query. Use Gmail operators such as from:, subject:, newer_than:, is:unread when useful.') }}"
+        }
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 1,
+      "position": [-180, 260],
+      "id": "dc1f21c0-f065-45e8-9cca-c1b9a50c7091",
+      "name": "Search Gmail"
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "send",
+        "sendTo": "={{ $fromAI('recipient', 'Recipient email address') }}",
+        "subject": "={{ $fromAI('subject', 'Email subject') }}",
+        "message": "={{ $fromAI('body', 'Email body') }}"
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 1,
+      "position": [20, 260],
+      "id": "a2d5e94b-6681-4388-ac44-496742940178",
+      "name": "Send Gmail"
+    },
+    {
+      "parameters": {
+        "resource": "calendar",
+        "operation": "availability",
+        "calendar": {
+          "__rl": true,
+          "value": "primary",
+          "mode": "id"
+        },
+        "timeMin": "={{ $fromAI('start_time', 'Start date/time as ISO 8601') }}",
+        "timeMax": "={{ $fromAI('end_time', 'End date/time as ISO 8601') }}"
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [220, 260],
+      "id": "65c3d929-c875-4ee0-a8b8-d84692ae98be",
+      "name": "Calendar Availability"
+    },
+    {
+      "parameters": {
+        "resource": "event",
+        "operation": "create",
+        "calendar": {
+          "__rl": true,
+          "value": "primary",
+          "mode": "id"
+        },
+        "start": "={{ $fromAI('event_start', 'Event start date/time as ISO 8601') }}",
+        "end": "={{ $fromAI('event_end', 'Event end date/time as ISO 8601') }}",
+        "useDefaultReminders": true,
+        "additionalFields": {
+          "summary": "={{ $fromAI('event_title', 'Calendar event title') }}",
+          "description": "={{ $fromAI('event_description', 'Calendar event description') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [430, 260],
+      "id": "d07bf15b-0a6a-488e-90ac-f33af2f65e2d",
+      "name": "Create Calendar Event"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolCalculator",
+      "typeVersion": 1,
+      "position": [640, 260],
+      "id": "ec86ee07-d6fe-464a-b9be-828373107d6d",
+      "name": "Calculator"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ answer: $json.output || $json.text || '', sources: [], metadata: { provider: 'n8n', route: $('Nexora Webhook').item.json.body?.route || 'agent', tools: $('Nexora Webhook').item.json.body?.tools || [], intermediateSteps: $json.intermediateSteps || [] } }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [-60, -20],
+      "id": "8fd3664a-a8fb-4d97-9f0a-57106f059351",
+      "name": "Return to Nexora"
+    }
+  ],
+  "connections": {
+    "Nexora Webhook": {
+      "main": [[{"node": "Nexora AI Agent", "type": "main", "index": 0}]]
+    },
+    "Nexora AI Agent": {
+      "main": [[{"node": "Return to Nexora", "type": "main", "index": 0}]]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [[{"node": "Nexora AI Agent", "type": "ai_languageModel", "index": 0}]]
+    },
+    "Simple Memory": {
+      "ai_memory": [[{"node": "Nexora AI Agent", "type": "ai_memory", "index": 0}]]
+    },
+    "Search Gmail": {
+      "ai_tool": [[{"node": "Nexora AI Agent", "type": "ai_tool", "index": 0}]]
+    },
+    "Send Gmail": {
+      "ai_tool": [[{"node": "Nexora AI Agent", "type": "ai_tool", "index": 0}]]
+    },
+    "Calendar Availability": {
+      "ai_tool": [[{"node": "Nexora AI Agent", "type": "ai_tool", "index": 0}]]
+    },
+    "Create Calendar Event": {
+      "ai_tool": [[{"node": "Nexora AI Agent", "type": "ai_tool", "index": 0}]]
+    },
+    "Calculator": {
+      "ai_tool": [[{"node": "Nexora AI Agent", "type": "ai_tool", "index": 0}]]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "active": false,
+  "versionId": "356152d8-33f4-4c16-8a96-7be5a9a1a89e",
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": []
+}
