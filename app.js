@@ -1,70 +1,33 @@
-const q=s=>document.querySelector(s);
-const all=s=>[...document.querySelectorAll(s)];
-const state={mode:"stable"};
-
-function setStable(){
- state.mode="stable";
- q("#heroRes").textContent="76 / 100";q("#heroRisk").textContent="18%";q("#heroRisk").style.color="var(--green)";q("#heroStatus").textContent="Monitoring";
- q("#kRisk").textContent="18%";q("#kNodes").textContent="0";q("#kPeople").textContent="0";q("#kTime").textContent="—";
- q("#mainRiskBar").style.width="18%";q("#mainRiskBar").style.background="linear-gradient(90deg,#37b276,#68d59a)";
- q("#cascadeNarrative").textContent="No critical cascade is active. Ω-CORE is continuously monitoring infrastructure dependencies and weak signals.";
- q("#fragile").textContent="Substation 4";q("#fragileDesc").textContent="High dependency centrality across water and communications.";
- q("#action").textContent="Standby";q("#actionDesc").textContent="No immediate intervention is required.";
- q("#improve").textContent="—";q("#improveDesc").textContent="Displayed after a cascade and intervention are evaluated.";
-}
-function simulate(){
- state.mode="cascade";
- q("#heroRes").textContent="47 / 100";q("#heroRisk").textContent="84%";q("#heroRisk").style.color="var(--red)";q("#heroStatus").textContent="Cascade detected";
- q("#kRisk").textContent="84%";q("#kNodes").textContent="4";q("#kPeople").textContent="8,420";q("#kTime").textContent="1h 42m";
- q("#mainRiskBar").style.width="84%";q("#mainRiskBar").style.background="linear-gradient(90deg,#e8a151,#db5058)";
- q("#cascadeNarrative").textContent="Extreme rainfall may flood Road B, isolate Substation 4, interrupt Pump 2 and threaten Hospital A water continuity. Ω-CORE identifies Pump 2 as the highest-leverage protection point.";
- q("#fragile").textContent="Pump 2";q("#fragileDesc").textContent="Protecting this node prevents the most important downstream hospital impact.";
- q("#action").textContent="Backup power → Pump 2";q("#actionDesc").textContent="Fastest targeted action with the highest downstream protection.";
- q("#improve").textContent="84% → 23%";q("#improveDesc").textContent="Projected cascade risk after the recommended intervention.";
- q("#godview").scrollIntoView({behavior:"smooth"});
-}
-function breakChain(){
- if(state.mode==="stable") simulate();
- state.mode="controlled";
- q("#heroRes").textContent="78 / 100";q("#heroRisk").textContent="23%";q("#heroRisk").style.color="var(--green)";q("#heroStatus").textContent="Cascade controlled";
- q("#kRisk").textContent="23%";q("#kNodes").textContent="1";q("#kPeople").textContent="1,310";q("#kTime").textContent="Stabilized";
- q("#mainRiskBar").style.width="23%";q("#mainRiskBar").style.background="linear-gradient(90deg,#37b276,#68d59a)";
- q("#cascadeNarrative").textContent="BREAK THE CHAIN protects Pump 2 with temporary backup power. The hospital water branch remains operational even if the upstream substation stays unstable.";
- q("#action").textContent="Generator at Pump 2";q("#actionDesc").textContent="Maintains water continuity while upstream restoration continues.";
- q("#improve").textContent="61% risk reduction";q("#improveDesc").textContent="Estimated reduction from 84% to 23%.";
-}
-function recover(){
- state.mode="recovery";
- q("#heroRes").textContent="86 / 100";q("#heroRisk").textContent="12%";q("#heroRisk").style.color="var(--green)";q("#heroStatus").textContent="Optimized recovery";
- q("#kRisk").textContent="12%";q("#kNodes").textContent="0";q("#kPeople").textContent="280";q("#kTime").textContent="2h 18m";
- q("#mainRiskBar").style.width="12%";q("#mainRiskBar").style.background="linear-gradient(90deg,#37b276,#68d59a)";
- q("#cascadeNarrative").textContent="Cascading Recovery restores Substation 4 first because this single upstream repair re-energizes Pump 2, supports Hospital A and improves communications.";
- q("#fragile").textContent="No critical single point";q("#fragileDesc").textContent="Network vulnerability is reduced after optimized restoration.";
- q("#action").textContent="Restore Substation 4 first";q("#actionDesc").textContent="Highest system-wide recovery benefit.";
- q("#improve").textContent="3+ services";q("#improveDesc").textContent="Recovered through one high-value upstream repair.";
-}
-q("#heroSim").onclick=simulate;q("#simBtn").onclick=simulate;q("#breakBtn").onclick=breakChain;q("#recoverBtn").onclick=recover;q("#resetBtn").onclick=setStable;
-
-const rain=q("#rain"),temp=q("#temp"),backup=q("#backup");
-function updateLabels(){q("#rainLabel").textContent=rain.value+" mm";q("#tempLabel").textContent="+"+Number(temp.value).toFixed(1)+"°C";q("#backupLabel").textContent=["None","Partial","Full critical"][backup.value]}
-[rain,temp,backup].forEach(x=>x.oninput=updateLabels);updateLabels();
-q("#scenarioBtn").onclick=()=>{
- const r=+rain.value,t=+temp.value,b=+backup.value;
- let risk=Math.round(Math.max(8,Math.min(96,(r-40)*.42+t*8-b*18)));
- let people=Math.round(risk*82);
- let res=Math.round(Math.max(22,Math.min(94,92-risk*.52+b*7)));
- q("#sRisk").textContent=risk+"%";q("#sPeople").textContent=people.toLocaleString();q("#sRes").textContent=res;
- q("#sNarrative").textContent=risk>70?"High cascade stress. Critical backup and intervention planning are strongly recommended.":risk>40?"Moderate-to-high stress. Redundancy meaningfully reduces the chance of downstream service loss.":"Low-to-moderate stress. Current backup capacity keeps most critical dependencies within the resilient range.";
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+function scrollToId(id){document.getElementById(id)?.scrollIntoView({behavior:"smooth"})}
+function openRolePicker(){document.querySelector(".roleStrip")?.scrollIntoView({behavior:"smooth"})}
+function toast(title,text){$("#toastTitle").textContent=title;$("#toastText").textContent=text;$("#toast").classList.add("show");setTimeout(()=>$("#toast").classList.remove("show"),3200)}
+const roleData={
+ personal:["👤","Personal Guardian","Daily safety, route intelligence, family awareness, utilities, hospital access and emergency guidance — explained in normal language."],
+ family:["👨‍👩‍👧","Family Resilience","Individual family safety, mobility needs, medication readiness, school status, safe meeting points and earlier assistance for vulnerable members."],
+ business:["🏢","Business Continuity","Operational disruption, backup duration, supply-chain exposure and the process that should receive protection first."],
+ hospital:["🏥","Critical Facility Continuity","Power, water, oxygen, communications, ambulance access and the countdown to service interruption."],
+ authority:["🏙️","Authority Command View","System-wide cascade intelligence, population exposure, Break-the-Chain interventions, resource allocation and optimized recovery."]
 };
-
-const modeData={
- personal:["Personal Guardian","Shows clear personal risk, safe routes, power and water continuity, hospital accessibility, shelter guidance, preparedness gaps and what to do next — without overwhelming the user with engineering data."],
- family:["Family Resilience","Explains each family member's current safety, mobility and medication needs, meeting points, school status, evacuation support and who requires earlier assistance."],
- expert:["Engineering Intelligence","Shows causal graphs, failure probabilities, dependency centrality, uncertainty, evidence, intervention alternatives, reasons alternatives were rejected and recovery sequencing."],
- authority:["Authority Command View","Shows population exposure, critical services, intervention priority, resource allocation, approval status, resilience improvement and system-wide recovery value."]
+$$('.role').forEach(b=>b.onclick=()=>{$$('.role').forEach(x=>x.classList.remove('active'));b.classList.add('active');const d=roleData[b.dataset.role];$('.roleIcon').textContent=d[0];$('#roleSummary h3').textContent=d[1];$('#roleSummary p').textContent=d[2];toast('Experience switched',d[1])});
+const replies=[
+['travel','Yes. Your Home → College route is currently safe. If rainfall increases this evening, Road C is the better return route because Road B has higher modeled water accumulation.'],
+['power','Power is expected to remain stable tonight under the current scenario. The main upstream dependency is Substation 4. If its risk rises, I would tell you when to charge phones and backup batteries.'],
+['family','All four registered family profiles are currently outside predicted high-risk zones. I am watching the school route and the grandparent priority profile more closely because their response needs are different.'],
+['go','If flooding worsens, Community Shelter 3 is the current recommended safe location. Use Home → Road C → Shelter 3; Road B is the route to avoid.'],
+['flood','Flood risk near your immediate location is currently low at 12%. Road B is the first nearby route likely to become unsafe if rainfall intensifies.'],
+['hospital','Hospital A is currently reachable in about 11 minutes through Road C. Hospital B is the backup if the primary route or facility becomes unavailable.']
+];
+function askPreset(t){$('#askInput').value=t;askNexus()}
+function askNexus(){const i=$('#askInput'),text=i.value.trim();if(!text)return;const w=$('#chatWindow');w.insertAdjacentHTML('beforeend',`<div class="msg user"><b>You</b><p>${text.replace(/[<>]/g,'')}</p></div>`);let ans='I can evaluate that using your current area, route, utilities, nearby critical services and the active scenario. For this prototype, try asking about travel, power, flooding, family, hospital access or where to go.';const lower=text.toLowerCase();for(const [k,v] of replies){if(lower.includes(k)){ans=v;break}}setTimeout(()=>{w.insertAdjacentHTML('beforeend',`<div class="msg ai"><b>NEXUS-Ω</b><p>${ans}</p></div>`);w.scrollTop=w.scrollHeight},350);i.value='';w.scrollTop=w.scrollHeight}
+function triggerRouteAlert(){toast('Route Guardian','Rain increased: use Road C for the return journey and avoid Road B.');$('.hazard').style.transform='scale(1.15)'}
+function checkFamily(){toast('Family Guardian','4/4 outside high-risk zones. Grandparent readiness and School B route remain priority watches.')}
+function toggleEmergency(){const e=$('#emergencyPhone');e.classList.toggle('active');toast('Emergency Copilot',e.classList.contains('active')?'Emergency guidance expanded.':'Emergency preview returned to normal.')}
+const orgData={
+business:{cls:'businessVisual',ey:'BUSINESS CONTINUITY',title:'Protect the process that cannot stop.',text:'If Substation 4 fails, Cold Storage 2 becomes critical after approximately three hours. NEXUS-Ω recommends generator priority for that unit before non-critical office loads.',decision:'Reserve generator priority for Cold Storage 2',why:'Why: highest potential inventory loss + limited thermal tolerance.',metrics:[['OPERATIONS TODAY','Normal'],['CRITICAL BACKUP','2h 48m'],['HIGHEST DEPENDENCY','Cold Storage 2']]},
+hospital:{cls:'hospitalVisual',ey:'HOSPITAL CONTINUITY',title:'Know how long every critical service can continue.',text:'Hospital A has strong electrical backup but weaker water continuity. Pump 2 is the hidden dependency that could reduce operational resilience during a prolonged upstream outage.',decision:'Prepare secondary power for Pump 2',why:'Why: water continuity becomes the limiting service before electricity backup is exhausted.',metrics:[['POWER BACKUP','9h'],['WATER CONTINUITY','3h 10m'],['OXYGEN RESERVE','14h']]},
+authority:{cls:'authorityVisual',ey:'AUTHORITY COMMAND',title:'See the whole cascade — and where to stop it.',text:'Extreme rain can flood Road B, isolate Substation 4, interrupt Pump 2 and threaten Hospital A. Ω-CORE compares interventions and finds the highest-leverage action.',decision:'BREAK THE CHAIN → Protect Pump 2',why:'Projected cascade risk: 84% → 23% with targeted backup power.',metrics:[['CASCADE RISK','84%'],['PEOPLE EXPOSED','8,420'],['TIME TO FAILURE','1h 42m']]}
 };
-all(".mode").forEach(b=>b.onclick=()=>{all(".mode").forEach(x=>x.classList.remove("active"));b.classList.add("active");const d=modeData[b.dataset.mode];q("#modeTitle").textContent=d[0];q("#modeText").textContent=d[1]});
-
-const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add("show")}),{threshold:.12});
-all(".reveal").forEach(el=>io.observe(el));
-setTimeout(()=>all(".reveal").slice(0,2).forEach(el=>el.classList.add("show")),100);
+$$('.orgTab').forEach(b=>b.onclick=()=>{$$('.orgTab').forEach(x=>x.classList.remove('active'));b.classList.add('active');const d=orgData[b.dataset.org];$('#orgVisual').className='orgVisual '+d.cls;$('#orgEyebrow').textContent=d.ey;$('#orgTitle').textContent=d.title;$('#orgText').textContent=d.text;$('#orgDecision').textContent=d.decision;$('#orgWhy').textContent=d.why;$('#orgVisual').innerHTML=d.metrics.map(m=>`<div class="orgMetric"><small>${m[0]}</small><b>${m[1]}</b></div>`).join('')});
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('show')}),{threshold:.12});$$('.reveal').forEach(e=>io.observe(e));setTimeout(()=>$$('.hero .reveal').forEach(e=>e.classList.add('show')),100);
+function updateClock(){const d=new Date();$('#clockText').textContent=d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})+' • monitoring'}updateClock();setInterval(updateClock,60000);
