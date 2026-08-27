@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXUS-Ω — Universal Resilience OS</title>
+<meta name="description" content="NEXUS-Ω predicts cascading infrastructure failures, finds the best intervention, and explains what to do next.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<nav class="nav">
+  <div class="container navin">
+    <div class="brand"><div class="logo">Ω</div><div><b>NEXUS-Ω</b><span>Universal Resilience Operating System</span></div></div>
+    <div class="navlinks">
+      <a href="#godview">God View</a><a href="#intelligence">Intelligence</a><a href="#break">Break the Chain</a><a href="#agents">AI Agents</a><a href="#scenario">Scenario Lab</a><a href="#recovery">Recovery</a>
+    </div>
+    <button class="navcta" onclick="document.querySelector('#break').scrollIntoView()">Run Simulation</button>
+  </div>
+</nav>
+
+<main class="container">
+<section class="hero">
+  <div class="reveal">
+    <div class="eyebrow">AI • CAUSAL DIGITAL TWIN • RESILIENCE INTELLIGENCE</div>
+    <h1>Predict the <span class="gradientText">next failure</span> before it happens.</h1>
+    <p class="lead">NEXUS-Ω understands how climate, power, water, roads, communications and critical services depend on one another — then finds the smallest intervention that can stop an entire cascade.</p>
+    <div class="heroBtns">
+      <button class="btn primary" id="heroSim">Simulate Extreme Rain</button>
+      <button class="btn teal" onclick="document.querySelector('#intelligence').scrollIntoView()">Explore Intelligence</button>
+    </div>
+    <div class="smallnote">Prototype district • Explainable AI • Human approval for consequential actions</div>
+  </div>
+  <div class="heroVisual reveal">
+    <div class="orb o1"></div><div class="orb o2"></div>
+    <div class="city"><div class="gridplane"></div><div class="road r1"></div><div class="road r2"></div><div class="block b1"></div><div class="block b2"></div><div class="block b3"></div><div class="block b4"></div><div class="block b5"></div><div class="nodePulse n1"></div><div class="nodePulse n2"></div><div class="nodePulse n3"></div></div>
+    <div class="floatCard fc1"><div class="k">System Resilience</div><div class="v" id="heroRes">76 / 100</div></div>
+    <div class="floatCard fc2"><div class="k">Cascade Risk</div><div class="v" id="heroRisk" style="color:var(--green)">18%</div></div>
+    <div class="floatCard fc3"><div class="k">Ω-Core Status</div><div class="v" style="font-size:22px" id="heroStatus">Monitoring</div></div>
+  </div>
+</section>
+
+<section class="section reveal" id="godview">
+  <div class="sectionHead"><div><div class="eyebrow">SYSTEM GOD VIEW</div><h2>One view of an interconnected city.</h2></div><p>Instead of monitoring each department separately, NEXUS-Ω treats infrastructure as a dependency network and continuously asks what one failure could trigger next.</p></div>
+  <div class="kpis">
+    <div class="kpi"><div class="l">Cascade Risk</div><div class="v" id="kRisk">18%</div><p>Probability that an active disruption propagates into other systems.</p></div>
+    <div class="kpi"><div class="l">Critical Nodes</div><div class="v" id="kNodes">0</div><p>Assets whose current condition requires immediate attention.</p></div>
+    <div class="kpi"><div class="l">People Exposed</div><div class="v" id="kPeople">0</div><p>Estimated population potentially affected by the modeled chain.</p></div>
+    <div class="kpi"><div class="l">Time to Failure</div><div class="v" id="kTime">—</div><p>Estimated intervention window before a major service disruption.</p></div>
+  </div>
+  <div class="twinGrid">
+    <div class="panel">
+      <div class="panelTitle">Live Dependency Path</div><div class="bigTitle">Climate → Access → Power → Water → Health</div>
+      <div class="cascade"><div class="cnode"><b>Extreme Rain</b><span>Climate trigger</span></div><div class="arr">→</div><div class="cnode"><b>Road B</b><span>Access risk</span></div><div class="arr">→</div><div class="cnode"><b>Substation 4</b><span>Power node</span></div><div class="arr">→</div><div class="cnode"><b>Pump 2</b><span>Water dependency</span></div><div class="arr">→</div><div class="cnode"><b>Hospital A</b><span>Critical service</span></div></div>
+      <div class="riskbar"><div class="riskfill" id="mainRiskBar"></div></div>
+      <div class="desc" id="cascadeNarrative">No critical cascade is active. Ω-CORE is continuously monitoring infrastructure dependencies and weak signals.</div>
+      <div class="heroBtns"><button class="btn primary" id="simBtn">Simulate Extreme Rain</button><button class="btn" id="breakBtn">Break the Chain</button><button class="btn teal" id="recoverBtn">Optimize Recovery</button><button class="btn" id="resetBtn">Reset</button></div>
+    </div>
+    <div class="sideStack">
+      <div class="focus"><div class="panelTitle">Most Fragile Asset</div><div class="v" id="fragile">Substation 4</div><p id="fragileDesc">High dependency centrality across water and communications.</p></div>
+      <div class="focus"><div class="panelTitle">Best Intervention</div><div class="v" id="action">Standby</div><p id="actionDesc">No immediate intervention is required.</p></div>
+      <div class="focus"><div class="panelTitle">Projected Improvement</div><div class="v" id="improve">—</div><p id="improveDesc">Displayed after a cascade and intervention are evaluated.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section reveal" id="intelligence">
+  <div class="sectionHead"><div><div class="eyebrow">DETAILED INTELLIGENCE STANDARD</div><h2>Every number explains itself.</h2></div><p>NEXUS-Ω never stops at “Low”, “Safe” or “84%”. Every important result explains meaning, cause, dependencies, evidence, what happens next, impact, recommended action, alternatives and confidence.</p></div>
+  <div class="detailsGrid">
+    <article class="intel"><div class="intelHead"><div class="intelTop"><div><div class="eyebrow">NEXUS INTELLIGENCE CARD</div><div class="intelName">Current Area Safety</div></div><div class="status safe">LOW RISK</div></div><div class="intelSummary">Your current location is outside the predicted high-risk zone. No immediate evacuation or protective action is required.</div></div><div class="intelBody"><div class="dgrid">
+      <div class="detail"><h4>What it means</h4><p>The combined risk from flooding, road disruption, electricity loss, water interruption and nearby infrastructure failure is currently low.</p></div>
+      <div class="detail"><h4>Why NEXUS-Ω says this</h4><p>Rainfall is manageable, drainage remains functional, major roads are open and no nearby critical asset is failing.</p></div>
+      <div class="detail"><h4>Dependencies</h4><p>Your safety still depends on road access, power, water, communications and hospital reachability.</p></div>
+      <div class="detail"><h4>Evidence</h4><p>Weather trend, drainage condition, road status, nearby infrastructure and the dependency graph.</p></div>
+      <div class="detail"><h4>What may happen next</h4><p>If rainfall strengthens or Substation 4 becomes unstable, the area risk and safest route are recalculated.</p></div>
+      <div class="detail warning"><h4>Time window</h4><p>No immediate deadline. Continuous monitoring remains active.</p></div>
+      <div class="detail"><h4>Possible impact</h4><p>No significant personal disruption is expected while current conditions remain stable.</p></div>
+      <div class="detail action"><h4>Recommended action</h4><p>Continue normal activity, keep alerts enabled and avoid unnecessary low-lying-road travel if rainfall intensifies.</p></div>
+      <div class="detail"><h4>Why this action</h4><p>At the current risk level, monitoring and preparedness are safer than unnecessary evacuation.</p></div>
+      <div class="detail"><h4>Alternatives</h4><p>Review your family meeting point, charge devices and confirm emergency water and medicines.</p></div>
+      <div class="detail after"><h4>After action</h4><p>Preparedness reduces response delay if conditions suddenly worsen.</p></div>
+      <div class="detail"><h4>Confidence</h4><p>93% — evidence quality is high.</p></div>
+    </div></div></article>
+
+    <article class="intel"><div class="intelHead"><div class="intelTop"><div><div class="eyebrow">NEXUS INTELLIGENCE CARD</div><div class="intelName">Flood Intelligence</div></div><div class="status safe">LOW • 12%</div></div><div class="intelSummary">Significant flooding is currently unlikely near your location, but Road B is the nearest route with meaningful water-accumulation vulnerability.</div></div><div class="intelBody"><div class="dgrid">
+      <div class="detail"><h4>What it means</h4><p>A 12% probability means current conditions do not strongly support a local flood event, although the risk is not zero.</p></div>
+      <div class="detail"><h4>Why</h4><p>Rainfall intensity and duration are manageable, drainage capacity is sufficient and nearby water levels are not rising abnormally.</p></div>
+      <div class="detail"><h4>Dependencies</h4><p>Risk depends on rainfall duration, drainage performance, road elevation, soil saturation and nearby water channels.</p></div>
+      <div class="detail"><h4>Evidence</h4><p>Forecast rainfall, elevation, drainage estimate, historical flood patterns and road-water accumulation modeling.</p></div>
+      <div class="detail"><h4>What may happen next</h4><p>If rainfall intensifies, Road B may accumulate water first and later reduce access to Substation 4 and emergency routes.</p></div>
+      <div class="detail warning"><h4>Time window</h4><p>No current evacuation deadline. Time-to-unsafe appears automatically when risk becomes high.</p></div>
+      <div class="detail"><h4>Possible impact</h4><p>The first likely impact is travel disruption rather than direct home flooding.</p></div>
+      <div class="detail action"><h4>Recommended action</h4><p>No evacuation now. Prefer Road C for essential travel if rainfall becomes stronger.</p></div>
+      <div class="detail"><h4>Why this action</h4><p>Road C is higher, less flood-prone and maintains access to Hospital A and Shelter 3.</p></div>
+      <div class="detail"><h4>Alternatives</h4><p>Road E remains a secondary route if Road C becomes constrained.</p></div>
+      <div class="detail after"><h4>After action</h4><p>Early rerouting prevents last-minute movement through a rapidly degrading corridor.</p></div>
+      <div class="detail"><h4>Confidence</h4><p>91% — weather, elevation and historical-pattern evidence agree.</p></div>
+    </div></div></article>
+  </div>
+</section>
+
+<section class="section reveal" id="break">
+  <div class="sectionHead"><div><div class="eyebrow">SIGNATURE CAPABILITY</div><h2>BREAK THE CHAIN</h2></div><p>Instead of trying to fix everything at once, Ω-CORE searches for the smallest action capable of preventing the largest downstream consequence.</p></div>
+  <div class="twinGrid">
+    <div class="panel"><div class="panelTitle">Intervention Logic</div><div class="bigTitle">Protect Pump 2 before Hospital A is affected.</div><p class="desc">In the simulated flood cascade, repairing the entire upstream network takes longer. Temporary backup power at Pump 2 preserves hospital water continuity immediately, even while Substation 4 remains unstable.</p>
+      <div class="resultGrid"><div class="result"><span>Before</span><b style="color:var(--red)">84%</b></div><div class="result"><span>After</span><b style="color:var(--green)">23%</b></div><div class="result"><span>Risk Reduced</span><b>61%</b></div></div>
+    </div>
+    <div class="panel"><div class="panelTitle">Why Ω-CORE chose it</div><div class="timeline">
+      <div class="step"><b>01</b><div>Find every downstream asset threatened by the active chain.</div></div>
+      <div class="step"><b>02</b><div>Measure critical-service importance, dependency centrality, time and intervention cost.</div></div>
+      <div class="step"><b>03</b><div>Run counterfactual alternatives: road repair, substation repair, backup pump power and routing changes.</div></div>
+      <div class="step"><b>04</b><div>Select the action with the greatest reduction in human and infrastructure impact per unit of effort.</div></div>
+    </div></div>
+  </div>
+</section>
+
+<section class="section reveal" id="agents">
+  <div class="sectionHead"><div><div class="eyebrow">Ω-CORE AGENT COUNCIL</div><h2>Specialists reason together.</h2></div><p>Domain agents analyze the same event independently, challenge assumptions and send evidence to the central causal engine before a recommendation is shown.</p></div>
+  <div class="agents">
+    <div class="agent"><div class="icon">🌧️</div><b>Climate Agent</b><p>Rainfall, heat, wind, compound hazards and future climate stress.</p></div>
+    <div class="agent"><div class="icon">⚡</div><b>Power Agent</b><p>Substations, transformers, backup supply, grid stress and redundancy.</p></div>
+    <div class="agent"><div class="icon">💧</div><b>Water Agent</b><p>Pumps, tanks, pressure, storage and continuity dependencies.</p></div>
+    <div class="agent"><div class="icon">🛣️</div><b>Mobility Agent</b><p>Flooded roads, emergency access, travel delay and safe routing.</p></div>
+    <div class="agent"><div class="icon">🏥</div><b>Health Agent</b><p>Hospitals, essential services, vulnerability and continuity windows.</p></div>
+    <div class="agent"><div class="icon">📡</div><b>Comms Agent</b><p>Telecom towers, backup batteries and emergency communication resilience.</p></div>
+    <div class="agent"><div class="icon">🧠</div><b>Optimization Agent</b><p>Minimum-action, maximum-impact intervention and recovery search.</p></div>
+    <div class="agent"><div class="icon">✓</div><b>Verification Agent</b><p>Checks evidence, uncertainty and whether recommended action actually reduces risk.</p></div>
+  </div>
+</section>
+
+<section class="section reveal" id="scenario">
+  <div class="sectionHead"><div><div class="eyebrow">COUNTERFACTUAL SCENARIO LAB</div><h2>Test the future before it happens.</h2></div><p>Change hazard intensity and backup capacity. The prototype recalculates cascade risk, estimated exposure and system resilience.</p></div>
+  <div class="scenario">
+    <div class="panel">
+      <div class="control"><label><span>Rainfall intensity</span><b id="rainLabel">150 mm</b></label><input type="range" min="40" max="220" value="150" id="rain"></div>
+      <div class="control"><label><span>Temperature increase</span><b id="tempLabel">+1.5°C</b></label><input type="range" min="0" max="4" step=".5" value="1.5" id="temp"></div>
+      <div class="control"><label><span>Critical backup capacity</span><b id="backupLabel">Partial</b></label><input type="range" min="0" max="2" step="1" value="1" id="backup"></div>
+      <button class="btn primary" id="scenarioBtn">Run Scenario</button>
+    </div>
+    <div class="panel">
+      <div class="panelTitle">Scenario Results</div><div class="bigTitle">Projected system response</div>
+      <div class="resultGrid"><div class="result"><span>Risk</span><b id="sRisk">54%</b></div><div class="result"><span>People Exposed</span><b id="sPeople">4,428</b></div><div class="result"><span>Resilience</span><b id="sRes">64</b></div></div>
+      <p class="desc" id="sNarrative">Moderate-to-high stress. Partial backup reduces the probability that power disruption reaches critical water and health services.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section reveal" id="recovery">
+  <div class="sectionHead"><div><div class="eyebrow">CASCADING RECOVERY</div><h2>Repair one node. Restore many services.</h2></div><p>NEXUS-Ω runs the dependency graph in reverse and prioritizes the repair sequence that brings the greatest number of critical services back online fastest.</p></div>
+  <div class="recovery">
+    <div class="panel"><div class="timeline">
+      <div class="step"><b>#1</b><div><strong>Restore Substation 4.</strong><br>Highest network-wide recovery value because multiple dependent services rely on it.</div></div>
+      <div class="step"><b>#2</b><div><strong>Re-energize Pump 2.</strong><br>Restores stable water movement and pressure.</div></div>
+      <div class="step"><b>#3</b><div><strong>Stabilize Hospital A.</strong><br>Critical water-service continuity returns to normal.</div></div>
+      <div class="step"><b>#4</b><div><strong>Restore communications redundancy.</strong><br>Improves command and emergency coordination.</div></div>
+    </div></div>
+    <div class="panel"><div class="panelTitle">Recovery Intelligence</div><div class="bigTitle">Why this sequence?</div><p class="desc">Road repair improves access but does not immediately restore power-dependent services. Restoring the upstream substation first produces a larger system-wide recovery benefit.</p>
+      <div class="resultGrid"><div class="result"><span>Recovery Score</span><b>86</b></div><div class="result"><span>Services Restored</span><b>3+</b></div><div class="result"><span>Completion</span><b>2h 18m</b></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section reveal">
+  <div class="sectionHead"><div><div class="eyebrow">UNIVERSAL USE</div><h2>One Ω-CORE. Different experiences.</h2></div><p>The same resilience engine can serve a citizen, family, engineer, hospital, business or city command center without giving every user the same complicated screen.</p></div>
+  <div class="modeTabs"><button class="mode active" data-mode="personal">Personal Guardian</button><button class="mode" data-mode="family">Family</button><button class="mode" data-mode="expert">Expert</button><button class="mode" data-mode="authority">Authority</button></div>
+  <div class="panel modePanel"><div class="bigTitle" id="modeTitle">Personal Guardian</div><p class="desc" id="modeText">Shows clear personal risk, safe routes, power and water continuity, hospital accessibility, shelter guidance, preparedness gaps and what to do next — without overwhelming the user with engineering data.</p></div>
+</section>
+
+<section class="section reveal">
+  <div class="emergency"><div class="eyebrow" style="color:var(--red)">EMERGENCY MODE</div><h3>🔴 HIGH FLOOD RISK DETECTED</h3><p class="lead" style="font-size:19px">Your area may become unsafe within approximately 35–45 minutes. Road B is predicted to become the first unsafe route.</p><div class="route"><span>Your Home</span><b>→</b><span>Road C</span><b>→</b><span>Community Shelter 3</span></div>
+    <div class="dgrid"><div class="detail"><h4>Why this warning</h4><p>Rainfall is high, drainage utilization is approaching capacity and Road B has the strongest accumulation risk.</p></div><div class="detail warning"><h4>Time window</h4><p>Estimated 35–45 minutes before Road B may become unsafe under the current scenario.</p></div><div class="detail action"><h4>Recommended action</h4><p>Avoid Road B. Use Road C for essential travel or evacuation and carry medicines, water and phone power.</p></div><div class="detail after"><h4>Expected outcome</h4><p>The selected route lowers exposure while maintaining access to Shelter 3 and Hospital A.</p></div></div>
+  </div>
+</section>
+
+<section class="cta reveal"><h2>The intelligence layer for resilience.</h2><p>From a person asking “Am I safe?” to an operator asking “What fails next?” and an authority asking “Where should we intervene?”, NEXUS-Ω uses the same causal resilience intelligence to provide a clear, explainable answer.</p></section>
+<div class="footer">NEXUS-Ω V1 • Classic white / navy / teal design • Interactive prototype • Responsible AI decision-support concept</div>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
