@@ -1,3 +1,18 @@
+function extractPerplexity(data) {
+  const text = [];
+  const citations = [];
+  for (const item of data?.output || []) {
+    for (const part of item?.content || []) {
+      if (part?.text) text.push(part.text);
+      for (const a of part?.annotations || []) {
+        if (a?.url) citations.push({ title: a.title || a.url, url: a.url });
+      }
+    }
+  }
+  const unique = [...new Map(citations.map(x => [x.url, x])).values()];
+  return { text: data?.output_text || text.join("\n\n"), citations: unique };
+}
+
 module.exports = async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
   const key = process.env.PERPLEXITY_API_KEY;
@@ -6,30 +21,30 @@ module.exports = async function handler(req, res) {
   const { message, language = "English", context = {} } = req.body || {};
   if (!message || typeof message !== "string") return res.status(400).json({ error: "A message is required." });
 
-  const system = `You are the web-research layer for NEXUS-Ω, a personal resilience and infrastructure continuity assistant.
-Use fresh web information when relevant. Distinguish verified public information from the app's local context. Do not invent outages, closures, hospital capacity, flood levels, evacuation orders, or official alerts.
-Prefer authoritative/public-safety sources for high-consequence claims. Keep the answer practical and in ${language}.`;
+  const instructions = `You are the fresh web-research layer for NEXUS-Ω, a personal resilience and infrastructure continuity assistant. Prefer authoritative and official public-safety sources for consequential claims. Never fabricate live outages, road closures, hospital capacity, flood levels, evacuation orders, or official alerts. Clearly separate verified public information from the app's local context. Keep the result practical and answer in ${language}.`;
 
   try {
-    const response = await fetch("https://api.perplexity.ai/chat/completions", {
+    const response = await fetch("https://api.perplexity.ai/v1/agent", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${key}`
       },
       body: JSON.stringify({
-        model: "sonar",
-        messages: [
-          { role: "system", content: system },
-          { role: "user", content: `QUESTION:\n${message}\n\nNEXUS APP CONTEXT:\n${JSON.stringify(context)}` }
-        ],
-        return_citations: true
+        preset: "pro-search",
+        instructions,
+        input: `QUESTION:\n${message}\n\nNEXUS APP CONTEXT:\n${JSON.stringify(context)}`
       })
     });
     const data = await response.json();
     if (!response.ok) return res.status(response.status).json({ error: data?.error?.message || "Perplexity request failed." });
-    const text = data?.choices?.[0]?.message?.content || "I could not produce a research response.";
-    return res.status(200).json({ text, citations: data.citations || [], engine: "perplexity", model: data.model || "sonar" });
+    const parsed = extractPerplexity(data);
+    return res.status(200).json({
+      text: parsed.text || "I could not produce a research response.",
+      citations: parsed.citations,
+      engine: "perplexity",
+      model: data.model || "perplexity-agent-pro-search"
+    });
   } catch (e) {
     return res.status(500).json({ error: "Perplexity service request failed." });
   }
