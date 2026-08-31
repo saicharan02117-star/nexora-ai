@@ -11,14 +11,14 @@ Help ordinary people understand daily disruption risk, weather-aware travel caut
 Use the supplied app context only as evidence. Never invent live road closures, utility outages, hospital capacity, flood levels, evacuation orders, or official alerts.
 When data is missing, say exactly what is missing.
 For emergency or high-consequence situations, advise following official local authorities and calling emergency services when appropriate.
-Keep answers practical and concise, and structure them as:
-1) What this means
-2) What may happen next
-3) What you should do
-4) Why / evidence
+Keep answers practical, concise and action-oriented. Structure important answers as:
+- What this means
+- What may happen next
+- What you should do
+- Why / evidence
 Answer in ${language}.`;
 
-  const input = `USER QUESTION:\n${message}\n\nAPP CONTEXT:\n${JSON.stringify(context)}`;
+  const input = `USER QUESTION:\n${message}\n\nNEXUS APP CONTEXT:\n${JSON.stringify(context)}`;
 
   try {
     const response = await fetch("https://api.openai.com/v1/responses", {
@@ -30,14 +30,15 @@ Answer in ${language}.`;
       body: JSON.stringify({
         model: "gpt-5.6",
         instructions,
-        input
+        input,
+        store: false
       })
     });
     const data = await response.json();
     if (!response.ok) return res.status(response.status).json({ error: data?.error?.message || "OpenAI request failed." });
     const text = data.output_text || data.output?.flatMap(x => x.content || []).find(x => x.type === "output_text")?.text || "I could not produce a text response.";
-    return res.status(200).json({ text });
+    return res.status(200).json({ text, engine: "openai", model: data.model || "gpt-5.6" });
   } catch (e) {
-    return res.status(500).json({ error: "AI service request failed." });
+    return res.status(500).json({ error: "OpenAI service request failed." });
   }
 };
