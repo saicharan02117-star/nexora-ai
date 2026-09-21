@@ -1,9 +1,6 @@
 {
-  "name": "nexora-ai-search-runtime",
-  "private": true,
-  "type": "module",
-  "dependencies": {
-    "ai": "latest",
-    "@ai-sdk/anthropic": "latest"
-  }
+  "name":"nexus-omega-1m1b-final",
+  "version":"1.0.0",
+  "private":true,
+  "description":"Final static prototype for the 1M1B AI for Sustainability Virtual Internship. No Vercel or paid API keys required."
 }
