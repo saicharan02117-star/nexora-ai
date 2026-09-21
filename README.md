@@ -1,293 +1,188 @@
-# NEXORA AI
+# NEXUS-Ω - Universal Resilience Operating System
 
-### Universal Transactional AI & Zero-App Commerce Operating System
+**1M1B AI for Sustainability Virtual Internship - Final Project**
 
-**One AI. Every transaction. From intent to outcome.**
+**Student:** Thodupunuri Sai Charan  
+**College:** CMR College of Engineering and Technology  
+**Primary SDG:** SDG 11 - Sustainable Cities and Communities
 
-Nexora AI is an agentic commerce platform designed to remove the friction of fragmented digital journeys. Instead of making a user jump between search, marketplaces, merchant sites, checkout pages, payment flows, delivery tracking and support systems, Nexora keeps the experience in one intelligent interface and coordinates the required systems behind the scenes.
-
-A user can state an outcome such as:
-
-> Find me the best laptop below ₹70,000 for AI development and coding.
-
-Nexora converts that request into structured constraints, discovers eligible options, compares them, optimizes the budget, checks merchant-authorized offers, applies transaction permissions, prepares a test payment order and maintains a trace of the decision path.
-
----
+> One intelligence layer for people, families and infrastructure when the systems they depend on are under stress.
 
 ## Problem
 
-Modern digital commerce is fragmented.
+People usually receive isolated information: weather in one app, maps in another, emergency contacts elsewhere, and infrastructure information in separate systems. During disruption, the real question is not only "what is happening?" but:
 
-A typical journey can look like:
+- What can affect me?
+- What could fail next?
+- Who or what depends on it?
+- What is the safest next action?
+- Where can the failure chain be interrupted?
 
-`AI assistant → search engine → marketplace → merchant website → checkout → payment → delivery tracking → customer support`
+## Problem Statement
 
-This creates repeated context, app switching, poor personalization, abandoned carts, checkout friction, payment failures and revenue leakage.
+**How might we use multimodal, causal and agentic AI to understand dependencies between climate, electricity, water, transport, communication and essential services so that cascading infrastructure failures can be predicted, interrupted and recovered from before they cause severe social and environmental disruption?**
 
 ## Solution
 
-Nexora changes the model from **Prompt → Advice** to:
+NEXUS-Ω is a resilience decision-support prototype with two connected views:
 
-`Intent → Understand → Plan → Discover → Compare → Optimize → Authorize → Transact → Verify → Track → Recover → Complete`
+1. **Personal Resilience OS** - live weather brief, Ask NEXUS, Route Guardian, Family Guardian and Emergency Copilot.
+2. **Cascade Lab** - a synthetic digital-twin demonstration showing how one disruption can propagate across transport, power, water and healthcare, and how a high-leverage intervention can "break the chain."
 
-The user interacts with one Nexora interface while specialist agents operate internally.
+### Ω-CORE workflow
 
-## Core Differentiators
+`SENSE → UNDERSTAND → PREDICT → TRACE → SIMULATE → BREAK → VERIFY → RECOVER → LEARN`
 
-- **Zero-App Commerce** — one user-facing interface for the full commerce mission.
-- **Goal-to-Outcome Engine** — users express outcomes instead of manually navigating applications.
-- **Master Agent Orchestrator** — coordinates specialist agents behind one consistent interface.
-- **Commerce World Model** — maintains shared mission, constraint and transaction state.
-- **Action Wallet** — separates AI reasoning from transaction authority.
-- **Agent Firewall** — validates identity, purpose, amount, merchant and user approval before sensitive actions.
-- **Merchant Intelligence** — maps revenue leakage and ranks recoverable opportunities.
-- **Autonomous Replanning Architecture** — preserves user constraints when an inventory, offer or transaction step fails.
+## Working Prototype Features
 
-## Architecture
+- **Live Weather Brief** using the free Open-Meteo API.
+- **Transparent Weather Risk Indicator** with an explanation of what is and is not known.
+- **Ask NEXUS** using a free community text model when available, with a deterministic local safety fallback that requires no paid key.
+- **Route Guardian** with weather-aware pre-trip caution and real map handoff.
+- **Family Guardian** with local-only check-ins.
+- **Emergency Copilot** with 112, location sharing, nearby hospital search, speech and offline checklist.
+- **Cascade Lab** with synthetic causal dependency logic:
+  `Extreme Rain → Road Access → Substation 4 → Pump 2 → Hospital A`
+- **Break-the-Chain Recommendation** that compares simple intervention scenarios and explains the result.
+- **Multi-Agent Explanation Layer**: Climate, Power, Water, Health and Verification agents.
+- **Responsible AI panel**: fairness, transparency, ethics and privacy.
+- **PWA/offline support** for cached static assets.
 
-```text
-USER
- │
- ▼
-NEXORA AI
- │
- ▼
-Intent & Goal Engine
- │
- ▼
-Commerce World Model
- │
- ▼
-Master Agent Orchestrator
- │
- ├── Intent Agent
- ├── Planner Agent
- ├── Discovery Agent
- ├── Comparison Agent
- ├── Budget Agent
- ├── Negotiation Agent
- ├── Payment Layer
- ├── Recovery Agent
- └── Merchant Intelligence Agent
- │
- ▼
-Zero-Trust Action Engine
- │
- ├── Agent Identity
- ├── Permission
- ├── Purpose
- ├── Spending Limit
- ├── Merchant Policy
- └── User Consent
- │
- ▼
-Connector Layer
- │
- ├── Merchant Catalogue
- ├── Inventory
- └── Razorpay Sandbox
- │
- ▼
-Transaction Verification
- │
- ▼
-COMPLETED OUTCOME
-```
+## Important Truth Labels
 
-## Current MVP
+NEXUS-Ω separates:
 
-The repository contains a working prototype for:
+- **LIVE** - weather retrieved from Open-Meteo.
+- **LOCAL** - family check-ins and saved trips stored in the browser.
+- **SIMULATED** - Cascade Lab values used for the educational demo.
+- **UNVERIFIED** - road closures, utility outages, hospital capacity, flood depth, evacuation orders and official alerts unless a verified source is connected.
 
-- Universal Nexora mission interface
-- Natural-language intent extraction
-- Goal decomposition and mission planning
-- Product discovery from a simulated merchant catalogue
-- Product scoring and comparison
-- Budget-aware ranking
-- Merchant-policy-aware offers
-- Action Wallet permissions
-- Agent Firewall payment checks
-- Razorpay test-order connector with demo fallback
-- Payment signature verification logic
-- Multi-merchant event planning scenario
-- Merchant revenue leakage dashboard
-- Agent execution trace
-- Responsive Mission Control interface
+The prototype never claims synthetic infrastructure values are live.
 
-## Demo Scenarios
+## Why AI Is Used
 
-### 1. Consumer Commerce
+The project uses AI/agent concepts for:
 
-**Prompt:** `Find me the best laptop below ₹70,000 for AI development and coding.`
+- conversational decision support,
+- context interpretation,
+- causal dependency reasoning,
+- intervention comparison,
+- explainable multi-agent outputs,
+- human-readable recommendations.
 
-Flow:
+The internship guideline allows prompt workflows, IBM BOB, agentic AI, RAG and multimodal components. This prototype demonstrates prompt/agent logic and an explainable decision-support workflow without requiring paid cloud AI credentials.
 
-`Intent → Discovery → Comparison → Budget Optimization → Merchant Offer → Permission Check → Test Order`
+## Responsible AI Considerations
 
-### 2. Multi-Merchant Mission
+### Fairness
+Avoid decisions that disadvantage people by identity, language, income or neighborhood. Vulnerability may guide support priority but not discriminatory treatment.
 
-**Prompt:** `Arrange a birthday for 25 people under ₹20,000.`
+### Transparency
+Important outputs show evidence, missing information, uncertainty and the data category (live/local/simulated/unverified).
 
-Flow:
+### Ethics
+The system does not fabricate emergencies or automatically execute consequential safety actions. Human judgment and official instructions remain primary.
 
-`Goal Decomposition → Vendor Discovery → Multi-Merchant Bundle → Budget Check → Approval`
+### Privacy
+Family data remains local in the prototype. Exact coordinates are not sent to the optional external free AI; only minimized weather context is shared.
 
-### 3. Merchant Intelligence
+## Demo Scenario
 
-**Prompt:** `Why is my merchant revenue leaking today?`
+Default synthetic scenario:
 
-Flow:
+`Extreme Rain → Road Access Risk → Substation 4 Risk → Pump 2 Risk → Hospital A Continuity Risk`
 
-`Funnel Metrics → Revenue Leak Radar → Ranked Causes → Recovery Actions`
+The **Break the Chain** logic compares interventions such as:
+- road access/drainage support,
+- substation backup,
+- Pump 2 backup power,
+- hospital emergency water storage.
 
-## Security Model
+The recommendation is based on modeled downstream risk reduction. It is a demonstration of causal decision-support logic, not a real-world engineering instruction.
 
-Nexora follows a simple rule: **reasoning is not authority**.
+## Run Locally - No Vercel Required
 
-A model or agent may recommend an action, but a sensitive tool call passes through a separate policy layer first.
+This final branch is intentionally static and does **not** require Vercel.
 
-Payment-related checks include:
-
-1. Agent identity
-2. Merchant identity
-3. Transaction purpose
-4. Maximum transaction amount
-5. User permission
-6. Confirmation requirement
-7. Payment verification
-
-No private keys are stored in the repository.
-
-## Razorpay Sandbox Integration
-
-Nexora supports two modes:
-
-- **Demo mode** — works immediately without credentials and generates a local test order object.
-- **Sandbox mode** — uses Razorpay test credentials from environment variables to create a real test order.
-
-Create a `.env` file from `.env.example` and add only test credentials locally.
-
-## Tech Stack
-
-- **Backend:** Python, FastAPI
-- **Validation:** Pydantic
-- **HTTP integration:** HTTPX
-- **Frontend:** HTML, CSS, JavaScript
-- **Agent architecture:** modular Python specialist agents + Master Orchestrator
-- **Payments:** Razorpay Sandbox-compatible order and verification service
-- **Testing:** Pytest
-- **Deployment target:** any Python web host; static UI is served by FastAPI
-
-## Local Setup
-
-### 1. Clone
+### Option 1: Python
 
 ```bash
 git clone https://github.com/saicharan02117-star/nexora-ai.git
 cd nexora-ai
+git checkout 1m1b-final-nexus-omega
+python -m http.server 8000
 ```
 
-### 2. Create environment
+Open:
 
-```bash
-python -m venv .venv
-```
+`http://localhost:8000`
 
-Activate it, then install dependencies:
+### Option 2: VS Code Live Server
 
-```bash
-pip install -r requirements.txt
-```
+Open this branch/folder in VS Code and run **Live Server** on `index.html`.
 
-### 3. Environment variables
+## IBM Bob Requirement - Must Be Genuine
 
-```bash
-cp .env.example .env
-```
+The internship team separately instructed that IBM Bob must be used at least once and that the **.bob** folder should be **automatically generated by IBM Bob**.
 
-The app works in demo mode without payment credentials.
+For academic integrity, this repository does **not** fabricate a `.bob` folder.
 
-### 4. Run
+Before final submission:
 
-```bash
-uvicorn app.main:app --reload
-```
+1. Open this final project folder in IBM Bob.
+2. Use Bob for a short project review / improvement conversation.
+3. Allow IBM Bob to generate `.bob` automatically.
+4. Keep the genuine `.bob` folder in the project root.
+5. Commit that generated folder to this branch.
+6. Keep one screenshot of the Bob conversation as evidence.
 
-Open `http://127.0.0.1:8000`.
+See: `docs/IBM_BOB_REQUIRED_STEP.md`.
 
-## API
+## Final Submission Files
 
-- `GET /api/health`
-- `POST /api/missions`
-- `GET /api/merchant/metrics`
-- `GET /api/permissions`
-- `POST /api/permissions`
-- `POST /api/payments/order`
-- `POST /api/payments/verify`
+The official guideline requires a PPT or PDF covering:
+- title,
+- name and college,
+- SDG alignment,
+- problem statement,
+- AI solution,
+- target users,
+- responsible AI,
+- expected impact,
+- prototype/demo evidence,
+- impact statement.
 
-Interactive API documentation is available at `/docs` while the server is running.
+The internship offer letter also states the final project should include a **concept note, video and code repository**.
+
+Prepared documentation is in `docs/`.
 
 ## Repository Structure
 
 ```text
-nexora-ai/
-├── app/
-│   ├── agents/
-│   ├── security/
-│   ├── services/
-│   ├── world_model/
-│   ├── main.py
-│   └── schemas.py
-├── data/
-├── frontend/
+.
+├── index.html
+├── styles.css
+├── app.js
+├── manifest.webmanifest
+├── sw.js
+├── README.md
 ├── docs/
-├── tests/
-├── .github/workflows/
-├── .env.example
-├── requirements.txt
-└── README.md
+│   ├── CONCEPT_NOTE.md
+│   ├── ARCHITECTURE.md
+│   ├── RESPONSIBLE_AI.md
+│   ├── DEMO_SCRIPT.md
+│   ├── IBM_BOB_REQUIRED_STEP.md
+│   ├── TEST_EVIDENCE.md
+│   └── SUBMISSION_CHECKLIST.md
+└── LICENSE
 ```
 
-## Roadmap
+## Scope and Limitations
 
-### Phase 1 — Core Agentic Commerce
-- Stateful mission memory
-- More product/service connectors
-- Full sandbox checkout UI
-- Transaction event ledger
+This is a student prototype. It does not have direct access to municipal control systems, live utility SCADA, hospital capacity systems, verified flood depth feeds, road-closure authority feeds or official evacuation systems. The Cascade Lab is synthetic and intentionally labeled.
 
-### Phase 2 — Merchant Intelligence
-- Revenue Digital Twin
-- Abandonment prediction
-- Recovery workflows
-- Growth experiment simulator
+## Expected Impact
 
-### Phase 3 — Zero-App Commerce
-- Universal Intent Cart
-- Multi-service orchestration
-- Unified order center
-- Returns and subscription management
+If implemented with verified public and infrastructure data, NEXUS-Ω could improve preparedness, reduce fragmented decision-making, help users understand cross-system dependencies and support earlier intervention during disruptions.
 
-### Phase 4 — Intent Marketplace
-- Buyer-side intent agents
-- Merchant-side offer agents
-- B2B procurement
-- Collective procurement
-
-### Phase 5 — Multimodal Transactional AI
-- Voice commerce
-- Indian language support
-- Image-based product discovery
-- Hyperlocal commerce
-
-## Limitations
-
-- Demo catalogue data is fictional and intended for prototype evaluation.
-- External merchant, logistics and marketplace integrations require official APIs and permissions.
-- Automatic payment authority is disabled by default.
-- The current world model is in-memory and should move to a persistent database for production use.
-- Production deployments require authentication, rate limiting, secrets management, audit storage and compliance review.
-
-## License
-
-MIT License. See `LICENSE`.
+The project prioritizes clarity, feasibility, responsible AI and explainable impact over pretending to be a production city command system.
