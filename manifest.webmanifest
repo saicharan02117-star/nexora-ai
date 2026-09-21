@@ -1,1 +1,9 @@
-{"name":"NEXUS-Ω Personal Resilience OS","short_name":"NEXUS-Ω","start_url":"/","display":"standalone","background_color":"#f7f9fc","theme_color":"#071a33","description":"Personal resilience, daily disruption awareness and emergency actions."}
+{
+  "name":"NEXUS-Ω Universal Resilience Operating System",
+  "short_name":"NEXUS-Ω",
+  "start_url":"./",
+  "display":"standalone",
+  "background_color":"#f4f8fc",
+  "theme_color":"#071a33",
+  "description":"AI-powered resilience decision support for people, families and critical infrastructure."
+}
