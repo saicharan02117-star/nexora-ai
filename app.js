@@ -57,13 +57,13 @@ $("[data-close]").onclick=()=>$("#whyModal").classList.remove("show");$("#whyMod
 
 async function askAI(text){
  const payload={message:text,language:state.language,context:{location:state.place,weather:state.weather?{temperature:state.weather.temperature_2m,precipitation:state.weather.precipitation,weather:weatherCodeLabel(state.weather.weather_code),wind:state.weather.wind_speed_10m,rainProbability:state.hourly?.precipitation_probability?.[0]??null}:null}};
- const r=await fetch("/api/ai",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
- const d=await r.json();if(!r.ok)throw new Error(d.error||"AI unavailable");return d.text
+ const r=await fetch("/api/free-ai",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+ const d=await r.json();if(!r.ok)throw new Error(d.error||"Free AI unavailable");window.__nexusAIEngine=d.engine||"free-ai";return d.text
 }
 async function sendMessage(text){
  text=(text||$("#askText").value).trim();if(!text)return;const chat=$("#chat");chat.insertAdjacentHTML("beforeend",`<div class="bubble user"><b>You</b><p>${escapeHtml(text)}</p></div>`);$("#askText").value="";chat.scrollTop=chat.scrollHeight;
  const loading=document.createElement("div");loading.className="bubble ai";loading.innerHTML="<b>NEXUS-Ω</b><p>Thinking with your current context…</p>";chat.appendChild(loading);chat.scrollTop=chat.scrollHeight;
- try{const ans=await askAI(text);loading.querySelector("p").textContent=ans;$("#aiStatus").textContent="OpenAI response received securely via server";}catch(e){loading.querySelector("p").textContent="The live OpenAI connection is not configured yet. The server route is installed, but the Vercel project still needs an OPENAI_API_KEY environment variable. Your question and the rest of the app can continue working without exposing a key in the browser.";$("#aiStatus").textContent="OpenAI key not configured on server";}
+ try{const ans=await askAI(text);loading.querySelector("p").textContent=ans;$("#aiStatus").textContent=window.__nexusAIEngine==="nexus-local-fallback"?"Free fallback active • no paid API key required":"Free AI active • no paid API key required";}catch(e){loading.querySelector("p").textContent="Free AI is temporarily unavailable. Please use the live weather, Route Guardian, Family and Emergency tools while the AI service recovers.";$("#aiStatus").textContent="Free AI temporarily unavailable";}
  chat.scrollTop=chat.scrollHeight
 }
 function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
