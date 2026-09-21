@@ -55,15 +55,56 @@ $("#locationBtn").onclick=getLocation;$("#refreshBtn").onclick=loadWeather;
 $("#whyBtn").onclick=()=>{const w=state.weather;$("#whyContent").textContent=w?`This weather-risk score is based on live precipitation (${w.precipitation} mm), near-term rain probability (${state.hourly?.precipitation_probability?.[0]??0}%) and wind (${w.wind_speed_10m} km/h). It is not a flood forecast, road-closure feed or utility outage forecast. Those need dedicated verified data sources.`:"Location/weather have not been loaded yet, so NEXUS-Ω has not calculated a live weather-aware score.";$("#whyModal").classList.add("show")};
 $("[data-close]").onclick=()=>$("#whyModal").classList.remove("show");$("#whyModal").onclick=e=>{if(e.target.id==="whyModal")$("#whyModal").classList.remove("show")};
 
+function localNexusAnswer(text){
+ const q=String(text||"").toLowerCase();
+ const w=state.weather;
+ const prob=state.hourly?.precipitation_probability?.[0]??null;
+ let severity="low";
+ if(w&&(Number(prob)>=70||Number(w.precipitation)>=8||Number(w.wind_speed_10m)>=45))severity="high";
+ else if(w&&(Number(prob)>=35||Number(w.precipitation)>=2||Number(w.wind_speed_10m)>=30))severity="moderate";
+
+ const weather=w?`Current live weather in your app: ${weatherCodeLabel(w.weather_code)}, ${w.temperature_2m}°C, precipitation ${w.precipitation} mm, rain probability ${prob??"unknown"}%, wind ${w.wind_speed_10m} km/h.`:"Live weather has not been loaded yet.";
+
+ let action=severity==="high"
+  ?"Avoid unnecessary exposure, re-check weather before travel, keep your phone charged, and follow official local alerts or emergency instructions if issued."
+  :severity==="moderate"
+  ?"Use extra caution, re-check rain before leaving, and use your navigation app for actual traffic or closure information."
+  :"Normal activity is reasonable based on the weather context available here, but check official alerts before important travel.";
+
+ if(q.includes("family"))action+=" Confirm a family check-in plan and keep essential contacts available.";
+ if(q.includes("travel")||q.includes("route")||q.includes("hyderabad"))action+=" For the actual journey, use Route Guardian and a live navigation service because NEXUS-Ω does not have verified road-closure feeds.";
+ if(q.includes("emergency"))action+=" If there is immediate danger, call emergency services.";
+
+ window.__nexusAIEngine="nexus-local-fallback";
+ return `What this means\n${weather}\n\nWhat may happen next\nThe current weather context suggests a ${severity} weather-related disruption level. I cannot verify live road closures, utility outages, hospital capacity, flood depth, evacuation orders, or official alerts unless a verified source is connected.\n\nWhat you should do\n${action}\n\nWhy / evidence and limits\nThis fallback answer uses the live weather already shown in NEXUS-Ω plus conservative safety rules. It is not an official emergency forecast.`;
+}
+
 async function askAI(text){
- const payload={message:text,language:state.language,context:{location:state.place,weather:state.weather?{temperature:state.weather.temperature_2m,precipitation:state.weather.precipitation,weather:weatherCodeLabel(state.weather.weather_code),wind:state.weather.wind_speed_10m,rainProbability:state.hourly?.precipitation_probability?.[0]??null}:null}};
- const r=await fetch("/api/free-ai",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
- const d=await r.json();if(!r.ok)throw new Error(d.error||"Free AI unavailable");window.__nexusAIEngine=d.engine||"free-ai";return d.text
+ const w=state.weather;
+ const prob=state.hourly?.precipitation_probability?.[0]??null;
+ const safeContext=w?`Weather: ${weatherCodeLabel(w.weather_code)}, temperature ${w.temperature_2m}°C, precipitation ${w.precipitation} mm, rain probability ${prob??"unknown"}%, wind ${w.wind_speed_10m} km/h.`:"Live weather not loaded.";
+ const prompt=`You are Ω-CORE Free, the NEXUS-Ω personal resilience assistant. Answer in ${state.language}. Help with weather-aware travel caution, preparedness, family safety, and emergency planning. Never invent live road closures, utility outages, hospital capacity, flood depth, evacuation orders, or official alerts. If information is missing, say so. For emergencies, tell the user to follow official local authorities and emergency services. Structure the answer as: What this means; What may happen next; What you should do; Why / evidence and limits. Do not request or reveal sensitive personal data.\n\nAPP CONTEXT (exact location intentionally omitted for privacy):\n${safeContext}\n\nUSER QUESTION:\n${text}`;
+
+ const controller=new AbortController();
+ const timeout=setTimeout(()=>controller.abort(),12000);
+ try{
+   const url="https://text.pollinations.ai/"+encodeURIComponent(prompt);
+   const r=await fetch(url,{method:"GET",signal:controller.signal,cache:"no-store"});
+   if(!r.ok)throw new Error("Free model unavailable");
+   const answer=(await r.text()).trim();
+   if(!answer)throw new Error("Empty free-model response");
+   window.__nexusAIEngine="pollinations-free";
+   return answer;
+ }catch(e){
+   return localNexusAnswer(text);
+ }finally{
+   clearTimeout(timeout);
+ }
 }
 async function sendMessage(text){
  text=(text||$("#askText").value).trim();if(!text)return;const chat=$("#chat");chat.insertAdjacentHTML("beforeend",`<div class="bubble user"><b>You</b><p>${escapeHtml(text)}</p></div>`);$("#askText").value="";chat.scrollTop=chat.scrollHeight;
  const loading=document.createElement("div");loading.className="bubble ai";loading.innerHTML="<b>NEXUS-Ω</b><p>Thinking with your current context…</p>";chat.appendChild(loading);chat.scrollTop=chat.scrollHeight;
- try{const ans=await askAI(text);loading.querySelector("p").textContent=ans;$("#aiStatus").textContent=window.__nexusAIEngine==="nexus-local-fallback"?"Free fallback active • no paid API key required":"Free AI active • no paid API key required";}catch(e){loading.querySelector("p").textContent="Free AI is temporarily unavailable. Please use the live weather, Route Guardian, Family and Emergency tools while the AI service recovers.";$("#aiStatus").textContent="Free AI temporarily unavailable";}
+ try{const ans=await askAI(text);loading.querySelector("p").textContent=ans;$("#aiStatus").textContent=window.__nexusAIEngine==="pollinations-free"?"Free generative AI active • no paid key required":"NEXUS local safety fallback active • always available";}catch(e){const ans=localNexusAnswer(text);loading.querySelector("p").textContent=ans;$("#aiStatus").textContent="NEXUS local safety fallback active • always available";}
  chat.scrollTop=chat.scrollHeight
 }
 function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
