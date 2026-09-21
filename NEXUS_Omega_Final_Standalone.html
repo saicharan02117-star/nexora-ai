@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#071a33">
+<title>NEXUS-Ω — Universal Resilience Operating System</title>
+<meta name="description" content="NEXUS-Ω is an AI-powered resilience decision-support prototype for people, families and critical infrastructure.">
+
+<style>:root{
+  --navy:#071a33;--navy2:#0b2f59;--blue:#155ed6;--teal:#07998f;--green:#2e9f69;
+  --red:#c94755;--amber:#c5842c;--ink:#0c1b2d;--muted:#64758b;--line:#dce5ef;
+  --bg:#f4f8fc;--card:#fff;--shadow:0 16px 45px rgba(18,47,79,.09)
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#f8fbff,#eff5fa);color:var(--ink);min-height:100vh}
+button,input,textarea,select{font:inherit}.bgGlow{position:fixed;border-radius:50%;filter:blur(80px);opacity:.16;pointer-events:none;z-index:-1}.g1{width:420px;height:420px;background:#2b8fff;left:-140px;top:100px}.g2{width:380px;height:380px;background:#20c7ad;right:-120px;top:300px}
+.topbar{height:76px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;background:rgba(255,255,255,.82);backdrop-filter:blur(18px);border-bottom:1px solid rgba(220,229,239,.8);position:sticky;top:0;z-index:70}
+.brand{display:flex;align-items:center;gap:11px}.omega{width:48px;height:48px;border-radius:16px;background:linear-gradient(145deg,#155ed6,#07998f);display:grid;place-items:center;color:#fff;font-size:23px;font-weight:950;box-shadow:0 12px 26px rgba(21,94,214,.22)}.brand b{display:block;font-size:20px}.brand span{display:block;color:var(--muted);font-size:11px;margin-top:2px}
+.topActions{display:flex;align-items:center;gap:8px}.chip,.iconBtn,.secondary,.primary,.lightBtn{border:1px solid var(--line);background:#fff;border-radius:13px;padding:10px 13px;font-weight:800;cursor:pointer}.primary{background:var(--navy);color:#fff;border-color:var(--navy)}.iconBtn{width:42px;height:42px;display:grid;place-items:center;padding:0}.chip{color:#314359}
+.appShell{display:grid;grid-template-columns:210px minmax(0,1fr);max-width:1580px;margin:auto}.sidebar{min-height:calc(100vh - 76px);padding:20px 13px;border-right:1px solid var(--line);position:sticky;top:76px;height:calc(100vh - 76px);background:rgba(248,251,255,.65)}
+.navItem{width:100%;border:0;background:transparent;border-radius:15px;padding:11px 12px;display:flex;align-items:center;gap:10px;color:#607189;cursor:pointer;margin-bottom:4px;text-align:left}.navItem span{width:29px;height:29px;border-radius:10px;background:#eaf1fa;display:grid;place-items:center;font-size:11px;font-weight:950}.navItem b{font-size:12px}.navItem.active{background:#e9f2ff;color:#0a4ca5}.navItem.active span{background:#155ed6;color:#fff}.emergencyNav{color:#a83c47}.emergencyNav span{background:#ffedf0;color:#b33d49}
+.content{padding:34px 30px 70px;min-width:0}.view{display:none}.view.active{display:block}.welcome,.pageHead{display:flex;justify-content:space-between;gap:20px;align-items:center}.welcome h1,.pageHead h1{font-size:clamp(36px,5vw,66px);line-height:1.02;letter-spacing:-2.8px;margin:7px 0 12px;max-width:900px}.welcome p,.pageHead p{max-width:830px;color:var(--muted);line-height:1.65;margin:0}.eyebrow,small{font-size:10px;letter-spacing:1.35px;font-weight:900;color:#6c7e94}.danger{color:#ffb2ba}.livePill{display:flex;align-items:center;gap:8px;border:1px solid #bfe6d2;background:#edf9f3;color:#2e845b;border-radius:999px;padding:9px 12px;font-size:10px;font-weight:900;white-space:nowrap}.livePill span{width:8px;height:8px;background:#31ae72;border-radius:50%;box-shadow:0 0 0 5px rgba(49,174,114,.12)}
+.glass,.weatherCard,.decision,.principle,.agentCard{background:rgba(255,255,255,.94);border:1px solid rgba(220,229,239,.95);box-shadow:var(--shadow)}
+.heroGrid{display:grid;grid-template-columns:1.35fr .65fr;gap:15px;margin-top:23px}.heroSafety{border-radius:26px;padding:23px}.heroTop{display:flex;justify-content:space-between;gap:18px;align-items:center}.heroTop h2{font-size:33px;margin:6px 0 0;letter-spacing:-1px}.heroSafety>p{color:var(--muted);line-height:1.65;max-width:800px}.scoreRing{width:124px;height:124px;border-radius:50%;display:grid;place-items:center;align-content:center;background:#e8eff5;border:9px solid #fff;box-shadow:0 9px 25px rgba(23,67,109,.12)}.scoreRing b{font-size:28px}.scoreRing span{font-size:9px;color:var(--muted)}
+.actionLine{display:flex;gap:15px;align-items:flex-start;padding:13px 15px;background:#f2f7fc;border-radius:16px;margin-top:16px}.actionLine b{min-width:105px}.actionLine span{font-size:13px;color:#53677f;line-height:1.5}.evidenceRow{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:14px;font-size:11px;color:var(--muted)}.linkBtn,.inlineAction{border:0;background:transparent;color:#155ed6;font-weight:900;cursor:pointer;padding:0}
+.weatherCard{border-radius:26px;padding:21px;background:linear-gradient(150deg,#071a33,#0b4772);color:#fff}.cardTitle{display:flex;align-items:center;gap:10px}.cardTitle>span{width:41px;height:41px;border-radius:13px;background:rgba(255,255,255,.13);display:grid;place-items:center;font-weight:950}.cardTitle small{color:#aac4db}.cardTitle b{display:block}.weatherMain{display:flex;align-items:center;gap:17px;margin:30px 0 22px}.weatherMain strong{font-size:64px;letter-spacing:-4px}.weatherMain b,.weatherMain span{display:block}.weatherMain span{font-size:11px;color:#bdd0e0;margin-top:5px}.miniMetrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.miniMetrics div{background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:10px}.miniMetrics small{color:#b8cedf;display:block}.miniMetrics b{font-size:13px;margin-top:5px;display:block}
+.sectionTitle{display:flex;justify-content:space-between;align-items:end;gap:16px;margin:30px 0 13px}.sectionTitle h2{font-size:27px;letter-spacing:-.8px;margin:4px 0 0}.sectionTitle.compact{margin-top:25px}.decisionGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.decision{border-radius:21px;padding:17px}.decisionIcon{width:43px;height:43px;border-radius:14px;background:linear-gradient(145deg,#e7f1ff,#e6fbf6);display:grid;place-items:center;color:#0a4ca5;font-weight:950}.decisionStatus{display:inline-block;margin-top:15px;border-radius:999px;padding:5px 8px;font-size:9px;font-weight:950;letter-spacing:.5px}.decisionStatus.safe{background:#eaf8f0;color:#23764d}.decisionStatus.info{background:#edf3ff;color:#155ed6}.decisionStatus.watch{background:#fff4df;color:#9a6420}.decision h3{margin:10px 0 7px}.decision p{font-size:12px;color:var(--muted);line-height:1.55;min-height:56px}.timeline{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}.hourCard,.timelineEmpty{background:#fff;border:1px solid var(--line);border-radius:16px;padding:13px}.hourCard small,.hourCard b,.hourCard span{display:block}.hourCard b{font-size:21px;margin:7px 0}.hourCard span{font-size:10px;color:var(--muted)}.timelineEmpty{grid-column:1/-1;color:var(--muted)}
+.featureBanner{margin-top:20px;border-radius:25px;padding:23px;background:linear-gradient(135deg,#092a50,#0b5a70);color:#fff;display:flex;justify-content:space-between;align-items:center;gap:18px}.featureBanner small{color:#9ed9df}.featureBanner h2{font-size:26px;margin:7px 0}.featureBanner p{margin:0;color:#d7e7f1}.lightBtn{background:#fff;color:#0b3974;border:0;white-space:nowrap}
+.askLayout{display:grid;grid-template-columns:1.3fr .7fr;gap:15px;margin-top:22px}.chatPanel{border-radius:25px;padding:18px}.chatHead{display:flex;align-items:center;gap:11px;border-bottom:1px solid var(--line);padding-bottom:13px}.aiOrb{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;color:#fff;background:radial-gradient(circle at 35% 30%,#5cd8d9,#155ed6 65%,#082f65);font-weight:950;font-size:22px;box-shadow:0 0 0 7px #edf4ff}.chatHead b,.chatHead span{display:block}.chatHead span{font-size:11px;color:var(--muted);margin-top:2px}.chatHead .iconBtn{margin-left:auto}.chat{height:420px;overflow:auto;padding:15px 2px}.bubble{max-width:84%;padding:13px 14px;border-radius:17px;margin:8px 0;font-size:14px;line-height:1.55}.bubble.ai{background:#f1f6fb}.bubble.user{margin-left:auto;background:#155ed6;color:#fff}.bubble b{font-size:10px}.bubble p{margin:5px 0 0;white-space:pre-wrap}.promptChips{display:flex;gap:7px;overflow-x:auto;padding-bottom:8px}.promptChips button{white-space:nowrap;border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 10px;font-size:11px;color:#41546d;cursor:pointer}.composer{display:flex;gap:8px;border-top:1px solid var(--line);padding-top:12px}.composer textarea{flex:1;border:1px solid var(--line);border-radius:14px;padding:12px;resize:none;outline:none}.composer button{border:0;background:var(--navy);color:#fff;border-radius:14px;padding:0 17px;font-weight:950;cursor:pointer}.privacyNote{font-size:10px;color:var(--muted);margin-top:9px}.contextPanel{display:grid;gap:12px;align-content:start}.contextPanel article{border-radius:22px;padding:18px}.contextPanel h3{margin:7px 0 13px}.contextList{display:grid;gap:10px}.contextList div{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding-bottom:9px;font-size:12px}.contextList span{color:var(--muted)}.explain p{font-size:13px;line-height:1.55;color:var(--muted)}
+.routeGrid{display:grid;grid-template-columns:.8fr 1.2fr;gap:15px;margin-top:22px}.routeBuilder{border-radius:24px;padding:20px}.routeBuilder label{display:grid;gap:6px;margin-bottom:13px;font-size:12px;font-weight:900;color:#45566d}.routeBuilder input,.familyToolbar input{border:1px solid var(--line);border-radius:13px;padding:12px;background:#fff}.routeButtons{display:flex;gap:8px;flex-wrap:wrap}.routeResult{margin-top:18px;background:#f4f8fd;border:1px solid var(--line);border-radius:18px;padding:15px}.routeResult h3{margin:5px 0 7px}.routeResult p{font-size:13px;line-height:1.55;color:var(--muted);margin:0}.mapMock{min-height:430px;border-radius:24px;position:relative;overflow:hidden;background:linear-gradient(145deg,#eaf7f7,#f8fbfe)}.mapGrid{position:absolute;inset:0;background-image:linear-gradient(rgba(50,95,130,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(50,95,130,.08) 1px,transparent 1px);background-size:43px 43px}.routePath{position:absolute;width:70%;height:16px;border-radius:999px;background:#6f9ed1;left:14%;top:54%;transform:rotate(-12deg);box-shadow:0 0 0 5px rgba(255,255,255,.6)}.mapPin{position:absolute;width:45px;height:45px;border-radius:50%;display:grid;place-items:center;background:#fff;border:4px solid var(--blue);box-shadow:var(--shadow);font-weight:950}.p1{left:11%;bottom:22%}.p2{right:13%;top:20%;border-color:var(--teal)}.mapOverlay{position:absolute;left:16px;top:16px;background:#fff;border:1px solid var(--line);border-radius:15px;padding:11px 13px;box-shadow:var(--shadow)}.mapOverlay b,.mapOverlay span{display:block}.mapOverlay span{font-size:10px;color:var(--muted);margin-top:3px}.tripGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.trip{background:#fff;border:1px solid var(--line);border-radius:17px;padding:14px;text-align:left;cursor:pointer}.trip b,.trip span{display:block}.trip span{color:var(--muted);font-size:11px;margin-top:4px}
+.familyToolbar{display:flex;gap:8px;margin-top:20px}.familyToolbar input{min-width:280px}.familyBoard{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:15px}.familyCard{background:#fff;border:1px solid var(--line);border-radius:21px;padding:17px;box-shadow:0 10px 28px rgba(28,62,103,.06)}.familyCard .avatar{width:46px;height:46px;border-radius:15px;background:linear-gradient(145deg,#155ed6,#07998f);color:#fff;display:grid;place-items:center;font-weight:950;font-size:18px}.familyCard h3{margin:12px 0 5px}.familyCard p{font-size:12px;color:var(--muted)}.checkBtn{border:1px solid var(--line);background:#fff;border-radius:11px;padding:9px 11px;font-weight:900;cursor:pointer}.checkBtn.checked{background:#eaf8f0;color:#23764d;border-color:#cee9d9}.familySummary{border-radius:20px;margin-top:14px;padding:16px;display:flex;justify-content:space-between;gap:12px}.familySummary span{color:var(--muted);font-size:12px}
+.cascadeTop{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:22px}.scenarioPanel,.breakCard{border-radius:24px;padding:21px}.scenarioTitle{display:flex;justify-content:space-between;gap:12px;align-items:start}.scenarioTitle h3{margin:5px 0 18px}.simBadge{border-radius:999px;background:#fff0d9;color:#9a6420;padding:7px 9px;font-size:9px;font-weight:950}.rangeLabel{display:flex;justify-content:space-between;font-size:12px;font-weight:900}.scenarioPanel input[type=range]{width:100%;accent-color:#155ed6}.toggleGrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:17px 0}.toggleGrid label{border:1px solid var(--line);border-radius:13px;padding:11px;font-size:12px;background:#f9fbfd}.breakCard{background:linear-gradient(145deg,#071a33,#0b5a70);color:#fff}.breakCard small{color:#99d7db}.breakCard h2{font-size:32px;line-height:1.05;margin:8px 0 12px}.breakCard p{color:#d8e7f0;line-height:1.55}.riskCompare{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:21px}.riskCompare div{background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.13);border-radius:14px;padding:12px}.riskCompare small,.riskCompare b{display:block}.riskCompare small{color:#acd2df}.riskCompare b{font-size:22px;margin-top:4px}
+.chain{display:flex;align-items:stretch;gap:7px;overflow-x:auto;padding-bottom:5px}.chainNode{min-width:160px;flex:1;border:1px solid var(--line);background:#fff;border-radius:20px;padding:16px;box-shadow:var(--shadow)}.chainNode.hazard{background:#fff6ec}.chainNode.critical{background:#fff0f2;border-color:#f2cbd0}.chainNode small,.chainNode b,.chainNode strong{display:block}.chainNode b{margin:6px 0 14px}.chainNode strong{font-size:29px}.arrow{display:grid;place-items:center;color:#7890a7;font-size:27px}.agentGrid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.agentCard{border-radius:18px;padding:14px;display:flex;gap:10px;align-items:flex-start}.agentCard>span{width:34px;height:34px;border-radius:11px;background:#eaf2ff;color:#155ed6;display:grid;place-items:center;font-weight:950;flex:0 0 auto}.agentCard b{font-size:12px}.agentCard p{font-size:11px;line-height:1.5;color:var(--muted);margin:4px 0 0}.agentCard.verify>span{background:#eaf8f0;color:#24774e}
+.principleGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:22px}.principle{border-radius:22px;padding:18px}.principle>span{width:42px;height:42px;border-radius:14px;background:#eaf2ff;color:#155ed6;display:grid;place-items:center;font-weight:950}.principle h3{margin:12px 0 7px}.principle p{color:var(--muted);font-size:12px;line-height:1.6}.truthPanel{border-radius:24px;padding:21px;margin-top:16px}.truthPanel h2{font-size:28px}.truthGrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.truthGrid>div{border:1px solid var(--line);border-radius:15px;padding:12px;display:flex;align-items:flex-start;gap:10px}.truth{font-size:9px;border-radius:999px;padding:6px 7px;white-space:nowrap}.truth.live{background:#eaf8f0;color:#24774e}.truth.local{background:#edf3ff;color:#155ed6}.truth.sim{background:#fff4df;color:#9a6420}.truth.unknown{background:#f1f2f4;color:#56616f}.truthGrid span{font-size:12px;color:var(--muted);line-height:1.5}
+.emergencyHero{background:linear-gradient(135deg,#3b1016,#781e27);color:#fff;border-radius:27px;padding:24px;display:flex;justify-content:space-between;gap:20px;align-items:center}.emergencyHero h1{margin:7px 0 8px}.emergencyHero p{color:#f0d8da;max-width:740px}.emergencyBadge{width:105px;height:105px;border-radius:50%;background:#fff;color:#9f3039;display:grid;place-items:center;font-size:36px;font-weight:950}.emergencyActions{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-top:16px}.emAction{border:1px solid var(--line);background:#fff;border-radius:19px;padding:15px;text-align:left;display:flex;gap:12px;align-items:center;color:var(--ink);cursor:pointer;text-decoration:none}.emAction>span{width:40px;height:40px;border-radius:13px;background:#edf3ff;color:#155ed6;display:grid;place-items:center;font-weight:950}.emAction b,.emAction small{display:block}.emAction small{color:var(--muted);margin-top:4px}.dangerAction{background:#fff0f1;border-color:#f1cdd0;color:#9d343c}.dangerAction>span{background:#ffdfe3;color:#a53844}.emergencyGuide,.offlinePack{border-radius:22px;padding:20px;margin-top:14px}.emergencyGuide h2{font-size:28px;margin:6px 0}.emergencyGuide p{color:var(--muted);line-height:1.6}.guideEvidence{font-size:11px;color:var(--muted);border-top:1px solid var(--line);padding-top:12px}.checklist{display:grid;gap:10px}.checklist label{background:#f7f9fc;border:1px solid var(--line);border-radius:12px;padding:11px;font-size:13px}
+.bottomNav{display:none}.modal{position:fixed;inset:0;background:rgba(7,22,40,.5);display:none;place-items:center;z-index:100;padding:20px}.modal.show{display:grid}.modalCard{max-width:520px;background:#fff;border-radius:24px;padding:22px;position:relative;box-shadow:0 30px 80px rgba(0,0,0,.2)}.modalCard h2{font-size:30px;margin:7px 0}.modalCard p{color:var(--muted);line-height:1.6}.modalClose{position:absolute;right:12px;top:10px;border:0;background:transparent;font-size:26px;cursor:pointer}.toast{position:fixed;right:20px;bottom:20px;background:#0b2039;color:#fff;border-radius:14px;padding:12px 14px;display:grid;gap:2px;box-shadow:0 18px 40px rgba(0,0,0,.22);transform:translateY(100px);opacity:0;transition:.3s;z-index:120}.toast.show{transform:none;opacity:1}.toast span{font-size:11px;color:#ccdae8}
+@media(max-width:1180px){.appShell{grid-template-columns:175px 1fr}.heroGrid,.askLayout,.routeGrid,.cascadeTop{grid-template-columns:1fr}.decisionGrid{grid-template-columns:1fr 1fr}.principleGrid{grid-template-columns:1fr 1fr}.agentGrid{grid-template-columns:1fr 1fr}.familyBoard{grid-template-columns:1fr 1fr}.emergencyActions{grid-template-columns:1fr 1fr}}
+@media(max-width:760px){body{padding-bottom:72px}.topbar{height:64px;padding:0 13px}.brand span{display:none}.omega{width:39px;height:39px}.brand b{font-size:16px}.topActions .chip:first-child{max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.chip{padding:8px;font-size:10px}.topActions .iconBtn{display:none}.appShell{display:block}.sidebar{display:none}.content{padding:23px 14px 35px}.welcome{align-items:flex-start}.welcome h1,.pageHead h1{font-size:41px;letter-spacing:-1.8px}.livePill{display:none}.heroGrid{grid-template-columns:1fr}.heroTop h2{font-size:25px}.scoreRing{width:104px;height:104px}.decisionGrid,.principleGrid,.agentGrid{grid-template-columns:1fr}.decision p{min-height:auto}.featureBanner{flex-direction:column;align-items:flex-start}.askLayout,.routeGrid,.cascadeTop{grid-template-columns:1fr}.chat{height:360px}.familyToolbar{display:grid}.familyToolbar input{min-width:0}.familyBoard{grid-template-columns:1fr}.familySummary{flex-direction:column}.tripGrid{grid-template-columns:1fr}.toggleGrid{grid-template-columns:1fr}.riskCompare{grid-template-columns:1fr 1fr 1fr}.chainNode{min-width:145px}.truthGrid{grid-template-columns:1fr}.emergencyHero{align-items:flex-start}.emergencyBadge{width:82px;height:82px;font-size:29px}.emergencyActions{grid-template-columns:1fr}.bottomNav{position:fixed;display:grid;grid-template-columns:repeat(5,1fr);left:0;right:0;bottom:0;height:68px;background:rgba(255,255,255,.95);backdrop-filter:blur(16px);border-top:1px solid var(--line);z-index:80}.bottomNav .navItem{display:grid;place-items:center;align-content:center;gap:2px;padding:5px;border-radius:0;margin:0}.bottomNav .navItem span{font-size:10px;width:25px;height:25px}.bottomNav .navItem b{font-size:9px}.toast{bottom:82px;left:14px;right:14px}.miniMetrics{gap:6px}.weatherMain strong{font-size:50px}}</style>
+</head>
+<body>
+<div class="bgGlow g1"></div><div class="bgGlow g2"></div>
+<header class="topbar">
+  <div class="brand"><div class="omega">Ω</div><div><b>NEXUS-Ω</b><span>Universal Resilience OS</span></div></div>
+  <div class="topActions">
+    <span class="readyBadge">FINAL 1M1B BUILD • READY</span>
+    <button class="chip" id="demoBtn">Demo mode</button>
+    <button class="chip" id="locationBtn">Use my location</button>
+    <select class="chip" id="languageSelect" aria-label="Language"><option value="English">English</option><option value="Telugu">తెలుగు</option><option value="Hindi">हिन्दी</option></select>
+  </div>
+</header>
+
+<div class="appShell">
+<aside class="sidebar">
+  <button class="navItem active" data-view="home"><span>01</span><b>Today</b></button>
+  <button class="navItem" data-view="ask"><span>Ω</span><b>Ask NEXUS</b></button>
+  <button class="navItem" data-view="route"><span>03</span><b>Route Guardian</b></button>
+  <button class="navItem" data-view="family"><span>04</span><b>Family Guardian</b></button>
+  <button class="navItem" data-view="cascade"><span>05</span><b>Cascade Lab</b></button>
+  <button class="navItem" data-view="responsible"><span>06</span><b>Responsible AI</b></button>
+  <button class="navItem emergencyNav" data-view="emergency"><span>!</span><b>Emergency</b></button>
+</aside>
+
+<main class="content">
+<section class="view active" id="view-home">
+  <div class="welcome">
+    <div><div class="eyebrow">PERSONAL RESILIENCE BRIEF</div><h1>Know what can affect you — before it does.</h1><p id="briefText">Use live location or Demo mode. NEXUS-Ω separates live observations, local data, simulations and unknown information.</p></div>
+    <div class="livePill" id="dataModePill"><span></span> WAITING FOR DATA</div>
+  </div>
+
+  <div class="heroGrid">
+    <article class="glass heroSafety">
+      <div class="heroTop"><div><small>OVERALL TODAY</small><h2 id="safetyHeadline">Ready for your context</h2></div><div class="scoreRing" id="scoreRing"><b id="riskScore">—</b><span>weather risk</span></div></div>
+      <p id="safetyMeaning">This is a transparent weather-related caution indicator, not an official disaster warning, flood model, traffic feed or utility outage forecast.</p>
+      <div class="actionLine"><b>Best next step</b><span id="mainActionText">Use your location for live weather or run Demo mode for instant evaluation.</span></div>
+      <div class="evidenceRow"><span id="confidenceBadge">Confidence: waiting for data</span><button class="linkBtn" id="whyBtn">Why this result?</button></div>
+    </article>
+
+    <article class="weatherCard">
+      <div class="cardTitle"><span>WX</span><div><small id="weatherSourceLabel">WEATHER CONTEXT</small><b id="weatherPlace">Location not set</b></div></div>
+      <div class="weatherMain"><strong id="tempNow">--°</strong><div><b id="weatherState">Waiting</b><span id="weatherDetail">Choose live location or Demo mode</span></div></div>
+      <div class="miniMetrics"><div><small>Rain now</small><b id="rainNow">--</b></div><div><small>Near-term rain</small><b id="rainProb">--</b></div><div><small>Wind</small><b id="windNow">--</b></div></div>
+    </article>
+  </div>
+
+  <div class="sectionTitle"><div><small>WHAT MATTERS</small><h2>Not more data. The next useful decision.</h2></div><button class="secondary" id="refreshBtn">Refresh weather</button></div>
+  <div class="decisionGrid">
+    <article class="decision"><div class="decisionIcon">A</div><div class="decisionStatus safe" id="travelStatus">READY</div><h3>Can I travel normally?</h3><p id="travelText">Load weather and NEXUS-Ω will add a pre-trip caution signal.</p><button class="inlineAction" data-jump="route">Open Route Guardian →</button></article>
+    <article class="decision"><div class="decisionIcon">Ω</div><div class="decisionStatus info">AI + FALLBACK</div><h3>What should I do?</h3><p>Ask practical questions. Free AI is attempted first; a built-in safety fallback always answers if the external model is unavailable.</p><button class="inlineAction" data-jump="ask">Ask NEXUS →</button></article>
+    <article class="decision"><div class="decisionIcon">F</div><div class="decisionStatus safe" id="familyMiniStatus">NOT CHECKED</div><h3>Is everyone okay?</h3><p id="familyMiniText">Family check-ins are stored only on this device.</p><button class="inlineAction" data-jump="family">Check family →</button></article>
+    <article class="decision"><div class="decisionIcon">C</div><div class="decisionStatus info">SIMULATED</div><h3>What fails next?</h3><p>Run a causal infrastructure cascade and test how interventions change downstream risk.</p><button class="inlineAction" data-jump="cascade">Open Cascade Lab →</button></article>
+  </div>
+
+  <div class="sectionTitle compact"><div><small>NEXT 6 HOURS</small><h2>Weather-aware timeline</h2></div></div>
+  <div class="timeline" id="hourlyTimeline"><div class="timelineEmpty">Weather timeline appears after live location or Demo mode.</div></div>
+
+  <div class="featureBanner"><div><small>Ω-CORE DECISION SUPPORT</small><h2>STATUS → MEANING → CONSEQUENCE → ACTION → WHY</h2><p>NEXUS-Ω explains what a result means, what may happen next, and what action is justified by the available evidence.</p></div><button class="lightBtn" id="makePlanBtn">Create my safe-day plan</button></div>
+</section>
+
+<section class="view" id="view-ask">
+  <div class="pageHead"><div class="eyebrow">FREE AI + GUARANTEED LOCAL FALLBACK</div><h1>Ask NEXUS what you should do.</h1><p>No paid OpenAI or Perplexity key is required. Exact coordinates are never sent to the optional external free model.</p></div>
+  <div class="askLayout">
+    <div class="chatPanel glass">
+      <div class="chatHead"><div class="aiOrb">Ω</div><div><b>Ω-CORE</b><span id="aiStatus">Ready • local fallback always available</span></div><button class="iconBtn" id="voiceBtn" title="Voice input">MIC</button></div>
+      <div class="chat" id="chat"><div class="bubble ai"><b>NEXUS-Ω</b><p>Ask: “Can I travel now?”, “What should I prepare tonight?”, “Explain my rain risk”, or “Give me a family emergency checklist.”</p></div></div>
+      <div class="promptChips"><button>Can I travel now?</button><button>Plan my evening</button><button>Explain my risk</button><button>Family emergency checklist</button></div>
+      <div class="composer"><textarea id="askText" rows="2" placeholder="Ask about your day, route, preparation or emergency plan..."></textarea><button id="sendBtn">Ask Ω</button></div>
+      <div class="privacyNote">Safety-critical facts must come from verified official sources. NEXUS-Ω will not invent outages, closures, hospital capacity, flood levels or evacuation orders.</div>
+    </div>
+    <aside class="contextPanel">
+      <article class="glass"><small>AI CONTEXT</small><h3>What Ω-CORE currently sees</h3><div class="contextList"><div><span>Mode</span><b id="ctxMode">Waiting</b></div><div><span>Location</span><b id="ctxLocation">Not provided</b></div><div><span>Weather</span><b id="ctxWeather">Not loaded</b></div><div><span>Rain probability</span><b id="ctxRain">Not loaded</b></div><div><span>Language</span><b id="ctxLanguage">English</b></div></div></article>
+      <article class="glass explain"><small>ANSWER CONTRACT</small><p><b>1. What this means</b><br>Plain-language interpretation.</p><p><b>2. What may happen next</b><br>Consequence without pretending certainty.</p><p><b>3. What you should do</b><br>Prioritized action.</p><p><b>4. Why / limits</b><br>Evidence, uncertainty and missing data.</p></article>
+    </aside>
+  </div>
+</section>
+
+<section class="view" id="view-route">
+  <div class="pageHead"><div class="eyebrow">ROUTE GUARDIAN</div><h1>Turn a normal trip into a safer decision.</h1><p>NEXUS-Ω adds weather context; your navigation provider remains the source for traffic and actual road closures.</p></div>
+  <div class="routeGrid">
+    <div class="routeBuilder glass"><label>From<input id="routeFrom" value="Current location" placeholder="Current location"></label><label>To<input id="routeTo" placeholder="College, office, hospital, home..."></label><div class="routeButtons"><button class="primary" id="checkRouteBtn">Check trip</button><button class="secondary" id="openMapsBtn">Open navigation</button></div><div class="routeResult" id="routeResult"><small>TRIP STATUS</small><h3>Add a destination.</h3><p>NEXUS-Ω will add a weather-aware note and then hand off navigation to your mapping provider.</p></div></div>
+    <div class="mapMock glass"><div class="mapGrid"></div><div class="routePath"></div><span class="mapPin p1">A</span><span class="mapPin p2">B</span><div class="mapOverlay"><b>Route Guardian</b><span>Weather context + real map handoff</span></div></div>
+  </div>
+  <div class="sectionTitle compact"><div><small>LOCAL STORAGE</small><h2>Frequent trips</h2></div></div><div class="tripGrid" id="tripGrid"></div>
+</section>
+
+<section class="view" id="view-family">
+  <div class="pageHead"><div class="eyebrow">FAMILY GUARDIAN</div><h1>Know who has checked in.</h1><p>Names and check-in status remain in the browser’s local storage in this prototype.</p></div>
+  <div class="familyToolbar"><input id="familyName" placeholder="Add family member name"><button class="primary" id="addFamilyBtn">Add member</button><button class="secondary" id="shareCheckinBtn">Share “I’m safe”</button></div>
+  <div class="familyBoard" id="familyBoard"></div><div class="familySummary glass" id="familySummary"><b>No family members added yet.</b><span>Add people you care about and record check-ins.</span></div>
+</section>
+
+<section class="view" id="view-cascade">
+  <div class="pageHead"><div class="eyebrow">SIMULATED DIGITAL TWIN • 1M1B DEMO</div><h1>BREAK THE CHAIN before failure cascades.</h1><p>This lab uses synthetic values to demonstrate causal dependencies, counterfactual testing and agent-style decision support. It is not a real city prediction.</p></div>
+  <div class="cascadeTop">
+    <article class="glass scenarioPanel"><div class="scenarioTitle"><div><small>SCENARIO INPUT</small><h3>Extreme Rain → Infrastructure Stress</h3></div><span class="simBadge">SIMULATED</span></div><label class="rangeLabel"><span>Rain intensity</span><b id="rainValue">90%</b></label><input id="rainSlider" type="range" min="10" max="100" value="90"><div class="toggleGrid"><label><input type="checkbox" id="roadSupport"> Road drainage / access support</label><label><input type="checkbox" id="subBackup"> Substation backup</label><label><input type="checkbox" id="pumpBackup"> Pump 2 backup power</label><label><input type="checkbox" id="hospitalStorage"> Hospital water storage</label></div><div class="routeButtons"><button class="primary" id="applyRecommended">Apply recommended intervention</button><button class="secondary" id="useLiveRainBtn">Use weather rain signal</button><button class="secondary" id="resetScenario">Reset</button></div></article>
+    <article class="glass breakCard"><small>BREAK THE CHAIN</small><h2 id="breakTitle">Protect Pump 2 with backup power.</h2><p id="breakWhy">Ω-CORE compares downstream risk reduction across the available synthetic interventions.</p><div class="riskCompare"><div><small>Baseline cascade</small><b id="baselineCascade">83%</b></div><div><small>Current scenario</small><b id="currentCascade">83%</b></div><div><small>Risk reduction</small><b id="riskReduction">0%</b></div></div></article>
+  </div>
+  <div class="sectionTitle compact"><div><small>CAUSAL PATH</small><h2>What fails next?</h2></div></div>
+  <div class="chain"><div class="chainNode hazard"><small>HAZARD</small><b>Extreme Rain</b><strong id="rainNode">90%</strong></div><div class="arrow">→</div><div class="chainNode"><small>TRANSPORT</small><b>Road Access</b><strong id="roadRiskNode">82%</strong></div><div class="arrow">→</div><div class="chainNode"><small>POWER</small><b>Substation 4</b><strong id="subRiskNode">80%</strong></div><div class="arrow">→</div><div class="chainNode"><small>WATER</small><b>Pump 2</b><strong id="pumpRiskNode">73%</strong></div><div class="arrow">→</div><div class="chainNode critical"><small>HEALTH</small><b>Hospital A</b><strong id="hospitalRiskNode">83%</strong></div></div>
+  <div class="sectionTitle compact"><div><small>MULTI-AGENT REASONING</small><h2>Domain agents explain the cascade.</h2></div></div>
+  <div class="agentGrid"><article class="agentCard"><span>C</span><div><b>Climate Agent</b><p id="climateAgent">Heavy rainfall is the initiating hazard.</p></div></article><article class="agentCard"><span>P</span><div><b>Power Agent</b><p id="powerAgent">Substation risk rises when road access and rain stress combine.</p></div></article><article class="agentCard"><span>W</span><div><b>Water Agent</b><p id="waterAgent">Pump 2 depends on power continuity.</p></div></article><article class="agentCard"><span>H</span><div><b>Health Agent</b><p id="healthAgent">Hospital water continuity is the downstream human-impact concern.</p></div></article><article class="agentCard verify"><span>V</span><div><b>Verification Agent</b><p id="verifyAgent">All Cascade Lab values are synthetic.</p></div></article></div>
+</section>
+
+<section class="view" id="view-responsible">
+  <div class="pageHead"><div class="eyebrow">MANDATORY RESPONSIBLE AI</div><h1>Useful AI must also be trustworthy.</h1><p>NEXUS-Ω follows the internship’s four required responsible-AI principles: fairness, transparency, ethics and privacy.</p></div>
+  <div class="principleGrid"><article class="principle"><span>F</span><h3>Fairness</h3><p>Avoid discriminatory assumptions. Vulnerability can guide support priority without becoming discriminatory treatment.</p></article><article class="principle"><span>T</span><h3>Transparency</h3><p>Every important output identifies whether its evidence is live, local, simulated or unavailable.</p></article><article class="principle"><span>E</span><h3>Ethics</h3><p>No fabricated emergencies and no autonomous execution of consequential safety actions.</p></article><article class="principle"><span>P</span><h3>Privacy</h3><p>Family data stays local; exact coordinates are withheld from the optional external AI.</p></article></div>
+  <article class="glass truthPanel"><small>TRUTH LABELS</small><h2>Every data point tells you what it really is.</h2><div class="truthGrid"><div><b class="truth live">LIVE</b><span>Current weather retrieved from Open-Meteo when location is enabled.</span></div><div><b class="truth local">LOCAL</b><span>Family check-ins and saved trips stored on this device.</span></div><div><b class="truth sim">SIMULATED</b><span>Cascade Lab and Demo-mode values created for educational demonstration.</span></div><div><b class="truth unknown">UNVERIFIED</b><span>Road closures, utility outages, hospital capacity and official alerts are not claimed without a verified source.</span></div></div></article>
+</section>
+
+<section class="view" id="view-emergency">
+  <div class="emergencyHero"><div><div class="eyebrow danger">EMERGENCY COPILOT</div><h1>Do the next safe thing.</h1><p>NEXUS-Ω does not replace emergency services, official alerts or evacuation instructions.</p></div><div class="emergencyBadge">112</div></div>
+  <div class="emergencyActions"><a class="emAction dangerAction" href="tel:112"><span>01</span><div><b>Call emergency services</b><small>India emergency number: 112</small></div></a><button class="emAction" id="shareLocationBtn"><span>02</span><div><b>Share my location</b><small>Uses your device share sheet</small></div></button><button class="emAction" id="safeCheckBtn"><span>03</span><div><b>Tell family I’m safe</b><small>Share a prepared check-in message</small></div></button><button class="emAction" id="emHospitalBtn"><span>04</span><div><b>Find nearby hospitals</b><small>Open a map search around you</small></div></button><button class="emAction" id="speakBtn"><span>05</span><div><b>Hear safety guidance</b><small>Read current guidance aloud</small></div></button><button class="emAction" id="offlinePackBtn"><span>06</span><div><b>Open offline safety pack</b><small>Basic checklist remains in the app</small></div></button></div>
+  <article class="glass emergencyGuide"><small>CURRENT GUIDANCE</small><h2 id="emGuideTitle">No live emergency detected by this prototype.</h2><p id="emGuideText">Use official alerts and local authorities for real emergency decisions.</p><div class="guideEvidence" id="emEvidence">Evidence: weather context not loaded.</div></article>
+  <article class="glass offlinePack" id="offlinePack"><h3>Offline Safety Pack</h3><div class="checklist"><label><input type="checkbox"> Keep phone charged and power bank ready</label><label><input type="checkbox"> Carry essential medicines and identification</label><label><input type="checkbox"> Keep drinking water available</label><label><input type="checkbox"> Avoid visibly flooded roads and moving water</label><label><input type="checkbox"> Follow official evacuation and emergency instructions</label><label><input type="checkbox"> Confirm a family meeting/check-in plan</label></div></article>
+</section>
+
+<footer class="projectFooter"><b>NEXUS-Ω • Final 1M1B Prototype</b><span>SDG 11 • Live weather + local privacy + synthetic cascade intelligence • No Vercel required</span></footer>
+</main>
+</div>
+
+<nav class="bottomNav"><button class="navItem active" data-view="home"><span>01</span><b>Today</b></button><button class="navItem" data-view="ask"><span>Ω</span><b>Ask</b></button><button class="navItem" data-view="route"><span>03</span><b>Route</b></button><button class="navItem" data-view="cascade"><span>05</span><b>Cascade</b></button><button class="navItem emergencyNav" data-view="emergency"><span>!</span><b>Help</b></button></nav>
+<div class="modal" id="whyModal"><div class="modalCard"><button class="modalClose" data-close>×</button><small>WHY THIS RESULT?</small><h2>Evidence before certainty.</h2><p id="whyContent">Load weather first.</p></div></div>
+<div class="toast" id="toast"><b>NEXUS-Ω</b><span id="toastText">Updated</span></div>
+<script>const $=s=>document.querySelector(s), $=s=>[...document.querySelectorAll(s)];
+let state={lat:null,lon:null,weather:null,hourly:null,place:"Your area",language:"English"};
+
+function clamp(n,min=0,max=100){return Math.max(min,Math.min(max,n))}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+function toast(t){$("#toastText").textContent=t;$("#toast").classList.add("show");clearTimeout(window._toast);window._toast=setTimeout(()=>$("#toast").classList.remove("show"),2600)}
+function setView(v){$(".view").forEach(x=>x.classList.remove("active"));const target=$("#view-"+v);if(target)target.classList.add("active");$(".navItem").forEach(x=>x.classList.toggle("active",x.dataset.view===v));window.scrollTo({top:0,behavior:"smooth"})}
+$(".navItem").forEach(b=>b.onclick=()=>setView(b.dataset.view));
+$("[data-jump]").forEach(b=>b.onclick=()=>setView(b.dataset.jump));
+$("#languageSelect").onchange=e=>{state.language=e.target.value;$("#ctxLanguage").textContent=state.language;toast("Language preference: "+state.language)};
+
+function weatherCodeLabel(code){
+ if(code===0)return"Clear"; if([1,2].includes(code))return"Mostly clear"; if(code===3)return"Overcast";
+ if([45,48].includes(code))return"Fog"; if(code>=51&&code<=67)return"Rain";
+ if(code>=71&&code<=77)return"Snow"; if(code>=80&&code<=82)return"Rain showers";
+ if(code>=95)return"Thunderstorm"; return"Mixed conditions"
+}
+function riskFromWeather(w,prob){
+ let r=8;r+=Math.min(34,(Number(w.precipitation)||0)*10);r+=Math.min(34,(Number(prob)||0)*.34);
+ r+=Math.min(10,Math.max(0,(Number(w.wind_speed_10m)||0)-25)*.4);return Math.round(clamp(r,5,92))
+}
+function riskClass(r){return r>=65?"high":r>=35?"watch":"low"}
+
+function updateBrief(){
+ const w=state.weather;if(!w)return;
+ const prob=state.hourly?.precipitation_probability?.[0]??0;
+ const r=riskFromWeather(w,prob), cls=riskClass(r);
+ $("#riskScore").textContent=r+"%";
+ $("#scoreRing").style.background=`conic-gradient(${cls==="high"?"#c94755":cls==="watch"?"#c5842c":"#2e9f69"} ${r}%,#e8eff5 0)`;
+ $("#safetyHeadline").textContent=cls==="high"?"Conditions need extra caution":cls==="watch"?"Some conditions are worth watching":"No major weather-driven concern right now";
+ $("#safetyMeaning").textContent=`Live weather shows ${weatherCodeLabel(w.weather_code).toLowerCase()}, ${w.temperature_2m}°C, ${w.precipitation} mm current precipitation and ${prob}% near-term rain probability. This is a weather caution indicator, not an official flood, traffic or utility forecast.`;
+ $("#mainAction span").textContent=cls==="high"?"Avoid unnecessary exposure, check official alerts, and review your route before essential travel.":cls==="watch"?"Re-check rain before longer trips and stay aware of changing conditions.":"Continue normally while keeping official alerts available.";
+ $("#confidenceBadge").textContent="Confidence: live weather + transparent limits";
+ $("#briefText").textContent=`Live brief for ${state.place}. Updated ${new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})}.`;
+ $("#travelStatus").textContent=cls==="high"?"CAUTION":cls==="watch"?"WATCH":"GOOD NOW";
+ $("#travelStatus").className="decisionStatus "+(cls==="low"?"safe":"watch");
+ $("#travelText").textContent=cls==="high"?"Weather conditions are elevated. Use real navigation and official alerts before essential travel.":cls==="watch"?"Rain risk is meaningful enough to re-check before leaving.":"Current weather does not add a strong travel caution signal.";
+ $("#ctxWeather").textContent=weatherCodeLabel(w.weather_code)+", "+w.temperature_2m+"°C";$("#ctxRain").textContent=prob+"%";
+ $("#emGuideTitle").textContent=cls==="high"?"Weather conditions justify extra caution.":"No live emergency detected from the weather context.";
+ $("#emGuideText").textContent=cls==="high"?"Avoid visibly flooded roads and moving water, follow official alerts, and use emergency services if you are in immediate danger.":"Use official alerts and local authorities for real emergency decisions. NEXUS-Ω will not invent closures, outages or evacuation orders.";
+ $("#emEvidence").textContent=`Evidence: ${state.place}; ${w.temperature_2m}°C; precipitation ${w.precipitation} mm; near-term rain ${prob}%; wind ${w.wind_speed_10m} km/h.`;
+}
+
+async function getLocation(){
+ if(!navigator.geolocation){toast("Location is not supported on this device.");return}
+ $("#locationBtn").textContent="Locating...";
+ navigator.geolocation.getCurrentPosition(async pos=>{
+   state.lat=pos.coords.latitude;state.lon=pos.coords.longitude;state.place=`${state.lat.toFixed(3)}, ${state.lon.toFixed(3)}`;
+   $("#locationBtn").textContent="Location active";$("#weatherPlace").textContent=state.place;$("#ctxLocation").textContent=state.place;
+   localStorage.setItem("nexusLocation",JSON.stringify({lat:state.lat,lon:state.lon}));
+   await loadWeather();
+ },()=>{$("#locationBtn").textContent="Use my location";toast("Location permission was not granted.")},{enableHighAccuracy:true,timeout:12000,maximumAge:300000})
+}
+async function loadWeather(){
+ if(state.lat==null){toast("Enable location first.");return}
+ try{
+   const url=`https://api.open-meteo.com/v1/forecast?latitude=${state.lat}&longitude=${state.lon}&current=temperature_2m,precipitation,rain,weather_code,wind_speed_10m&hourly=temperature_2m,precipitation_probability,precipitation&forecast_days=1&timezone=auto`;
+   const r=await fetch(url);if(!r.ok)throw new Error("weather");
+   const d=await r.json(), idx=Math.max(0,d.hourly.time.findIndex(t=>new Date(t)>=new Date()));
+   state.weather=d.current;state.hourly={time:d.hourly.time.slice(idx,idx+6),temperature_2m:d.hourly.temperature_2m.slice(idx,idx+6),precipitation_probability:d.hourly.precipitation_probability.slice(idx,idx+6),precipitation:d.hourly.precipitation.slice(idx,idx+6)};
+   const prob=state.hourly.precipitation_probability[0]??0;
+   $("#tempNow").textContent=Math.round(d.current.temperature_2m)+"°";$("#weatherState").textContent=weatherCodeLabel(d.current.weather_code);$("#weatherDetail").textContent="Live weather from Open-Meteo";
+   $("#rainNow").textContent=d.current.precipitation+" mm";$("#rainProb").textContent=prob+"%";$("#windNow").textContent=d.current.wind_speed_10m+" km/h";
+   renderTimeline();updateBrief();toast("Live weather updated.");
+ }catch(e){toast("Could not load live weather. Try again shortly.")}
+}
+function renderTimeline(){const h=state.hourly;if(!h)return;$("#hourlyTimeline").innerHTML=h.time.map((t,i)=>`<div class="hourCard"><small>${new Date(t).toLocaleTimeString([],{hour:"numeric"})}</small><b>${Math.round(h.temperature_2m[i])}°</b><span>Rain ${h.precipitation_probability[i]??0}%</span></div>`).join("")}
+$("#locationBtn").onclick=getLocation;$("#refreshBtn").onclick=loadWeather;
+$("#whyBtn").onclick=()=>{const w=state.weather;$("#whyContent").textContent=w?`This score uses current precipitation (${w.precipitation} mm), near-term rain probability (${state.hourly?.precipitation_probability?.[0]??0}%) and wind (${w.wind_speed_10m} km/h). It does not know live road closures, utility outages, hospital capacity or evacuation orders unless verified sources are connected.`:"Location/weather are not loaded yet.";$("#whyModal").classList.add("show")};
+$("[data-close]").onclick=()=>$("#whyModal").classList.remove("show");$("#whyModal").onclick=e=>{if(e.target.id==="whyModal")$("#whyModal").classList.remove("show")};
+
+function localNexusAnswer(text){
+ const q=String(text||"").toLowerCase(), w=state.weather, prob=state.hourly?.precipitation_probability?.[0]??null;
+ let severity="low";if(w&&(Number(prob)>=70||Number(w.precipitation)>=8||Number(w.wind_speed_10m)>=45))severity="high";else if(w&&(Number(prob)>=35||Number(w.precipitation)>=2||Number(w.wind_speed_10m)>=30))severity="moderate";
+ const weather=w?`Current live weather: ${weatherCodeLabel(w.weather_code)}, ${w.temperature_2m}°C, precipitation ${w.precipitation} mm, rain probability ${prob??"unknown"}%, wind ${w.wind_speed_10m} km/h.`:"Live weather has not been loaded yet.";
+ let action=severity==="high"?"Avoid unnecessary exposure, re-check weather before travel, keep your phone charged, and follow official alerts if issued.":severity==="moderate"?"Use extra caution, re-check rain before leaving, and use your navigation app for actual road conditions.":"Normal activity is reasonable based on the weather context available here, but check official alerts before important travel.";
+ if(q.includes("family"))action+=" Confirm a family check-in plan and keep essential contacts available.";
+ if(q.includes("travel")||q.includes("route"))action+=" Route Guardian can add weather context, but a navigation service remains the source for traffic and closures.";
+ if(q.includes("emergency"))action+=" If there is immediate danger, call emergency services.";
+ window.__nexusAIEngine="local";
+ return `What this means\n${weather}\n\nWhat may happen next\nThe current weather context suggests a ${severity} weather-related disruption level. NEXUS-Ω cannot verify live road closures, utility outages, hospital capacity, flood depth, evacuation orders or official alerts without verified sources.\n\nWhat you should do\n${action}\n\nWhy / evidence and limits\nThis local fallback uses the live weather already shown in NEXUS-Ω plus transparent safety rules. It is decision support, not an official emergency forecast.`;
+}
+async function askAI(text){
+ const w=state.weather, prob=state.hourly?.precipitation_probability?.[0]??null;
+ const safeContext=w?`Weather: ${weatherCodeLabel(w.weather_code)}, temperature ${w.temperature_2m}°C, precipitation ${w.precipitation} mm, rain probability ${prob??"unknown"}%, wind ${w.wind_speed_10m} km/h.`:"Live weather not loaded.";
+ const prompt=`You are Ω-CORE Free, the NEXUS-Ω resilience assistant. Answer in ${state.language}. Help with weather-aware travel caution, preparedness, family safety and emergency planning. Never invent live road closures, utility outages, hospital capacity, flood depth, evacuation orders or official alerts. If information is missing, say so. For emergencies, direct the user to official authorities and emergency services. Structure: What this means; What may happen next; What you should do; Why / evidence and limits. APP CONTEXT: ${safeContext} USER QUESTION: ${text}`;
+ const controller=new AbortController(), timeout=setTimeout(()=>controller.abort(),9000);
+ try{
+   const r=await fetch("https://text.pollinations.ai/"+encodeURIComponent(prompt),{signal:controller.signal,cache:"no-store"});
+   if(!r.ok)throw new Error("free ai");
+   const answer=(await r.text()).trim();if(!answer)throw new Error("empty");
+   window.__nexusAIEngine="free";return answer;
+ }catch(e){return localNexusAnswer(text)}finally{clearTimeout(timeout)}
+}
+async function sendMessage(text){
+ text=(text||$("#askText").value).trim();if(!text)return;
+ const chat=$("#chat");chat.insertAdjacentHTML("beforeend",`<div class="bubble user"><b>You</b><p>${escapeHtml(text)}</p></div>`);$("#askText").value="";
+ const loading=document.createElement("div");loading.className="bubble ai";loading.innerHTML="<b>NEXUS-Ω</b><p>Thinking with the available context...</p>";chat.appendChild(loading);chat.scrollTop=chat.scrollHeight;
+ const ans=await askAI(text);loading.querySelector("p").textContent=ans;$("#aiStatus").textContent=window.__nexusAIEngine==="free"?"Free generative AI active • no paid key required":"NEXUS local safety fallback active • always available";chat.scrollTop=chat.scrollHeight
+}
+$("#sendBtn").onclick=()=>sendMessage();$("#askText").onkeydown=e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendMessage()}};$(".promptChips button").forEach(b=>b.onclick=()=>sendMessage(b.textContent));$("#makePlanBtn").onclick=()=>{setView("ask");setTimeout(()=>sendMessage("Create a simple safe-day plan for me based on the current context. Separate live facts from assumptions."),250)};
+$("#voiceBtn").onclick=()=>{const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){toast("Voice input is not supported in this browser.");return}const rec=new SR();rec.lang=state.language==="Telugu"?"te-IN":state.language==="Hindi"?"hi-IN":"en-IN";rec.onresult=e=>{$("#askText").value=e.results[0][0].transcript};rec.start();toast("Listening...")};
+
+function routeAssessment(){
+ const dest=$("#routeTo").value.trim();if(!dest){$("#routeResult h3").textContent="Add a destination.";return}
+ const prob=state.hourly?.precipitation_probability?.[0]??null;
+ const text=prob==null?"Live weather is not loaded, so NEXUS-Ω cannot add a weather caution yet.":prob>=65?`Near-term rain probability is ${prob}%. Extra weather caution is justified. Check live navigation and official alerts before essential travel.`:prob>=35?`Near-term rain probability is ${prob}%. Re-check rain before leaving and use your navigation app for actual road conditions.`:`Near-term rain probability is ${prob}%. Current weather does not add a strong caution signal, but traffic and closures still come from your navigation provider.`;
+ $("#routeResult h3").textContent="Trip to "+dest;$("#routeResult p").textContent=text;saveTrip(dest);renderTrips()
+}
+function saveTrip(dest){let trips=JSON.parse(localStorage.getItem("nexusTrips")||"[]");trips=[dest,...trips.filter(x=>x!==dest)].slice(0,6);localStorage.setItem("nexusTrips",JSON.stringify(trips))}
+function renderTrips(){const trips=JSON.parse(localStorage.getItem("nexusTrips")||"[]");$("#tripGrid").innerHTML=trips.length?trips.map(x=>`<button class="trip" data-trip="${escapeHtml(x)}"><b>${escapeHtml(x)}</b><span>Tap to reuse</span></button>`).join(""):'<div class="timelineEmpty">No frequent trips saved yet.</div>';$("[data-trip]").forEach(b=>b.onclick=()=>{$("#routeTo").value=b.dataset.trip;routeAssessment()})}
+$("#checkRouteBtn").onclick=routeAssessment;$("#openMapsBtn").onclick=()=>{const dest=$("#routeTo").value.trim();if(!dest){toast("Add a destination first.");return}const origin=state.lat!=null?`${state.lat},${state.lon}`:"";window.open(`https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(dest)}`,"_blank")};renderTrips();
+
+function loadFamily(){return JSON.parse(localStorage.getItem("nexusFamily")||"[]")}function saveFamily(a){localStorage.setItem("nexusFamily",JSON.stringify(a))}
+function renderFamily(){
+ const a=loadFamily();$("#familyBoard").innerHTML=a.length?a.map((m,i)=>`<article class="familyCard"><div class="avatar">${escapeHtml(m.name[0].toUpperCase())}</div><h3>${escapeHtml(m.name)}</h3><p>${m.checked?"Checked in on this device.":"Waiting for check-in."}</p><button class="checkBtn ${m.checked?"checked":""}" data-check="${i}">${m.checked?"Checked in":"Mark checked in"}</button> <button class="linkBtn" data-remove="${i}">Remove</button></article>`).join(""):'<div class="timelineEmpty">Add family members to start local check-ins.</div>';
+ const checked=a.filter(x=>x.checked).length;$("#familySummary").innerHTML=a.length?`<b>${checked} of ${a.length} checked in</b><span>${a.length-checked} still waiting for confirmation.</span>`:"<b>No family members added yet.</b><span>Add people you care about and record check-ins.</span>";$("#familyMiniStatus").textContent=a.length?`${checked}/${a.length} CHECKED`:"NOT CHECKED";$("#familyMiniText").textContent=a.length?`${a.length-checked} family member(s) have not checked in on this device.`:"Family check-ins are stored locally on this device.";
+ $("[data-check]").forEach(b=>b.onclick=()=>{const x=loadFamily();x[+b.dataset.check].checked=!x[+b.dataset.check].checked;saveFamily(x);renderFamily()});$("[data-remove]").forEach(b=>b.onclick=()=>{const x=loadFamily();x.splice(+b.dataset.remove,1);saveFamily(x);renderFamily()})
+}
+$("#addFamilyBtn").onclick=()=>{const n=$("#familyName").value.trim();if(!n)return;const a=loadFamily();a.push({name:n,checked:false});saveFamily(a);$("#familyName").value="";renderFamily()};renderFamily();
+
+function calcScenario(opts={}){
+ const rain=Number(opts.rain??$("#rainSlider").value);
+ const roadSupport=opts.roadSupport??$("#roadSupport").checked, subBackup=opts.subBackup??$("#subBackup").checked, pumpBackup=opts.pumpBackup??$("#pumpBackup").checked, hospitalStorage=opts.hospitalStorage??$("#hospitalStorage").checked;
+ const road=clamp(10+0.8*rain-(roadSupport?25:0));
+ const sub=clamp(5+0.7*road+0.2*rain-(subBackup?50:0));
+ const pump=clamp(5+0.85*sub-(pumpBackup?60:0));
+ const hospital=clamp(10+pump-(hospitalStorage?35:0));
+ return {rain,road,sub,pump,hospital,roadSupport,subBackup,pumpBackup,hospitalStorage}
+}
+function baselineScenario(){return calcScenario({rain:Number($("#rainSlider").value),roadSupport:false,subBackup:false,pumpBackup:false,hospitalStorage:false})}
+function bestIntervention(){
+ const base=baselineScenario(), candidates=[
+   {id:"roadSupport",label:"Strengthen road drainage / access",cost:2},
+   {id:"subBackup",label:"Activate substation backup",cost:3},
+   {id:"pumpBackup",label:"Protect Pump 2 with backup power",cost:2},
+   {id:"hospitalStorage",label:"Use hospital emergency water storage",cost:1.5}
+ ];
+ return candidates.map(c=>{const o={rain:base.rain,roadSupport:false,subBackup:false,pumpBackup:false,hospitalStorage:false,[c.id]:true};const r=calcScenario(o);return {...c,result:r,reduction:base.hospital-r.hospital,score:(base.hospital-r.hospital)/c.cost}}).sort((a,b)=>b.score-a.score)[0]
+}
+function renderCascade(){
+ const current=calcScenario(), base=baselineScenario(), best=bestIntervention();
+ $("#rainValue").textContent=current.rain+"%";$("#rainNode").textContent=Math.round(current.rain)+"%";$("#roadRiskNode").textContent=Math.round(current.road)+"%";$("#subRiskNode").textContent=Math.round(current.sub)+"%";$("#pumpRiskNode").textContent=Math.round(current.pump)+"%";$("#hospitalRiskNode").textContent=Math.round(current.hospital)+"%";
+ $("#baselineCascade").textContent=Math.round(base.hospital)+"%";$("#currentCascade").textContent=Math.round(current.hospital)+"%";$("#riskReduction").textContent=Math.max(0,Math.round(base.hospital-current.hospital))+"%";
+ $("#breakTitle").textContent=best.label+".";$("#breakWhy").textContent=`In this synthetic model it produces about ${Math.round(best.reduction)} percentage-points of downstream hospital-risk reduction relative to the no-intervention baseline. This is educational decision logic, not an operational recommendation for a real city.`;
+ $("#climateAgent").textContent=`Rain intensity is ${current.rain}%. The Climate Agent treats it as the initiating hazard, not as a real flood measurement.`;
+ $("#powerAgent").textContent=`Substation 4 modeled risk is ${Math.round(current.sub)}%. Road access and rain stress propagate into the power layer.`;
+ $("#waterAgent").textContent=`Pump 2 modeled risk is ${Math.round(current.pump)}%. It depends strongly on power continuity, so backup power can break the chain.`;
+ $("#healthAgent").textContent=`Hospital A modeled continuity risk is ${Math.round(current.hospital)}%. This is the downstream human-impact indicator used by the demo.`;
+ $("#verifyAgent").textContent="Verification Agent: all Cascade Lab values are synthetic. No live utility, road, hospital or evacuation data is being claimed."
+}
+["rainSlider","roadSupport","subBackup","pumpBackup","hospitalStorage"].forEach(id=>$("#"+id).addEventListener("input",renderCascade));
+$("#resetScenario").onclick=()=>{$("#rainSlider").value=90;$("#roadSupport").checked=false;$("#subBackup").checked=false;$("#pumpBackup").checked=false;$("#hospitalStorage").checked=false;renderCascade();toast("Scenario reset.")};
+$("#applyRecommended").onclick=()=>{const best=bestIntervention();["roadSupport","subBackup","pumpBackup","hospitalStorage"].forEach(id=>$("#"+id).checked=id===best.id);renderCascade();toast("Recommended synthetic intervention applied.")};
+$("#useLiveRainBtn").onclick=()=>{const p=state.hourly?.precipitation_probability?.[0];if(p==null){toast("Load live weather first.");return}$("#rainSlider").value=clamp(Math.max(10,p));renderCascade();toast("Live rain probability mapped into the simulated scenario.")};renderCascade();
+
+async function shareText(text){if(navigator.share)try{await navigator.share({text})}catch{}else if(navigator.clipboard){await navigator.clipboard.writeText(text);toast("Copied to clipboard.")}}
+$("#shareCheckinBtn").onclick=()=>shareText("I’m safe. This is my NEXUS-Ω family check-in.");
+$("#safeCheckBtn").onclick=()=>shareText(`I’m safe. My current location: ${state.lat!=null?`https://maps.google.com/?q=${state.lat},${state.lon}`:"not shared"}.`);
+$("#shareLocationBtn").onclick=()=>state.lat!=null?shareText(`My current location: https://maps.google.com/?q=${state.lat},${state.lon}`):toast("Enable location first.");
+function hospitalSearch(){window.open(state.lat!=null?`https://www.google.com/maps/search/hospital/@${state.lat},${state.lon},14z`:"https://www.google.com/maps/search/hospital","_blank")}$("#emHospitalBtn").onclick=hospitalSearch;
+$("#notifyBtn").onclick=async()=>{if(!("Notification" in window)){toast("Notifications are not supported.");return}const p=await Notification.requestPermission();toast(p==="granted"?"Browser alerts enabled.":"Notification permission not granted.")};
+$("#speakBtn").onclick=()=>{if(!("speechSynthesis" in window)){toast("Speech is not supported.");return}const u=new SpeechSynthesisUtterance($("#emGuideTitle").textContent+". "+$("#emGuideText").textContent);u.lang=state.language==="Telugu"?"te-IN":state.language==="Hindi"?"hi-IN":"en-IN";speechSynthesis.speak(u)};
+$("#offlinePackBtn").onclick=()=>{$("#offlinePack").scrollIntoView({behavior:"smooth"});toast("Offline safety pack opened.")};
+
+if("serviceWorker" in navigator && location.protocol!=="file:")navigator.serviceWorker.register("./sw.js").catch(()=>{});
+const saved=JSON.parse(localStorage.getItem("nexusLocation")||"null");if(saved){state.lat=saved.lat;state.lon=saved.lon;state.place=`${state.lat.toFixed(3)}, ${state.lon.toFixed(3)}`;$("#locationBtn").textContent="Location saved";$("#weatherPlace").textContent=state.place;$("#ctxLocation").textContent=state.place;loadWeather()}
+</script>
+</body>
+</html>
