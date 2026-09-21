@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#071a33">
-<title>NEXUS-Ω - Universal Resilience Operating System</title>
+<title>NEXUS-Ω — Universal Resilience Operating System</title>
 <meta name="description" content="NEXUS-Ω is an AI-powered resilience decision-support prototype for people, families and critical infrastructure.">
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="stylesheet" href="./styles.css">
@@ -14,13 +14,10 @@
 <header class="topbar">
   <div class="brand"><div class="omega">Ω</div><div><b>NEXUS-Ω</b><span>Universal Resilience OS</span></div></div>
   <div class="topActions">
+    <span class="readyBadge">FINAL 1M1B BUILD • READY</span>
+    <button class="chip" id="demoBtn">Demo mode</button>
     <button class="chip" id="locationBtn">Use my location</button>
-    <select class="chip" id="languageSelect" aria-label="Language">
-      <option value="English">English</option>
-      <option value="Telugu">తెలుగు</option>
-      <option value="Hindi">हिन्दी</option>
-    </select>
-    <button class="iconBtn" id="notifyBtn" title="Enable browser alerts">●</button>
+    <select class="chip" id="languageSelect" aria-label="Language"><option value="English">English</option><option value="Telugu">తెలుగు</option><option value="Hindi">हिन्दी</option></select>
   </div>
 </header>
 
@@ -29,7 +26,7 @@
   <button class="navItem active" data-view="home"><span>01</span><b>Today</b></button>
   <button class="navItem" data-view="ask"><span>Ω</span><b>Ask NEXUS</b></button>
   <button class="navItem" data-view="route"><span>03</span><b>Route Guardian</b></button>
-  <button class="navItem" data-view="family"><span>04</span><b>Family</b></button>
+  <button class="navItem" data-view="family"><span>04</span><b>Family Guardian</b></button>
   <button class="navItem" data-view="cascade"><span>05</span><b>Cascade Lab</b></button>
   <button class="navItem" data-view="responsible"><span>06</span><b>Responsible AI</b></button>
   <button class="navItem emergencyNav" data-view="emergency"><span>!</span><b>Emergency</b></button>
@@ -38,187 +35,101 @@
 <main class="content">
 <section class="view active" id="view-home">
   <div class="welcome">
-    <div>
-      <div class="eyebrow">PERSONAL RESILIENCE BRIEF</div>
-      <h1>Know what can affect you - before it does.</h1>
-      <p id="briefText">Use your location to build a live weather-aware safety brief. NEXUS-Ω clearly separates live observations, simulated results and unknown data.</p>
-    </div>
-    <div class="livePill"><span></span> LIVE WEATHER</div>
+    <div><div class="eyebrow">PERSONAL RESILIENCE BRIEF</div><h1>Know what can affect you — before it does.</h1><p id="briefText">Use live location or Demo mode. NEXUS-Ω separates live observations, local data, simulations and unknown information.</p></div>
+    <div class="livePill" id="dataModePill"><span></span> WAITING FOR DATA</div>
   </div>
 
   <div class="heroGrid">
     <article class="glass heroSafety">
-      <div class="heroTop">
-        <div><small>OVERALL TODAY</small><h2 id="safetyHeadline">Ready for your location</h2></div>
-        <div class="scoreRing" id="scoreRing"><b id="riskScore">-</b><span>risk</span></div>
-      </div>
-      <p id="safetyMeaning">This score is a transparent weather-related caution indicator, not an official disaster warning or utility outage forecast.</p>
-      <div class="actionLine" id="mainAction"><b>Best next step</b><span>Enable location to create your brief.</span></div>
-      <div class="evidenceRow"><span id="confidenceBadge">Confidence: waiting for live weather</span><button class="linkBtn" id="whyBtn">Why this result?</button></div>
+      <div class="heroTop"><div><small>OVERALL TODAY</small><h2 id="safetyHeadline">Ready for your context</h2></div><div class="scoreRing" id="scoreRing"><b id="riskScore">—</b><span>weather risk</span></div></div>
+      <p id="safetyMeaning">This is a transparent weather-related caution indicator, not an official disaster warning, flood model, traffic feed or utility outage forecast.</p>
+      <div class="actionLine"><b>Best next step</b><span id="mainActionText">Use your location for live weather or run Demo mode for instant evaluation.</span></div>
+      <div class="evidenceRow"><span id="confidenceBadge">Confidence: waiting for data</span><button class="linkBtn" id="whyBtn">Why this result?</button></div>
     </article>
 
     <article class="weatherCard">
-      <div class="cardTitle"><span>WX</span><div><small>LIVE WEATHER</small><b id="weatherPlace">Location not set</b></div></div>
-      <div class="weatherMain"><strong id="tempNow">--°</strong><div><b id="weatherState">Waiting</b><span id="weatherDetail">Enable location for current conditions</span></div></div>
-      <div class="miniMetrics">
-        <div><small>Rain now</small><b id="rainNow">--</b></div>
-        <div><small>Near-term rain</small><b id="rainProb">--</b></div>
-        <div><small>Wind</small><b id="windNow">--</b></div>
-      </div>
+      <div class="cardTitle"><span>WX</span><div><small id="weatherSourceLabel">WEATHER CONTEXT</small><b id="weatherPlace">Location not set</b></div></div>
+      <div class="weatherMain"><strong id="tempNow">--°</strong><div><b id="weatherState">Waiting</b><span id="weatherDetail">Choose live location or Demo mode</span></div></div>
+      <div class="miniMetrics"><div><small>Rain now</small><b id="rainNow">--</b></div><div><small>Near-term rain</small><b id="rainProb">--</b></div><div><small>Wind</small><b id="windNow">--</b></div></div>
     </article>
   </div>
 
-  <div class="sectionTitle"><div><small>WHAT MATTERS</small><h2>Not more data. The next useful decision.</h2></div><button class="secondary" id="refreshBtn">Refresh live brief</button></div>
+  <div class="sectionTitle"><div><small>WHAT MATTERS</small><h2>Not more data. The next useful decision.</h2></div><button class="secondary" id="refreshBtn">Refresh weather</button></div>
   <div class="decisionGrid">
     <article class="decision"><div class="decisionIcon">A</div><div class="decisionStatus safe" id="travelStatus">READY</div><h3>Can I travel normally?</h3><p id="travelText">Load weather and NEXUS-Ω will add a pre-trip caution signal.</p><button class="inlineAction" data-jump="route">Open Route Guardian →</button></article>
-    <article class="decision"><div class="decisionIcon">Ω</div><div class="decisionStatus info">FREE AI</div><h3>What should I do?</h3><p>Ask practical questions. A free community AI is attempted first; a transparent local fallback always remains available.</p><button class="inlineAction" data-jump="ask">Ask NEXUS →</button></article>
-    <article class="decision"><div class="decisionIcon">F</div><div class="decisionStatus safe" id="familyMiniStatus">NOT CHECKED</div><h3>Is everyone okay?</h3><p id="familyMiniText">Family check-ins are stored locally on this device.</p><button class="inlineAction" data-jump="family">Check family →</button></article>
-    <article class="decision"><div class="decisionIcon">C</div><div class="decisionStatus info">SIMULATED</div><h3>What fails next?</h3><p>Run a synthetic infrastructure cascade and test how one intervention can reduce downstream risk.</p><button class="inlineAction" data-jump="cascade">Open Cascade Lab →</button></article>
+    <article class="decision"><div class="decisionIcon">Ω</div><div class="decisionStatus info">AI + FALLBACK</div><h3>What should I do?</h3><p>Ask practical questions. Free AI is attempted first; a built-in safety fallback always answers if the external model is unavailable.</p><button class="inlineAction" data-jump="ask">Ask NEXUS →</button></article>
+    <article class="decision"><div class="decisionIcon">F</div><div class="decisionStatus safe" id="familyMiniStatus">NOT CHECKED</div><h3>Is everyone okay?</h3><p id="familyMiniText">Family check-ins are stored only on this device.</p><button class="inlineAction" data-jump="family">Check family →</button></article>
+    <article class="decision"><div class="decisionIcon">C</div><div class="decisionStatus info">SIMULATED</div><h3>What fails next?</h3><p>Run a causal infrastructure cascade and test how interventions change downstream risk.</p><button class="inlineAction" data-jump="cascade">Open Cascade Lab →</button></article>
   </div>
 
   <div class="sectionTitle compact"><div><small>NEXT 6 HOURS</small><h2>Weather-aware timeline</h2></div></div>
-  <div class="timeline" id="hourlyTimeline"><div class="timelineEmpty">Live hourly forecast will appear after location access.</div></div>
+  <div class="timeline" id="hourlyTimeline"><div class="timelineEmpty">Weather timeline appears after live location or Demo mode.</div></div>
 
-  <div class="featureBanner">
-    <div><small>Ω-CORE DECISION SUPPORT</small><h2>STATUS → MEANING → CONSEQUENCE → ACTION → WHY</h2><p>NEXUS-Ω is designed to explain decisions, not simply display numbers.</p></div>
-    <button class="lightBtn" id="makePlanBtn">Create my safe-day plan</button>
-  </div>
+  <div class="featureBanner"><div><small>Ω-CORE DECISION SUPPORT</small><h2>STATUS → MEANING → CONSEQUENCE → ACTION → WHY</h2><p>NEXUS-Ω explains what a result means, what may happen next, and what action is justified by the available evidence.</p></div><button class="lightBtn" id="makePlanBtn">Create my safe-day plan</button></div>
 </section>
 
 <section class="view" id="view-ask">
-  <div class="pageHead"><div class="eyebrow">FREE AI + SAFE LOCAL FALLBACK</div><h1>Ask NEXUS what you should do.</h1><p>No paid OpenAI or Perplexity key is required for this final prototype. Exact coordinates are not sent to the external free model.</p></div>
+  <div class="pageHead"><div class="eyebrow">FREE AI + GUARANTEED LOCAL FALLBACK</div><h1>Ask NEXUS what you should do.</h1><p>No paid OpenAI or Perplexity key is required. Exact coordinates are never sent to the optional external free model.</p></div>
   <div class="askLayout">
     <div class="chatPanel glass">
-      <div class="chatHead"><div class="aiOrb">Ω</div><div><b>Ω-CORE</b><span id="aiStatus">Free AI ready • local fallback always available</span></div><button class="iconBtn" id="voiceBtn" title="Voice input">MIC</button></div>
+      <div class="chatHead"><div class="aiOrb">Ω</div><div><b>Ω-CORE</b><span id="aiStatus">Ready • local fallback always available</span></div><button class="iconBtn" id="voiceBtn" title="Voice input">MIC</button></div>
       <div class="chat" id="chat"><div class="bubble ai"><b>NEXUS-Ω</b><p>Ask: “Can I travel now?”, “What should I prepare tonight?”, “Explain my rain risk”, or “Give me a family emergency checklist.”</p></div></div>
       <div class="promptChips"><button>Can I travel now?</button><button>Plan my evening</button><button>Explain my risk</button><button>Family emergency checklist</button></div>
       <div class="composer"><textarea id="askText" rows="2" placeholder="Ask about your day, route, preparation or emergency plan..."></textarea><button id="sendBtn">Ask Ω</button></div>
-      <div class="privacyNote">External AI is optional. Safety-critical facts must come from verified official sources; NEXUS-Ω never invents outages, closures, hospital capacity or evacuation orders.</div>
+      <div class="privacyNote">Safety-critical facts must come from verified official sources. NEXUS-Ω will not invent outages, closures, hospital capacity, flood levels or evacuation orders.</div>
     </div>
     <aside class="contextPanel">
-      <article class="glass"><small>AI CONTEXT</small><h3>What Ω-CORE currently sees</h3><div class="contextList"><div><span>Location</span><b id="ctxLocation">Not provided</b></div><div><span>Weather</span><b id="ctxWeather">Not loaded</b></div><div><span>Rain probability</span><b id="ctxRain">Not loaded</b></div><div><span>Language</span><b id="ctxLanguage">English</b></div></div></article>
+      <article class="glass"><small>AI CONTEXT</small><h3>What Ω-CORE currently sees</h3><div class="contextList"><div><span>Mode</span><b id="ctxMode">Waiting</b></div><div><span>Location</span><b id="ctxLocation">Not provided</b></div><div><span>Weather</span><b id="ctxWeather">Not loaded</b></div><div><span>Rain probability</span><b id="ctxRain">Not loaded</b></div><div><span>Language</span><b id="ctxLanguage">English</b></div></div></article>
       <article class="glass explain"><small>ANSWER CONTRACT</small><p><b>1. What this means</b><br>Plain-language interpretation.</p><p><b>2. What may happen next</b><br>Consequence without pretending certainty.</p><p><b>3. What you should do</b><br>Prioritized action.</p><p><b>4. Why / limits</b><br>Evidence, uncertainty and missing data.</p></article>
     </aside>
   </div>
 </section>
 
 <section class="view" id="view-route">
-  <div class="pageHead"><div class="eyebrow">ROUTE GUARDIAN</div><h1>Turn a normal trip into a safer decision.</h1><p>NEXUS-Ω adds weather context, while your navigation provider remains the source for actual traffic and road closures.</p></div>
+  <div class="pageHead"><div class="eyebrow">ROUTE GUARDIAN</div><h1>Turn a normal trip into a safer decision.</h1><p>NEXUS-Ω adds weather context; your navigation provider remains the source for traffic and actual road closures.</p></div>
   <div class="routeGrid">
-    <div class="routeBuilder glass">
-      <label>From<input id="routeFrom" placeholder="Current location" value="Current location"></label>
-      <label>To<input id="routeTo" placeholder="College, office, hospital, home..."></label>
-      <div class="routeButtons"><button class="primary" id="checkRouteBtn">Check trip</button><button class="secondary" id="openMapsBtn">Open navigation</button></div>
-      <div class="routeResult" id="routeResult"><small>TRIP STATUS</small><h3>Add a destination.</h3><p>NEXUS-Ω will add a weather-aware note, then hand off to your navigation app.</p></div>
-    </div>
-    <div class="mapMock glass">
-      <div class="mapGrid"></div><div class="routePath"></div><span class="mapPin p1">A</span><span class="mapPin p2">B</span>
-      <div class="mapOverlay"><b>Route Guardian</b><span>Weather layer + real map handoff</span></div>
-    </div>
+    <div class="routeBuilder glass"><label>From<input id="routeFrom" value="Current location" placeholder="Current location"></label><label>To<input id="routeTo" placeholder="College, office, hospital, home..."></label><div class="routeButtons"><button class="primary" id="checkRouteBtn">Check trip</button><button class="secondary" id="openMapsBtn">Open navigation</button></div><div class="routeResult" id="routeResult"><small>TRIP STATUS</small><h3>Add a destination.</h3><p>NEXUS-Ω will add a weather-aware note and then hand off navigation to your mapping provider.</p></div></div>
+    <div class="mapMock glass"><div class="mapGrid"></div><div class="routePath"></div><span class="mapPin p1">A</span><span class="mapPin p2">B</span><div class="mapOverlay"><b>Route Guardian</b><span>Weather context + real map handoff</span></div></div>
   </div>
-  <div class="savedTrips"><div class="sectionTitle compact"><div><small>LOCAL STORAGE</small><h2>Frequent trips</h2></div></div><div class="tripGrid" id="tripGrid"></div></div>
+  <div class="sectionTitle compact"><div><small>LOCAL STORAGE</small><h2>Frequent trips</h2></div></div><div class="tripGrid" id="tripGrid"></div>
 </section>
 
 <section class="view" id="view-family">
-  <div class="pageHead"><div class="eyebrow">FAMILY GUARDIAN</div><h1>Know who has checked in.</h1><p>Names and check-in states stay in your browser's local storage in this prototype.</p></div>
+  <div class="pageHead"><div class="eyebrow">FAMILY GUARDIAN</div><h1>Know who has checked in.</h1><p>Names and check-in status remain in the browser’s local storage in this prototype.</p></div>
   <div class="familyToolbar"><input id="familyName" placeholder="Add family member name"><button class="primary" id="addFamilyBtn">Add member</button><button class="secondary" id="shareCheckinBtn">Share “I’m safe”</button></div>
-  <div class="familyBoard" id="familyBoard"></div>
-  <div class="familySummary glass" id="familySummary"><b>No family members added yet.</b><span>Add people you care about and record check-ins.</span></div>
+  <div class="familyBoard" id="familyBoard"></div><div class="familySummary glass" id="familySummary"><b>No family members added yet.</b><span>Add people you care about and record check-ins.</span></div>
 </section>
 
 <section class="view" id="view-cascade">
-  <div class="pageHead"><div class="eyebrow">SIMULATED DIGITAL TWIN • 1M1B DEMO</div><h1>BREAK THE CHAIN before failure cascades.</h1><p>This lab uses synthetic values to demonstrate causal dependencies and agent-style decision support. It is not a real city prediction.</p></div>
-
+  <div class="pageHead"><div class="eyebrow">SIMULATED DIGITAL TWIN • 1M1B DEMO</div><h1>BREAK THE CHAIN before failure cascades.</h1><p>This lab uses synthetic values to demonstrate causal dependencies, counterfactual testing and agent-style decision support. It is not a real city prediction.</p></div>
   <div class="cascadeTop">
-    <article class="glass scenarioPanel">
-      <div class="scenarioTitle"><div><small>SCENARIO INPUT</small><h3>Extreme Rain → Infrastructure Stress</h3></div><span class="simBadge">SIMULATED</span></div>
-      <label class="rangeLabel"><span>Rain intensity</span><b id="rainValue">90%</b></label>
-      <input id="rainSlider" type="range" min="10" max="100" value="90">
-      <div class="toggleGrid">
-        <label><input type="checkbox" id="roadSupport"> Road drainage / access support</label>
-        <label><input type="checkbox" id="subBackup"> Substation backup</label>
-        <label><input type="checkbox" id="pumpBackup"> Pump 2 backup power</label>
-        <label><input type="checkbox" id="hospitalStorage"> Hospital water storage</label>
-      </div>
-      <div class="routeButtons"><button class="primary" id="applyRecommended">Apply recommended intervention</button><button class="secondary" id="useLiveRainBtn">Use live rain signal</button><button class="secondary" id="resetScenario">Reset</button></div>
-    </article>
-
-    <article class="glass breakCard">
-      <small>BREAK THE CHAIN</small>
-      <h2 id="breakTitle">Protect Pump 2 with backup power.</h2>
-      <p id="breakWhy">Ω-CORE compares downstream risk reduction across available interventions and identifies the highest-leverage option in this synthetic scenario.</p>
-      <div class="riskCompare"><div><small>Baseline cascade</small><b id="baselineCascade">83%</b></div><div><small>Current scenario</small><b id="currentCascade">83%</b></div><div><small>Risk reduction</small><b id="riskReduction">0%</b></div></div>
-    </article>
+    <article class="glass scenarioPanel"><div class="scenarioTitle"><div><small>SCENARIO INPUT</small><h3>Extreme Rain → Infrastructure Stress</h3></div><span class="simBadge">SIMULATED</span></div><label class="rangeLabel"><span>Rain intensity</span><b id="rainValue">90%</b></label><input id="rainSlider" type="range" min="10" max="100" value="90"><div class="toggleGrid"><label><input type="checkbox" id="roadSupport"> Road drainage / access support</label><label><input type="checkbox" id="subBackup"> Substation backup</label><label><input type="checkbox" id="pumpBackup"> Pump 2 backup power</label><label><input type="checkbox" id="hospitalStorage"> Hospital water storage</label></div><div class="routeButtons"><button class="primary" id="applyRecommended">Apply recommended intervention</button><button class="secondary" id="useLiveRainBtn">Use weather rain signal</button><button class="secondary" id="resetScenario">Reset</button></div></article>
+    <article class="glass breakCard"><small>BREAK THE CHAIN</small><h2 id="breakTitle">Protect Pump 2 with backup power.</h2><p id="breakWhy">Ω-CORE compares downstream risk reduction across the available synthetic interventions.</p><div class="riskCompare"><div><small>Baseline cascade</small><b id="baselineCascade">83%</b></div><div><small>Current scenario</small><b id="currentCascade">83%</b></div><div><small>Risk reduction</small><b id="riskReduction">0%</b></div></div></article>
   </div>
-
   <div class="sectionTitle compact"><div><small>CAUSAL PATH</small><h2>What fails next?</h2></div></div>
-  <div class="chain">
-    <div class="chainNode hazard"><small>HAZARD</small><b>Extreme Rain</b><strong id="rainNode">90%</strong></div>
-    <div class="arrow">→</div>
-    <div class="chainNode"><small>TRANSPORT</small><b>Road Access</b><strong id="roadRiskNode">82%</strong></div>
-    <div class="arrow">→</div>
-    <div class="chainNode"><small>POWER</small><b>Substation 4</b><strong id="subRiskNode">80%</strong></div>
-    <div class="arrow">→</div>
-    <div class="chainNode"><small>WATER</small><b>Pump 2</b><strong id="pumpRiskNode">73%</strong></div>
-    <div class="arrow">→</div>
-    <div class="chainNode critical"><small>HEALTH</small><b>Hospital A</b><strong id="hospitalRiskNode">83%</strong></div>
-  </div>
-
+  <div class="chain"><div class="chainNode hazard"><small>HAZARD</small><b>Extreme Rain</b><strong id="rainNode">90%</strong></div><div class="arrow">→</div><div class="chainNode"><small>TRANSPORT</small><b>Road Access</b><strong id="roadRiskNode">82%</strong></div><div class="arrow">→</div><div class="chainNode"><small>POWER</small><b>Substation 4</b><strong id="subRiskNode">80%</strong></div><div class="arrow">→</div><div class="chainNode"><small>WATER</small><b>Pump 2</b><strong id="pumpRiskNode">73%</strong></div><div class="arrow">→</div><div class="chainNode critical"><small>HEALTH</small><b>Hospital A</b><strong id="hospitalRiskNode">83%</strong></div></div>
   <div class="sectionTitle compact"><div><small>MULTI-AGENT REASONING</small><h2>Domain agents explain the cascade.</h2></div></div>
-  <div class="agentGrid">
-    <article class="agentCard"><span>C</span><div><b>Climate Agent</b><p id="climateAgent">Heavy rainfall is the initiating hazard.</p></div></article>
-    <article class="agentCard"><span>P</span><div><b>Power Agent</b><p id="powerAgent">Substation risk rises when road access and direct rain stress combine.</p></div></article>
-    <article class="agentCard"><span>W</span><div><b>Water Agent</b><p id="waterAgent">Pump 2 depends on power continuity.</p></div></article>
-    <article class="agentCard"><span>H</span><div><b>Health Agent</b><p id="healthAgent">Hospital water continuity becomes the downstream human-impact concern.</p></div></article>
-    <article class="agentCard verify"><span>V</span><div><b>Verification Agent</b><p id="verifyAgent">All values on this page are synthetic and must not be treated as live infrastructure status.</p></div></article>
-  </div>
+  <div class="agentGrid"><article class="agentCard"><span>C</span><div><b>Climate Agent</b><p id="climateAgent">Heavy rainfall is the initiating hazard.</p></div></article><article class="agentCard"><span>P</span><div><b>Power Agent</b><p id="powerAgent">Substation risk rises when road access and rain stress combine.</p></div></article><article class="agentCard"><span>W</span><div><b>Water Agent</b><p id="waterAgent">Pump 2 depends on power continuity.</p></div></article><article class="agentCard"><span>H</span><div><b>Health Agent</b><p id="healthAgent">Hospital water continuity is the downstream human-impact concern.</p></div></article><article class="agentCard verify"><span>V</span><div><b>Verification Agent</b><p id="verifyAgent">All Cascade Lab values are synthetic.</p></div></article></div>
 </section>
 
 <section class="view" id="view-responsible">
-  <div class="pageHead"><div class="eyebrow">MANDATORY RESPONSIBLE AI</div><h1>Useful AI must also be trustworthy.</h1><p>NEXUS-Ω follows four responsible-AI requirements from the internship guideline: fairness, transparency, ethics and privacy.</p></div>
-  <div class="principleGrid">
-    <article class="principle"><span>F</span><h3>Fairness</h3><p>Do not disadvantage people because of identity, language, income or neighborhood. Vulnerability can guide support priority, but not discriminatory treatment.</p></article>
-    <article class="principle"><span>T</span><h3>Transparency</h3><p>Every important output explains the evidence used, missing information, confidence and whether data is live, user-entered or simulated.</p></article>
-    <article class="principle"><span>E</span><h3>Ethics</h3><p>NEXUS-Ω does not fabricate emergencies and does not autonomously execute consequential safety actions. Human judgment and official instructions remain primary.</p></article>
-    <article class="principle"><span>P</span><h3>Privacy</h3><p>Family data stays local in the prototype. Exact location is not sent to the optional external AI; only minimized weather context is shared.</p></article>
-  </div>
-  <article class="glass truthPanel">
-    <small>TRUTH LABELS</small><h2>Every data point should tell you what it really is.</h2>
-    <div class="truthGrid">
-      <div><b class="truth live">LIVE</b><span>Current weather retrieved from Open-Meteo.</span></div>
-      <div><b class="truth local">LOCAL</b><span>Family check-ins and saved trips stored on this device.</span></div>
-      <div><b class="truth sim">SIMULATED</b><span>Cascade Lab values created for the educational prototype.</span></div>
-      <div><b class="truth unknown">UNVERIFIED</b><span>Road closures, utility outages, hospital capacity and official alerts are not claimed without a connected source.</span></div>
-    </div>
-  </article>
+  <div class="pageHead"><div class="eyebrow">MANDATORY RESPONSIBLE AI</div><h1>Useful AI must also be trustworthy.</h1><p>NEXUS-Ω follows the internship’s four required responsible-AI principles: fairness, transparency, ethics and privacy.</p></div>
+  <div class="principleGrid"><article class="principle"><span>F</span><h3>Fairness</h3><p>Avoid discriminatory assumptions. Vulnerability can guide support priority without becoming discriminatory treatment.</p></article><article class="principle"><span>T</span><h3>Transparency</h3><p>Every important output identifies whether its evidence is live, local, simulated or unavailable.</p></article><article class="principle"><span>E</span><h3>Ethics</h3><p>No fabricated emergencies and no autonomous execution of consequential safety actions.</p></article><article class="principle"><span>P</span><h3>Privacy</h3><p>Family data stays local; exact coordinates are withheld from the optional external AI.</p></article></div>
+  <article class="glass truthPanel"><small>TRUTH LABELS</small><h2>Every data point tells you what it really is.</h2><div class="truthGrid"><div><b class="truth live">LIVE</b><span>Current weather retrieved from Open-Meteo when location is enabled.</span></div><div><b class="truth local">LOCAL</b><span>Family check-ins and saved trips stored on this device.</span></div><div><b class="truth sim">SIMULATED</b><span>Cascade Lab and Demo-mode values created for educational demonstration.</span></div><div><b class="truth unknown">UNVERIFIED</b><span>Road closures, utility outages, hospital capacity and official alerts are not claimed without a verified source.</span></div></div></article>
 </section>
 
 <section class="view" id="view-emergency">
-  <div class="emergencyHero">
-    <div><div class="eyebrow danger">EMERGENCY COPILOT</div><h1>Do the next safe thing.</h1><p>Immediate actions only. NEXUS-Ω does not replace emergency services, official alerts or evacuation instructions.</p></div><div class="emergencyBadge">112</div>
-  </div>
-  <div class="emergencyActions">
-    <a class="emAction dangerAction" href="tel:112"><span>01</span><div><b>Call emergency services</b><small>India emergency number: 112</small></div></a>
-    <button class="emAction" id="shareLocationBtn"><span>02</span><div><b>Share my location</b><small>Use your device share sheet</small></div></button>
-    <button class="emAction" id="safeCheckBtn"><span>03</span><div><b>Tell family I’m safe</b><small>Share a prepared check-in message</small></div></button>
-    <button class="emAction" id="emHospitalBtn"><span>04</span><div><b>Find nearby hospitals</b><small>Open a map search around you</small></div></button>
-    <button class="emAction" id="speakBtn"><span>05</span><div><b>Hear safety guidance</b><small>Read current guidance aloud</small></div></button>
-    <button class="emAction" id="offlinePackBtn"><span>06</span><div><b>Open offline safety pack</b><small>Basic checklist remains in the app</small></div></button>
-  </div>
-  <article class="glass emergencyGuide"><small>CURRENT GUIDANCE</small><h2 id="emGuideTitle">No live emergency detected by this prototype.</h2><p id="emGuideText">Use official alerts and local authorities for real emergency decisions.</p><div class="guideEvidence" id="emEvidence">Evidence: location/weather not loaded.</div></article>
+  <div class="emergencyHero"><div><div class="eyebrow danger">EMERGENCY COPILOT</div><h1>Do the next safe thing.</h1><p>NEXUS-Ω does not replace emergency services, official alerts or evacuation instructions.</p></div><div class="emergencyBadge">112</div></div>
+  <div class="emergencyActions"><a class="emAction dangerAction" href="tel:112"><span>01</span><div><b>Call emergency services</b><small>India emergency number: 112</small></div></a><button class="emAction" id="shareLocationBtn"><span>02</span><div><b>Share my location</b><small>Uses your device share sheet</small></div></button><button class="emAction" id="safeCheckBtn"><span>03</span><div><b>Tell family I’m safe</b><small>Share a prepared check-in message</small></div></button><button class="emAction" id="emHospitalBtn"><span>04</span><div><b>Find nearby hospitals</b><small>Open a map search around you</small></div></button><button class="emAction" id="speakBtn"><span>05</span><div><b>Hear safety guidance</b><small>Read current guidance aloud</small></div></button><button class="emAction" id="offlinePackBtn"><span>06</span><div><b>Open offline safety pack</b><small>Basic checklist remains in the app</small></div></button></div>
+  <article class="glass emergencyGuide"><small>CURRENT GUIDANCE</small><h2 id="emGuideTitle">No live emergency detected by this prototype.</h2><p id="emGuideText">Use official alerts and local authorities for real emergency decisions.</p><div class="guideEvidence" id="emEvidence">Evidence: weather context not loaded.</div></article>
   <article class="glass offlinePack" id="offlinePack"><h3>Offline Safety Pack</h3><div class="checklist"><label><input type="checkbox"> Keep phone charged and power bank ready</label><label><input type="checkbox"> Carry essential medicines and identification</label><label><input type="checkbox"> Keep drinking water available</label><label><input type="checkbox"> Avoid visibly flooded roads and moving water</label><label><input type="checkbox"> Follow official evacuation and emergency instructions</label><label><input type="checkbox"> Confirm a family meeting/check-in plan</label></div></article>
 </section>
+
+<footer class="projectFooter"><b>NEXUS-Ω • Final 1M1B Prototype</b><span>SDG 11 • Live weather + local privacy + synthetic cascade intelligence • No Vercel required</span></footer>
 </main>
 </div>
 
-<nav class="bottomNav">
-  <button class="navItem active" data-view="home"><span>01</span><b>Today</b></button>
-  <button class="navItem" data-view="ask"><span>Ω</span><b>Ask</b></button>
-  <button class="navItem" data-view="route"><span>03</span><b>Route</b></button>
-  <button class="navItem" data-view="cascade"><span>05</span><b>Cascade</b></button>
-  <button class="navItem emergencyNav" data-view="emergency"><span>!</span><b>Help</b></button>
-</nav>
-
+<nav class="bottomNav"><button class="navItem active" data-view="home"><span>01</span><b>Today</b></button><button class="navItem" data-view="ask"><span>Ω</span><b>Ask</b></button><button class="navItem" data-view="route"><span>03</span><b>Route</b></button><button class="navItem" data-view="cascade"><span>05</span><b>Cascade</b></button><button class="navItem emergencyNav" data-view="emergency"><span>!</span><b>Help</b></button></nav>
 <div class="modal" id="whyModal"><div class="modalCard"><button class="modalClose" data-close>×</button><small>WHY THIS RESULT?</small><h2>Evidence before certainty.</h2><p id="whyContent">Load weather first.</p></div></div>
 <div class="toast" id="toast"><b>NEXUS-Ω</b><span id="toastText">Updated</span></div>
 <script src="./app.js"></script>
