@@ -5,6 +5,9 @@ module.exports = async function handler(req, res) {
     perplexityConfigured: Boolean(process.env.PERPLEXITY_API_KEY),
     openaiModel: process.env.OPENAI_MODEL || "gpt-5.6",
     perplexityMode: "agent-pro-search",
-    verifiedPipelineReady: Boolean(process.env.OPENAI_API_KEY && process.env.PERPLEXITY_API_KEY)
+    verifiedPipelineReady: Boolean(process.env.OPENAI_API_KEY && process.env.PERPLEXITY_API_KEY),
+    freeAiReady: true,
+    defaultAiMode: "free-ai",
+    paidApiKeyRequiredForDefaultMode: false
   });
 };
